@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect x="0" y="0" width="1024" height="1024" fill="#F7F4EF"/>
+  <!-- the shelf: somewhere to put your day down -->
+  <rect x="252" y="630" width="520" height="90" rx="45" ry="45" fill="#6C8EBF"/>
+  <!-- the day: a small round weight, set down, resting -->
+  <circle cx="452" cy="485" r="145" fill="#7DB88B"/>
+</svg>
