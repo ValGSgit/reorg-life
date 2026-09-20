@@ -5,11 +5,13 @@ import { WebNotice } from './src/components/WebNotice';
 import { Onboarding } from './src/screens/Onboarding';
 import { Home } from './src/screens/Home';
 import { CheckIn } from './src/screens/CheckIn';
+import { Habits } from './src/screens/Habits';
 import { Timeline } from './src/screens/Timeline';
+import { Settings } from './src/screens/Settings';
 import { getProfile } from './src/db/repo';
 import { useTheme } from './src/theme';
 
-const TABS = ['Home', 'Check-in', 'Timeline'] as const;
+const TABS = ['Home', 'Check-in', 'Habits', 'Timeline', 'Settings'] as const;
 
 export default function App() {
   const t = useTheme();
@@ -39,12 +41,23 @@ export default function App() {
       <View style={{ flex: 1 }}>
         {tab === 'Home' && <Home refreshKey={refreshKey} />}
         {tab === 'Check-in' && <CheckIn onSaved={bump} />}
+        {tab === 'Habits' && <Habits onChanged={bump} />}
         {tab === 'Timeline' && <Timeline onChanged={bump} />}
+        {tab === 'Settings' && <Settings onChanged={bump} />}
       </View>
       <View style={{ flexDirection: 'row', borderTopWidth: 1, borderColor: t.line, backgroundColor: t.card, paddingBottom: 16 }}>
         {TABS.map((n) => (
-          <Pressable key={n} accessibilityRole="tab" onPress={() => setTab(n)} style={{ flex: 1, alignItems: 'center', paddingVertical: 14 }}>
-            <Text style={{ color: tab === n ? t.accent : t.sub, fontWeight: tab === n ? '700' : '500' }}>{n}</Text>
+          <Pressable
+            key={n}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: tab === n }}
+            onPress={() => setTab(n)}
+            style={{ flex: 1, alignItems: 'center', paddingVertical: 14, paddingHorizontal: 2 }}>
+            <Text
+              numberOfLines={1}
+              style={{ color: tab === n ? t.accent : t.sub, fontWeight: tab === n ? '700' : '500', fontSize: 13 }}>
+              {n}
+            </Text>
           </Pressable>
         ))}
       </View>

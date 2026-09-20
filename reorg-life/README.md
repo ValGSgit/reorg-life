@@ -7,8 +7,21 @@ A local-first, privacy-first mobile app (Android now, iOS-ready) to keep track o
 - No backend, no analytics, no AI API. Claude is used outside the app by you, with data you choose to export.
 - Gentle by design: streaks tolerate a missed day, no penalties, quiet areas are not failures.
 
-## Milestone 1 (this version)
+## Milestone 1
 Onboarding with selectable character, daily check-in (+XP), timeline with tasks/memories by life domain, home screen with character, level and "life garden", daily reminder notification.
+
+## Milestone 2 (this version)
+- **Habits** — recurring, with a schedule (daily / weekdays / chosen days) and
+  gentle streaks: one missed day is forgiven, and days the schedule does not
+  ask for are skipped rather than counted against you.
+- **Richer reminders** — an optional time per habit alongside the daily
+  check-in reminder. Permission is asked for once, a refusal is treated as a
+  normal answer, and reminders are rebuilt from the habit rows so the two never
+  drift apart.
+- **Unlockables** — small accessories for your companion that arrive with each
+  level (`src/unlockables.ts`). Nothing is ever taken away.
+- **Settings** — reminder time, change companion, pick an unlocked item, and
+  encrypted export/import.
 
 ## Run
 ```
@@ -47,8 +60,15 @@ fine. To add art: drop `assets/characters/<id>-<mood>.png` in place and
 uncomment that character's entry in `src/characterArt.ts`. See
 `assets/characters/README.md`.
 
+## Backups
+Settings can export everything as a single AES-256-GCM encrypted file. The key
+is generated fresh for each export and shown once as a **recovery key** — it is
+never stored, never written into the file, and cannot be recovered. A backup
+without its key is unreadable, including by you. Restoring replaces what is on
+the device, in one transaction, and asks first.
+
 ## Roadmap
-2. Habits and richer reminders, avatar items/unlocks  3. Read-only device calendar sync (expo-calendar)  4. Notion sync (token in secure store)  5. Digital footprint inventory, encrypted export/import.
+3. Read-only device calendar sync (expo-calendar)  4. Notion sync (token in secure store)  5. Digital footprint inventory.
 
 ## Safety
 Run `sh scripts/install-hooks.sh` to enable the pre-commit secret/data check (uses gitleaks if installed). Keep the repo free of personal data.

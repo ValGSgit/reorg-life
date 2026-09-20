@@ -34,7 +34,8 @@
         {
           "calendarPermission": "ReorgLife reads your calendar to build your timeline. Data stays on your device."
         }
-      ]
+      ],
+      "expo-sharing"
     ],
     "web": {
       "bundler": "metro",
