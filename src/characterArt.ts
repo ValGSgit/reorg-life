@@ -34,10 +34,15 @@ export const CHARACTER_ART: Partial<Record<CharacterId, ArtSet>> = {
     4: require('../assets/characters/ember-4.png'),
     5: require('../assets/characters/ember-5.png'),
   },
-  // Dusk's sheet has "Stage 1..5" text baked into the image, so it is not
-  // usable. Dusk falls back to the blob — and since the time-of-day rotation
-  // needs Dusk every night, that fallback is on the critical path and is
-  // covered by a test. See ADR 0001 and task T-010.
+  dusk: {
+    1: require('../assets/characters/dusk-1.png'),
+    2: require('../assets/characters/dusk-2.png'),
+    3: require('../assets/characters/dusk-3.png'),
+    4: require('../assets/characters/dusk-4.png'),
+    5: require('../assets/characters/dusk-5.png'),
+  },
+  // Comet, Moss and Blaze have no art at all and fall back to the blob. That
+  // path stays on the critical path and stays tested.
 };
 
 /** Clamps anything to the 1-5 scale, so bad data cannot pick a missing image. */

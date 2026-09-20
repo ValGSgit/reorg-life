@@ -54,15 +54,38 @@ PNGs. It is run by hand:
 python scripts/process-character-sheets.py
 ```
 
-| Files                           | Character                | Status                                        |
-| ------------------------------- | ------------------------ | --------------------------------------------- |
-| `sprout-1.png` … `sprout-5.png` | Sprout                   | Placeholder, wired into `src/characterArt.ts` |
-| `ember-1.png` … `ember-5.png`   | Ember                    | Placeholder, wired in                         |
-| —                               | Dusk, Comet, Moss, Blaze | No art; the blob fallback renders instead     |
+| Files                           | Character          | Status                                        |
+| ------------------------------- | ------------------ | --------------------------------------------- |
+| `sprout-1.png` … `sprout-5.png` | Sprout             | Placeholder, wired into `src/characterArt.ts` |
+| `ember-1.png` … `ember-5.png`   | Ember              | Placeholder, wired in                         |
+| `dusk-1.png` … `dusk-5.png`     | Dusk               | Placeholder, wired in                         |
+| —                               | Comet, Moss, Blaze | No art; the blob fallback renders instead     |
 
 Mood runs 1 (rough) to 5 (thriving), matching the check-in scale.
 
-> **These ten PNGs do not themselves carry the Higgsfield watermark**, because
+All three companions the time-of-day rotation needs (ADR 0001) now have art.
+Comet, Moss and Blaze still fall back to the blob, so that path stays live and
+stays tested.
+
+### How the cut-out works, and where it is imperfect
+
+The backdrop is found by colour **and** connectivity: a pale pixel only becomes
+transparent if it is connected to the edge of the crop. Colour alone removed the
+whites of Sprout's eyes, and left the owl's right eye translucent, because an
+eye is backdrop-coloured but walled in by the face.
+
+Enclosed regions are then made opaque only when they sit between 15% and 80% of
+the figure's height and cover under 5% of its area. Eyes qualify; the gap
+between a character's feet and the gap under Sprout's drooping leaf do not.
+Colour cannot make that distinction — Sprout's foot gap reads _further_ from the
+backdrop than its own eyes do — so position does.
+
+That is a heuristic tuned to these three sheets and it will need revisiting for
+new art. Which is fine: the real fix is licensed art that ships with a proper
+alpha channel (T-010), or running the sheets through a background-removal
+service rather than thresholding them here.
+
+> **These fifteen PNGs do not themselves carry the Higgsfield watermark**, because
 > it sits in the corner of the sheet rather than on each figure. That does not
 > make them shippable. They are derived from watermarked source art, their
 > provenance is recorded here, and they must be replaced before release —

@@ -4,8 +4,8 @@ import { Character } from '../../src/components/Character';
 import { NO_ITEM, UNLOCKABLES } from '../../src/domain';
 
 /**
- * The fallback path matters more than it looks: most companions have no
- * artwork yet (Dusk included), so the blob is what people actually see. A
+ * The fallback path matters more than it looks: Comet, Moss and Blaze still
+ * have no artwork, so the blob is what people actually see for them. A
  * regression here is a blank space where the companion should be.
  *
  * `render` is asynchronous in React Native Testing Library 14, and the
@@ -25,7 +25,7 @@ function countType(node: unknown, type: string): number {
 
 describe('Character', () => {
   it('renders without artwork, falling back to the blob', async () => {
-    const { toJSON } = await render(<Character id="dusk" color="#C4A8E0" mood={3} />);
+    const { toJSON } = await render(<Character id="comet" color="#9DB8F0" mood={3} />);
     expect(toJSON()).toBeTruthy();
   });
 
@@ -37,8 +37,13 @@ describe('Character', () => {
   });
 
   it('draws no image at all when it has fallen back to the blob', async () => {
-    const { toJSON } = await render(<Character id="dusk" color="#C4A8E0" mood={3} />);
+    const { toJSON } = await render(<Character id="comet" color="#9DB8F0" mood={3} />);
     expect(countType(toJSON(), 'Image')).toBe(0);
+  });
+
+  it('draws an image for a companion that now has art', async () => {
+    const { toJSON } = await render(<Character id="dusk" color="#C4A8E0" mood={3} />);
+    expect(countType(toJSON(), 'Image')).toBeGreaterThan(0);
   });
 
   it('renders every mood without throwing', async () => {

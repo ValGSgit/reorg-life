@@ -20,14 +20,32 @@ updates:
         update-types: [patch]
     ignore:
       # Expo SDK packages move together. Upgrading one out of step with the
-      # others breaks the build in confusing ways; use `npx expo install --fix`
-      # as a deliberate SDK upgrade task instead.
+      # others breaks the build in confusing ways, and npm will not stop you:
+      # expo declares its SDK siblings as `*` peers, so a wrong-SDK package
+      # installs cleanly and fails later at bundle time. Use
+      # `npx expo install --fix` as a deliberate SDK upgrade task instead.
+      #
+      # `@expo/*` is listed separately on purpose: the glob `expo-*` cannot
+      # match a scoped name beginning with `@`, which is how Dependabot came to
+      # propose @expo/metro-runtime 58 for an SDK 57 app.
       - dependency-name: 'expo'
       - dependency-name: 'expo-*'
+      - dependency-name: '@expo/*'
       - dependency-name: 'react-native'
       - dependency-name: 'react'
       - dependency-name: 'react-dom'
+      - dependency-name: 'react-native-web'
       - dependency-name: 'jest-expo'
+      # jest-expo 57 is built against jest 29; a jest major has to wait for
+      # jest-expo to follow. Same story for the types.
+      - dependency-name: 'jest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/jest'
+        update-types: ['version-update:semver-major']
+      # typescript-eslint 8 peers typescript >=4.8.4 <6.1.0, so a TypeScript
+      # major breaks `npm ci` before it breaks anything else.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: '/'
