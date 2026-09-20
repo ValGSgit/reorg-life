@@ -1,0 +1,12 @@
+# Normalise to LF in the repository. Without this, a Windows checkout gets
+# CRLF, Prettier (which expects LF) reports every line as changed, and CI on
+# Linux disagrees with the developer's machine.
+* text=auto eol=lf
+
+# Binary assets must never be touched.
+*.png binary
+*.jpg binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.wasm binary

@@ -50,3 +50,9 @@ private-data/
 # Raw character sheets from Higgsfield: multi-megabyte, watermarked,
 # placeholder-only. Kept out of git deliberately — see docs/ASSETS.md.
 assets/characters/_raw/
+
+# Test and build output
+coverage/
+playwright-report/
+test-results/
+.playwright/
