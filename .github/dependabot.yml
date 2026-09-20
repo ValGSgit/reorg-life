@@ -42,6 +42,12 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: '@types/jest'
         update-types: ['version-update:semver-major']
+      # eslint-config-expo 57 pulls in an eslint-plugin-react that still calls
+      # context.getFilename(), which ESLint 10 removed. Proven by CI on the
+      # Dependabot PR: "TypeError: contextOrFilename.getFilename is not a
+      # function" while linting App.tsx. Wait for eslint-config-expo to follow.
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
       # typescript-eslint 8 peers typescript >=4.8.4 <6.1.0, so a TypeScript
       # major breaks `npm ci` before it breaks anything else.
       - dependency-name: 'typescript'
