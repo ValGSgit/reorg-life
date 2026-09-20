@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1320" viewBox="0 0 750 1320">
+  <rect width="750" height="1320" fill="#16151B"/>
+
+  <!-- header -->
+  <text x="40" y="108" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="700" fill="#F1EFF5">Hi, there</text>
+  <text x="40" y="144" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#A19DAE">6 days of showing up. Rest days are built in.</text>
+
+  <!-- period pill -->
+  <rect x="560" y="66" width="150" height="40" rx="20" fill="#211F29" stroke="#2E2B38" stroke-width="1.5"/>
+  <text x="635" y="92" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#A19DAE" text-anchor="middle">Afternoon</text>
+
+  <!-- companion card -->
+  <rect x="40" y="200" width="670" height="460" rx="28" fill="#211F29" stroke="#2E2B38" stroke-width="1.5"/>
+  <path d="
+    M 365,240
+    L 385,240
+    A 110,110 0 0 1 495,350
+    L 495,440
+    A 60,60 0 0 1 435,500
+    L 315,500
+    A 60,60 0 0 1 255,440
+    L 255,350
+    A 110,110 0 0 1 365,240
+    Z" fill="#F4A97F"/>
+  <circle cx="346.2" cy="333.6" r="10" fill="#2B2A33"/>
+  <circle cx="403.8" cy="333.6" r="10" fill="#2B2A33"/>
+  <path d="M 355.8,385.6 Q 375,401.6 394.2,385.6" stroke="#2B2A33" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+  <text x="375" y="550" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#F1EFF5" text-anchor="middle">Ember &#183; Level 4</text>
+
+  <rect x="140" y="585" width="470" height="14" rx="7" fill="#2E2B38"/>
+  <rect x="140" y="585" width="282" height="14" rx="7" fill="#8FCB9C"/>
+
+  <text x="375" y="625" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#A19DAE" text-anchor="middle">460 XP</text>
+  <text x="375" y="651" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#A19DAE" text-anchor="middle">A scarf arrives at level 5.</text>
+
+  <!-- life garden card -->
+  <rect x="40" y="700" width="670" height="520" rx="28" fill="#211F29" stroke="#2E2B38" stroke-width="1.5"/>
+  <text x="80" y="766" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#F1EFF5">Life garden</text>
+  <text x="80" y="798" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#A19DAE">Last two weeks</text>
+
+  <rect x="100" y="1080" width="550" height="6" rx="3" fill="#2E2B38"/>
+  
+      <rect x="137.83333333333334" y="940" width="16" height="140" rx="8" fill="#7DB88B" />
+      <circle cx="145.83333333333334" cy="933" r="13" fill="#7DB88B" />
+      <text x="145.83333333333334" y="1114" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#A19DAE" text-anchor="middle">Health</text>
+    
+
+      <rect x="229.5" y="1040" width="16" height="40" rx="8" fill="#E28FA4" />
+      <circle cx="237.5" cy="1033" r="13" fill="#E28FA4" />
+      <text x="237.5" y="1114" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#A19DAE" text-anchor="middle">Relat.</text>
+    
+
+      <rect x="321.1666666666667" y="980" width="16" height="100" rx="8" fill="#6C8EBF" />
+      <circle cx="329.1666666666667" cy="973" r="13" fill="#6C8EBF" />
+      <text x="329.1666666666667" y="1114" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#A19DAE" text-anchor="middle">Work</text>
+    
+
+      <rect x="412.83333333333337" y="1010" width="16" height="70" rx="8" fill="#E0A85F" />
+      <circle cx="420.83333333333337" cy="1003" r="13" fill="#E0A85F" />
+      <text x="420.83333333333337" y="1114" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#A19DAE" text-anchor="middle">Create</text>
+    
+
+      <rect x="504.5" y="1060" width="16" height="20" rx="8" fill="#8C7FC2" />
+      <circle cx="512.5" cy="1053" r="13" fill="#8C7FC2" />
+      <text x="512.5" y="1114" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#A19DAE" text-anchor="middle">Money</text>
+    
+
+      <rect x="596.1666666666667" y="990" width="16" height="90" rx="8" fill="#5FB3B3" />
+      <circle cx="604.1666666666667" cy="983" r="13" fill="#5FB3B3" />
+      <text x="604.1666666666667" y="1114" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#A19DAE" text-anchor="middle">Digital</text>
+    
+
+  <text x="375" y="1190" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#A19DAE" text-anchor="middle">Quiet areas are not failures, just places you have not visited lately.</text>
+
+  <!-- home indicator -->
+  <rect x="310" y="1270" width="130" height="6" rx="3" fill="#2E2B38"/>
+</svg>
