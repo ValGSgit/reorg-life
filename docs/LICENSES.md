@@ -16,7 +16,7 @@ paid app.
 It cannot see:
 
 - A licence that is wrong or missing in a package's own `package.json`.
-- A second, different licence on source code vendored *inside* a package
+- A second, different licence on source code vendored _inside_ a package
   (a native library bundled into an npm wrapper, for instance — see
   SQLCipher below).
 - Whether a dependency is actually reachable at runtime versus only used by a
@@ -29,10 +29,10 @@ not a substitute for reading this file.
 
 ## Headline result
 
-| Run                              | Packages | Permissive | Weak copyleft | Strong copyleft | Unknown |
-| --------------------------------- | -------: | ---------: | ------------: | ---------------: | ------: |
-| `--prod` (shipping dependency tree) |      448 |        447 |              0 |                 0 |       1 |
-| `--full` (everything installed)   |      968 |        965 |              2 |                 0 |       1 |
+| Run                                 | Packages | Permissive | Weak copyleft | Strong copyleft | Unknown |
+| ----------------------------------- | -------: | ---------: | ------------: | --------------: | ------: |
+| `--prod` (shipping dependency tree) |      448 |        447 |             0 |               0 |       1 |
+| `--full` (everything installed)     |      968 |        965 |             2 |               0 |       1 |
 
 **Zero copyleft in the shipping tree. Zero strong copyleft anywhere, shipping
 or not.** The `--full` run's two weak-copyleft entries (`lightningcss`,
@@ -72,7 +72,7 @@ be reproduced in the documentation and/or other materials provided with the
 binary distribution** — i.e. it is not enough that the notice exists inside
 source code nobody using the app will ever see. A `LICENSE` file in the repo
 does not satisfy this for an app a user installs; it needs to be reachable
-*from inside the shipped app*.
+_from inside the shipped app_.
 
 **Action:** the app needs an "Open source licences" screen (or an entry in
 Settings) that reproduces the SQLCipher BSD-3-Clause notice, alongside MIT
@@ -109,7 +109,7 @@ build, and `browserslist`/`caniuse-lite` supply browser-compatibility data to
 that configuration step. Neither the app's source (`src/`) nor its build
 config (`metro.config.js`, `babel.config.js`, `app.json`) references
 `browserslist` or `caniuse-lite` directly — confirmed by grep. `caniuse-lite`
-is compatibility *data* consumed by the bundler while it decides what to
+is compatibility _data_ consumed by the bundler while it decides what to
 build, not code that gets pulled into the JS bundle the app ships. The
 audit script's dependency walk cannot distinguish "installed as a transitive
 build-time dependency" from "ends up in the artefact," which is exactly the
@@ -125,7 +125,7 @@ asset).
 Run `node scripts/audit-licenses.mjs --full` for the complete, current list —
 968 packages at last count, one line each. It is too long and too volatile
 (any `npm install`) to usefully freeze into this file; this document instead
-records the *shape* of the result and the exceptions that need judgement.
+records the _shape_ of the result and the exceptions that need judgement.
 Re-run before every release and re-check this file if the shape changes
 (anything moves into weak or strong copyleft, or a new "unknown" appears).
 

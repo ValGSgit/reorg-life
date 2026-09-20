@@ -49,7 +49,7 @@ stricter than Play's about health-adjacent apps.
 [ADR 0002](DECISIONS/0002-backup-recovery.md) chose a printable recovery
 card as the fix for "the only copy of the recovery key is whatever the user
 made unassisted," and explicitly rejected a passphrase-derived key as the
-*minimal* fix — not permanently. The ADR itself says this is "reasonable as
+_minimal_ fix — not permanently. The ADR itself says this is "reasonable as
 a later, additional opt-in" for a user who would rather trust memory than a
 piece of paper. It would need its own ADR (a new crypto dependency beyond
 `expo-crypto`, and passphrase-strength UX is a project of its own), so it
@@ -58,7 +58,7 @@ stays here rather than as a task until someone wants to take that on.
 ### A public-facing licences page vs. an in-app-only screen
 
 T-032 puts the SQLCipher/OpenSSL/MIT notices inside the app, which is what
-BSD-3-Clause actually requires. Whether the same content is *also* worth
+BSD-3-Clause actually requires. Whether the same content is _also_ worth
 publishing at a stable URL (linked from the Play listing, alongside the
 privacy policy) is a separate, smaller question — convenience for a curious
 user, not a legal requirement on top of T-032. Not worth its own task unless

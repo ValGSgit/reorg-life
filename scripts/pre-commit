@@ -35,6 +35,15 @@ if [ -d node_modules ] && command -v npx >/dev/null 2>&1; then
     exit 1
   }
 
+  # ESLint's prettier plugin only covers JS and TS. Markdown, YAML and JSON
+  # slip past it, which is how three unformatted docs reached main and broke
+  # the lint job's format:check step.
+  echo "pre-commit: formatting"
+  npx --no-install prettier --check . || {
+    echo "error: formatting. Fix with: npm run format"
+    exit 1
+  }
+
   echo "pre-commit: typecheck"
   npx --no-install tsc --noEmit || {
     echo "error: typecheck failed."
