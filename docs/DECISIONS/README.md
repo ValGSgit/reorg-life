@@ -46,6 +46,7 @@ What else was considered, and the specific reason it lost.
 
 ## Index
 
-| ADR                                    | Title                                  | Status   |
-| -------------------------------------- | -------------------------------------- | -------- |
-| [0001](0001-time-of-day-companions.md) | Companions rotate with the time of day | accepted |
+| ADR                                    | Title                                             | Status   |
+| -------------------------------------- | ------------------------------------------------- | -------- |
+| [0001](0001-time-of-day-companions.md) | Companions rotate with the time of day            | accepted |
+| [0002](0002-backup-recovery.md)        | What happens when a backup's recovery key is lost | proposed |
