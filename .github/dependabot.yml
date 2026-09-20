@@ -1,0 +1,38 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels: ['dependencies']
+    commit-message:
+      prefix: 'chore'
+      include: scope
+    groups:
+      # One PR for the routine noise, so the queue stays reviewable.
+      dev-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+      production-patch:
+        dependency-type: production
+        update-types: [patch]
+    ignore:
+      # Expo SDK packages move together. Upgrading one out of step with the
+      # others breaks the build in confusing ways; use `npx expo install --fix`
+      # as a deliberate SDK upgrade task instead.
+      - dependency-name: 'expo'
+      - dependency-name: 'expo-*'
+      - dependency-name: 'react-native'
+      - dependency-name: 'react'
+      - dependency-name: 'react-dom'
+      - dependency-name: 'jest-expo'
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: monthly
+    labels: ['dependencies']
+    commit-message:
+      prefix: 'chore'

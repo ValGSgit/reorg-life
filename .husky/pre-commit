@@ -1,0 +1,3 @@
+# Husky delegates to the same script the plain git hook uses, so both paths
+# behave identically. See scripts/pre-commit.
+sh scripts/pre-commit

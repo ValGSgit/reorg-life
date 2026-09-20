@@ -1,0 +1,99 @@
+name: Claude
+
+# Claude picks up work when the owner asks for it: label an issue `claude`,
+# assign an issue to itself, or write @claude in a comment.
+#
+# It opens a pull request. It never pushes to main and never merges — branch
+# protection on main is the backstop for that, and setting it up is on the
+# checklist in docs/SECURITY.md.
+on:
+  issues:
+    types: [opened, assigned, labeled]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+# One Claude run at a time per issue or PR. Without this, three quick comments
+# start three agents on the same branch.
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  claude:
+    # Only the repository owner can start a run, and only on this repository.
+    # Without this gate, anyone who can comment on an issue can spend tokens
+    # and run code in CI.
+    if: |
+      github.repository == 'ValGSgit/reorg-life' &&
+      github.actor == 'ValGSgit' && (
+        (github.event_name == 'issues' && (
+          contains(github.event.issue.labels.*.name, 'claude') ||
+          github.event.action == 'assigned'
+        )) ||
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude'))
+      )
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    permissions:
+      # Enough to push a branch and open a PR. Not enough to merge one.
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          # A Claude Pro / Max subscription token, not an API key.
+          # Generate with `claude setup-token` in the Claude Code CLI, then add
+          # it as a repository secret. See docs/CLAUDE_WORKFLOW.md.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          trigger_phrase: '@claude'
+          label_trigger: 'claude'
+          prompt: |
+            Read AGENTS.md first and follow it exactly. It is the source of
+            truth for this repository.
+
+            The rules that matter most:
+            - Test first. Write a failing test, show it failing, then make it
+              pass, then refactor.
+            - Never weaken or delete a test to get CI green. If a requirement
+              looks wrong, stop and say so in the pull request description.
+            - One task per pull request, ideally under 400 changed lines. If it
+              is turning out larger, split the rest into follow-up task files
+              rather than growing this one.
+            - `npm run verify` must pass before you open the pull request.
+            - Never commit a secret or any personal data.
+            - Work on a branch and open a pull request. Never push to main and
+              never merge.
+            - If you are blocked, write the blocker into the task file in
+              docs/tasks/ and stop. A clear blocker is a better outcome than a
+              guess.
+
+            If this issue refers to a task file in docs/tasks/, follow it,
+            check off its acceptance criteria as you satisfy them, and update
+            its status. Append one line to the status log in docs/ROADMAP.md
+            when you are done.
+          claude_args: --max-turns 60

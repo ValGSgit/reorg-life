@@ -1,0 +1,47 @@
+name: Bug
+description: Something behaves differently from what it should
+title: '[bug] '
+labels: ['bug']
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should have happened
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1. 
+        2.
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options: ['Android dev build', 'Android release build', 'Expo Go', 'Web preview', 'Tests / CI']
+    validations:
+      required: true
+  - type: checkboxes
+    id: data
+    attributes:
+      label: Before submitting
+      options:
+        - label: This report contains no personal data — no check-in text, no notes, no screenshots of real entries
+          required: true
+  - type: checkboxes
+    id: severity
+    attributes:
+      label: Does this risk data?
+      options:
+        - label: Could lose or corrupt data, or weaken encryption — treat as P1
+          required: false
