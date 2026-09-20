@@ -16,10 +16,11 @@ export function WebNotice() {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-      }}>
+      }}
+    >
       <Text style={{ color: '#FFF3DB', fontSize: 12, lineHeight: 17, flex: 1 }}>
-        Web preview — not secure. This browser copy stores your entries unencrypted and
-        reminders are off. Use the Android app for real data.
+        Web preview — not secure. This browser copy stores your entries unencrypted and reminders are off. Use
+        the Android app for real data.
       </Text>
     </View>
   );

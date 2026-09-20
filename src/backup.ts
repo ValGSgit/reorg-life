@@ -41,7 +41,7 @@ function utf8Encode(s: string): Uint8Array {
 
 function utf8Decode(bytes: Uint8Array): string {
   let s = '';
-  for (let i = 0; i < bytes.length; ) {
+  for (let i = 0; i < bytes.length;) {
     const b = bytes[i];
     if (b < 0x80) {
       s += String.fromCharCode(b);
@@ -54,7 +54,10 @@ function utf8Decode(bytes: Uint8Array): string {
       i += 3;
     } else {
       const cp =
-        ((b & 0x07) << 18) | ((bytes[i + 1] & 0x3f) << 12) | ((bytes[i + 2] & 0x3f) << 6) | (bytes[i + 3] & 0x3f);
+        ((b & 0x07) << 18) |
+        ((bytes[i + 1] & 0x3f) << 12) |
+        ((bytes[i + 2] & 0x3f) << 6) |
+        (bytes[i + 3] & 0x3f);
       const off = cp - 0x10000;
       s += String.fromCharCode(0xd800 + (off >> 10), 0xdc00 + (off & 0x3ff));
       i += 4;
@@ -106,7 +109,9 @@ export async function restoreBackup(payload: string, recoveryKey: string): Promi
   try {
     key = await AESEncryptionKey.import(trimmedKey, 'base64');
   } catch {
-    throw new BackupError('That recovery key is not in the right shape. It should be the long line of characters shown when you exported.');
+    throw new BackupError(
+      'That recovery key is not in the right shape. It should be the long line of characters shown when you exported.',
+    );
   }
 
   let json: string;
@@ -116,7 +121,9 @@ export async function restoreBackup(payload: string, recoveryKey: string): Promi
     json = utf8Decode(bytes);
   } catch {
     // AES-GCM authenticates, so a wrong key and a damaged file look the same.
-    throw new BackupError('Could not open this backup. The key may not match this file, or the file may be damaged.');
+    throw new BackupError(
+      'Could not open this backup. The key may not match this file, or the file may be damaged.',
+    );
   }
 
   let bundle: Bundle;
@@ -129,7 +136,8 @@ export async function restoreBackup(payload: string, recoveryKey: string): Promi
   if (typeof bundle.version !== 'number' || bundle.version > BACKUP_VERSION) {
     throw new BackupError('This backup was made by a newer version of the app.');
   }
-  if (!bundle.data || typeof bundle.data !== 'object') throw new BackupError('This backup has no data in it.');
+  if (!bundle.data || typeof bundle.data !== 'object')
+    throw new BackupError('This backup has no data in it.');
 
   await importSnapshot(bundle.data);
   return bundle.data;

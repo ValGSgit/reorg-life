@@ -21,9 +21,19 @@ export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const bump = () => setRefreshKey((k) => k + 1);
 
-  useEffect(() => { getProfile().then((p) => { setHasProfile(!!p); setReady(true); }); }, []);
+  useEffect(() => {
+    getProfile().then((p) => {
+      setHasProfile(!!p);
+      setReady(true);
+    });
+  }, []);
 
-  if (!ready) return <View style={{ flex: 1, justifyContent: 'center', backgroundColor: t.bg }}><ActivityIndicator /></View>;
+  if (!ready)
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', backgroundColor: t.bg }}>
+        <ActivityIndicator />
+      </View>
+    );
   if (!hasProfile)
     return (
       <View style={{ flex: 1, backgroundColor: t.bg }}>
@@ -45,17 +55,31 @@ export default function App() {
         {tab === 'Timeline' && <Timeline onChanged={bump} />}
         {tab === 'Settings' && <Settings onChanged={bump} />}
       </View>
-      <View style={{ flexDirection: 'row', borderTopWidth: 1, borderColor: t.line, backgroundColor: t.card, paddingBottom: 16 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          borderTopWidth: 1,
+          borderColor: t.line,
+          backgroundColor: t.card,
+          paddingBottom: 16,
+        }}
+      >
         {TABS.map((n) => (
           <Pressable
             key={n}
             accessibilityRole="tab"
             accessibilityState={{ selected: tab === n }}
             onPress={() => setTab(n)}
-            style={{ flex: 1, alignItems: 'center', paddingVertical: 14, paddingHorizontal: 2 }}>
+            style={{ flex: 1, alignItems: 'center', paddingVertical: 14, paddingHorizontal: 2 }}
+          >
             <Text
               numberOfLines={1}
-              style={{ color: tab === n ? t.accent : t.sub, fontWeight: tab === n ? '700' : '500', fontSize: 13 }}>
+              style={{
+                color: tab === n ? t.accent : t.sub,
+                fontWeight: tab === n ? '700' : '500',
+                fontSize: 13,
+              }}
+            >
               {n}
             </Text>
           </Pressable>

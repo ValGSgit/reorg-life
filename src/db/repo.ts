@@ -3,7 +3,14 @@ import { XP_PER_CHECKIN, XP_PER_HABIT, XP_PER_TASK, dayKey, gentleStreakOn, isDu
 
 export type Profile = { character_id: string; display_name: string; xp: number };
 export type Checkin = { id: number; day: string; mood: number; note: string };
-export type EventRow = { id: number; title: string; domain: string; starts_at: string; source: string; done: number };
+export type EventRow = {
+  id: number;
+  title: string;
+  domain: string;
+  starts_at: string;
+  source: string;
+  done: number;
+};
 
 export async function getProfile(): Promise<Profile | null> {
   const db = await getDb();
@@ -14,7 +21,9 @@ export async function createProfile(characterId: string, name: string) {
   const db = await getDb();
   await db.runAsync(
     'INSERT OR REPLACE INTO profile (id, character_id, display_name, xp, created_at) VALUES (1, ?, ?, COALESCE((SELECT xp FROM profile WHERE id = 1), 0), ?)',
-    characterId, name, new Date().toISOString(),
+    characterId,
+    name,
+    new Date().toISOString(),
   );
 }
 
@@ -41,7 +50,13 @@ export async function saveCheckin(mood: number, note: string): Promise<{ firstTo
     await db.runAsync('UPDATE checkins SET mood = ?, note = ? WHERE id = ?', mood, note, existing.id);
     return { firstToday: false };
   }
-  await db.runAsync('INSERT INTO checkins (day, mood, note, created_at) VALUES (?, ?, ?, ?)', dayKey(), mood, note, new Date().toISOString());
+  await db.runAsync(
+    'INSERT INTO checkins (day, mood, note, created_at) VALUES (?, ?, ?, ?)',
+    dayKey(),
+    mood,
+    note,
+    new Date().toISOString(),
+  );
   await addXp(XP_PER_CHECKIN);
   return { firstToday: true };
 }
@@ -59,7 +74,12 @@ export async function checkinDays(): Promise<string[]> {
 
 export async function addEvent(title: string, domain: string, startsAt: Date) {
   const db = await getDb();
-  await db.runAsync('INSERT INTO events (title, domain, starts_at) VALUES (?, ?, ?)', title, domain, startsAt.toISOString());
+  await db.runAsync(
+    'INSERT INTO events (title, domain, starts_at) VALUES (?, ?, ?)',
+    title,
+    domain,
+    startsAt.toISOString(),
+  );
 }
 
 export async function listEvents(): Promise<EventRow[]> {
@@ -78,7 +98,9 @@ export async function domainActivity(): Promise<Record<string, number>> {
   const db = await getDb();
   const since = new Date(Date.now() - 14 * 86400000).toISOString();
   const rows = await db.getAllAsync<{ domain: string; n: number }>(
-    'SELECT domain, COUNT(*) AS n FROM events WHERE done = 1 AND starts_at >= ? GROUP BY domain', since);
+    'SELECT domain, COUNT(*) AS n FROM events WHERE done = 1 AND starts_at >= ? GROUP BY domain',
+    since,
+  );
   return Object.fromEntries(rows.map((r) => [r.domain, r.n]));
 }
 
@@ -133,7 +155,11 @@ export async function createHabit(
   const db = await getDb();
   const r = await db.runAsync(
     'INSERT INTO habits (title, domain, schedule, remind_at, created_at) VALUES (?, ?, ?, ?, ?)',
-    title, domain, schedule, remindAt, new Date().toISOString(),
+    title,
+    domain,
+    schedule,
+    remindAt,
+    new Date().toISOString(),
   );
   return r.lastInsertRowId;
 }
@@ -157,7 +183,10 @@ export async function deleteHabit(id: number) {
 
 export async function habitLogDays(habitId: number): Promise<string[]> {
   const db = await getDb();
-  const rows = await db.getAllAsync<{ day: string }>('SELECT day FROM habit_logs WHERE habit_id = ?', habitId);
+  const rows = await db.getAllAsync<{ day: string }>(
+    'SELECT day FROM habit_logs WHERE habit_id = ?',
+    habitId,
+  );
   return rows.map((r) => r.day);
 }
 
@@ -173,12 +202,16 @@ export async function setHabitDone(habitId: number, done: boolean, day = dayKey(
     return;
   }
   const existing = await db.getFirstAsync<{ id: number }>(
-    'SELECT id FROM habit_logs WHERE habit_id = ? AND day = ?', habitId, day,
+    'SELECT id FROM habit_logs WHERE habit_id = ? AND day = ?',
+    habitId,
+    day,
   );
   if (existing) return;
   await db.runAsync(
     'INSERT INTO habit_logs (habit_id, day, created_at) VALUES (?, ?, ?)',
-    habitId, day, new Date().toISOString(),
+    habitId,
+    day,
+    new Date().toISOString(),
   );
   await addXp(XP_PER_HABIT);
 }
@@ -188,7 +221,9 @@ export async function habitViews(today = dayKey()): Promise<HabitView[]> {
   const db = await getDb();
   const habits = await listHabits();
   if (!habits.length) return [];
-  const logs = await db.getAllAsync<{ habit_id: number; day: string }>('SELECT habit_id, day FROM habit_logs');
+  const logs = await db.getAllAsync<{ habit_id: number; day: string }>(
+    'SELECT habit_id, day FROM habit_logs',
+  );
   const byHabit = new Map<number, string[]>();
   for (const l of logs) {
     const list = byHabit.get(l.habit_id);
@@ -223,12 +258,14 @@ export async function exportSnapshot(): Promise<Snapshot> {
   const db = await getDb();
   const [profile, checkins, events, habits, habit_logs, settings] = await Promise.all([
     db.getFirstAsync<Profile & { created_at: string }>(
-      'SELECT character_id, display_name, xp, created_at FROM profile WHERE id = 1'),
+      'SELECT character_id, display_name, xp, created_at FROM profile WHERE id = 1',
+    ),
     db.getAllAsync<Checkin>('SELECT id, day, mood, note FROM checkins ORDER BY day'),
     db.getAllAsync<EventRow>('SELECT * FROM events ORDER BY starts_at'),
     db.getAllAsync<Habit>('SELECT * FROM habits ORDER BY created_at'),
     db.getAllAsync<{ habit_id: number; day: string; created_at: string }>(
-      'SELECT habit_id, day, created_at FROM habit_logs ORDER BY day'),
+      'SELECT habit_id, day, created_at FROM habit_logs ORDER BY day',
+    ),
     allSettings(),
   ]);
   return { profile, checkins, events, habits, habit_logs, settings };
@@ -247,27 +284,43 @@ export async function importSnapshot(s: Snapshot): Promise<void> {
     if (s.profile) {
       await db.runAsync(
         'INSERT INTO profile (id, character_id, display_name, xp, created_at) VALUES (1, ?, ?, ?, ?)',
-        s.profile.character_id, s.profile.display_name, s.profile.xp ?? 0,
+        s.profile.character_id,
+        s.profile.display_name,
+        s.profile.xp ?? 0,
         s.profile.created_at ?? new Date().toISOString(),
       );
     }
     for (const c of s.checkins ?? []) {
       await db.runAsync(
         'INSERT OR REPLACE INTO checkins (day, mood, note, created_at) VALUES (?, ?, ?, ?)',
-        c.day, c.mood, c.note ?? '', new Date().toISOString());
+        c.day,
+        c.mood,
+        c.note ?? '',
+        new Date().toISOString(),
+      );
     }
     for (const e of s.events ?? []) {
       await db.runAsync(
         'INSERT INTO events (title, domain, starts_at, source, done) VALUES (?, ?, ?, ?, ?)',
-        e.title, e.domain, e.starts_at, e.source ?? 'manual', e.done ? 1 : 0);
+        e.title,
+        e.domain,
+        e.starts_at,
+        e.source ?? 'manual',
+        e.done ? 1 : 0,
+      );
     }
     // Habit ids are re-issued, so logs are remapped onto the new ids.
     const idMap = new Map<number, number>();
     for (const h of s.habits ?? []) {
       const r = await db.runAsync(
         'INSERT INTO habits (title, domain, schedule, remind_at, archived, created_at) VALUES (?, ?, ?, ?, ?, ?)',
-        h.title, h.domain, h.schedule ?? 'daily', h.remind_at ?? null, h.archived ? 1 : 0,
-        h.created_at ?? new Date().toISOString());
+        h.title,
+        h.domain,
+        h.schedule ?? 'daily',
+        h.remind_at ?? null,
+        h.archived ? 1 : 0,
+        h.created_at ?? new Date().toISOString(),
+      );
       idMap.set(h.id, r.lastInsertRowId);
     }
     for (const l of s.habit_logs ?? []) {
@@ -275,7 +328,10 @@ export async function importSnapshot(s: Snapshot): Promise<void> {
       if (mapped === undefined) continue;
       await db.runAsync(
         'INSERT OR IGNORE INTO habit_logs (habit_id, day, created_at) VALUES (?, ?, ?)',
-        mapped, l.day, l.created_at ?? new Date().toISOString());
+        mapped,
+        l.day,
+        l.created_at ?? new Date().toISOString(),
+      );
     }
     for (const [k, v] of Object.entries(s.settings ?? {})) {
       await db.runAsync('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)', k, v);

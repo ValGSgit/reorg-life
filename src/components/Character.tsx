@@ -55,10 +55,25 @@ export function Character({ color, mood = 3, size = 120, id, image, item = NO_IT
             borderBottomRightRadius: size * 0.26,
             alignItems: 'center',
             paddingTop: size * 0.28,
-          }}>
+          }}
+        >
           <View style={{ flexDirection: 'row', gap: size * 0.2 }}>
-            <View style={{ width: eye, height: mood <= 1 ? eye * 0.4 : eye * 1.3, borderRadius: eye, backgroundColor: '#2B2A33' }} />
-            <View style={{ width: eye, height: mood <= 1 ? eye * 0.4 : eye * 1.3, borderRadius: eye, backgroundColor: '#2B2A33' }} />
+            <View
+              style={{
+                width: eye,
+                height: mood <= 1 ? eye * 0.4 : eye * 1.3,
+                borderRadius: eye,
+                backgroundColor: '#2B2A33',
+              }}
+            />
+            <View
+              style={{
+                width: eye,
+                height: mood <= 1 ? eye * 0.4 : eye * 1.3,
+                borderRadius: eye,
+                backgroundColor: '#2B2A33',
+              }}
+            />
           </View>
           <Mouth size={size} kind={smile} />
         </View>
@@ -75,7 +90,14 @@ function Accessory({ size, item }: { size: number; item: Unlockable }) {
     case 'sprig':
       return (
         <View style={{ position: 'absolute', top: size * 0.02, left: size * 0.56 }}>
-          <View style={{ width: size * 0.04, height: size * 0.16, backgroundColor: item.color, borderRadius: size * 0.02 }} />
+          <View
+            style={{
+              width: size * 0.04,
+              height: size * 0.16,
+              backgroundColor: item.color,
+              borderRadius: size * 0.02,
+            }}
+          />
           <View
             style={{
               position: 'absolute',
@@ -106,8 +128,23 @@ function Accessory({ size, item }: { size: number; item: Unlockable }) {
     case 'hat':
       return (
         <View style={{ position: 'absolute', top: size * 0.0, alignItems: 'center' }}>
-          <View style={{ width: size * 0.3, height: size * 0.16, backgroundColor: item.color, borderTopLeftRadius: size * 0.15, borderTopRightRadius: size * 0.15 }} />
-          <View style={{ width: size * 0.5, height: size * 0.05, backgroundColor: item.color, borderRadius: size * 0.03 }} />
+          <View
+            style={{
+              width: size * 0.3,
+              height: size * 0.16,
+              backgroundColor: item.color,
+              borderTopLeftRadius: size * 0.15,
+              borderTopRightRadius: size * 0.15,
+            }}
+          />
+          <View
+            style={{
+              width: size * 0.5,
+              height: size * 0.05,
+              backgroundColor: item.color,
+              borderRadius: size * 0.03,
+            }}
+          />
         </View>
       );
     case 'stars':
@@ -136,6 +173,31 @@ function Mouth({ size, kind }: { size: number; kind: number }) {
   const w = size * 0.025;
   const base = { marginTop: size * 0.1, width: size * 0.22, borderColor: '#2B2A33' } as const;
   if (kind === 0) return <View style={{ ...base, height: 0, borderBottomWidth: w }} />;
-  if (kind > 0) return <View style={{ ...base, height: size * 0.1, borderBottomWidth: w, borderLeftWidth: w, borderRightWidth: w, borderBottomLeftRadius: size * 0.11, borderBottomRightRadius: size * 0.11 }} />;
-  return <View style={{ ...base, height: size * 0.08, borderTopWidth: w, borderLeftWidth: w, borderRightWidth: w, borderTopLeftRadius: size * 0.11, borderTopRightRadius: size * 0.11 }} />;
+  if (kind > 0)
+    return (
+      <View
+        style={{
+          ...base,
+          height: size * 0.1,
+          borderBottomWidth: w,
+          borderLeftWidth: w,
+          borderRightWidth: w,
+          borderBottomLeftRadius: size * 0.11,
+          borderBottomRightRadius: size * 0.11,
+        }}
+      />
+    );
+  return (
+    <View
+      style={{
+        ...base,
+        height: size * 0.08,
+        borderTopWidth: w,
+        borderLeftWidth: w,
+        borderRightWidth: w,
+        borderTopLeftRadius: size * 0.11,
+        borderTopRightRadius: size * 0.11,
+      }}
+    />
+  );
 }

@@ -26,18 +26,44 @@ export const NO_ITEM: Unlockable = {
 
 export const UNLOCKABLES: Unlockable[] = [
   NO_ITEM,
-  { id: 'sprig', name: 'Little sprig', level: 2, kind: 'sprig', color: '#7DB88B', note: 'For showing up twice.' },
-  { id: 'scarf', name: 'Soft scarf', level: 3, kind: 'scarf', color: '#E28FA4', note: 'For the colder days.' },
+  {
+    id: 'sprig',
+    name: 'Little sprig',
+    level: 2,
+    kind: 'sprig',
+    color: '#7DB88B',
+    note: 'For showing up twice.',
+  },
+  {
+    id: 'scarf',
+    name: 'Soft scarf',
+    level: 3,
+    kind: 'scarf',
+    color: '#E28FA4',
+    note: 'For the colder days.',
+  },
   { id: 'hat', name: 'Round hat', level: 5, kind: 'hat', color: '#6C8EBF', note: 'Worn at a slight angle.' },
-  { id: 'halo', name: 'Quiet glow', level: 7, kind: 'halo', color: '#E0A85F', note: 'You have been kind to yourself.' },
-  { id: 'stars', name: 'Small stars', level: 10, kind: 'stars', color: '#C4A8E0', note: 'For the long haul.' },
+  {
+    id: 'halo',
+    name: 'Quiet glow',
+    level: 7,
+    kind: 'halo',
+    color: '#E0A85F',
+    note: 'You have been kind to yourself.',
+  },
+  {
+    id: 'stars',
+    name: 'Small stars',
+    level: 10,
+    kind: 'stars',
+    color: '#C4A8E0',
+    note: 'For the long haul.',
+  },
 ];
 
-export const unlockedFor = (level: number): Unlockable[] =>
-  UNLOCKABLES.filter((u) => u.level <= level);
+export const unlockedFor = (level: number): Unlockable[] => UNLOCKABLES.filter((u) => u.level <= level);
 
-export const lockedFor = (level: number): Unlockable[] =>
-  UNLOCKABLES.filter((u) => u.level > level);
+export const lockedFor = (level: number): Unlockable[] => UNLOCKABLES.filter((u) => u.level > level);
 
 /** The next thing to look forward to, if there is one. */
 export const nextUnlock = (level: number): Unlockable | undefined =>

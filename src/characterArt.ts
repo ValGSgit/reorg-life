@@ -15,9 +15,7 @@ export type ArtMood = 'neutral' | 'happy' | 'tired';
  * To switch a character over to artwork, drop
  * `assets/characters/<id>-<mood>.png` in place and uncomment its entry.
  */
-export const CHARACTER_ART: Partial<
-  Record<CharacterId, Partial<Record<ArtMood, ImageSourcePropType>>>
-> = {
+export const CHARACTER_ART: Partial<Record<CharacterId, Partial<Record<ArtMood, ImageSourcePropType>>>> = {
   // sprout: {
   //   neutral: require('../assets/characters/sprout-neutral.png'),
   //   happy: require('../assets/characters/sprout-happy.png'),
@@ -26,14 +24,10 @@ export const CHARACTER_ART: Partial<
 };
 
 /** Maps a 1-5 mood score onto the three drawn expressions. */
-export const artMoodFor = (mood: number): ArtMood =>
-  mood >= 4 ? 'happy' : mood <= 2 ? 'tired' : 'neutral';
+export const artMoodFor = (mood: number): ArtMood => (mood >= 4 ? 'happy' : mood <= 2 ? 'tired' : 'neutral');
 
 /** The right image for this character and mood, or undefined to use the blob. */
-export function characterArt(
-  id: CharacterId | undefined,
-  mood: number,
-): ImageSourcePropType | undefined {
+export function characterArt(id: CharacterId | undefined, mood: number): ImageSourcePropType | undefined {
   if (!id) return undefined;
   const set = CHARACTER_ART[id];
   if (!set) return undefined;

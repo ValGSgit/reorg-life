@@ -3,7 +3,15 @@ import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { Button, Card, H, Sub } from '../../components/ui';
 import { DOMAINS, SCHEDULES, XP_PER_HABIT, scheduleLabel } from '../../domain';
 import { useTheme } from '../../theme';
-import { HabitView, createHabit, deleteHabit, habitViews, listHabits, setHabitDone, updateHabit } from '../../db/repo';
+import {
+  HabitView,
+  createHabit,
+  deleteHabit,
+  habitViews,
+  listHabits,
+  setHabitDone,
+  updateHabit,
+} from '../../db/repo';
 import { REMINDERS_SUPPORTED, parseTime, syncHabitReminders } from '../../reminders';
 
 export function Habits({ onChanged }: { onChanged: () => void }) {
@@ -17,7 +25,9 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
   const [msg, setMsg] = useState('');
 
   const load = useCallback(async () => setHabits(await habitViews()), []);
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   // Reminders are rebuilt from the habit rows, so the two never drift apart.
   const resync = useCallback(async () => {
@@ -29,9 +39,15 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
   const timeInvalid = remindAt.trim() !== '' && !parseTime(remindAt);
 
   return (
-    <ScrollView style={{ backgroundColor: t.bg }} contentContainerStyle={{ padding: 24, paddingTop: 64, gap: 12 }} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      style={{ backgroundColor: t.bg }}
+      contentContainerStyle={{ padding: 24, paddingTop: 64, gap: 12 }}
+      keyboardShouldPersistTaps="handled"
+    >
       <H>Habits</H>
-      <Sub>Small, repeating things. A missed day is forgiven automatically — a streak only stops after two.</Sub>
+      <Sub>
+        Small, repeating things. A missed day is forgiven automatically — a streak only stops after two.
+      </Sub>
 
       {habits.map((h) => {
         const d = DOMAINS.find((x) => x.id === h.domain);
@@ -46,7 +62,8 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
                 await load();
                 onChanged();
               }}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}
+            >
               <View
                 style={{
                   width: 26,
@@ -57,7 +74,8 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
                   backgroundColor: h.doneToday ? t.good : 'transparent',
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}>
+                }}
+              >
                 {h.doneToday && <Text style={{ color: '#fff', fontWeight: '700' }}>✓</Text>}
               </View>
               <View style={{ flex: 1 }}>
@@ -80,7 +98,8 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
                   await load();
                   await resync();
                   onChanged();
-                }}>
+                }}
+              >
                 <Text style={{ color: t.sub, fontSize: 12 }}>Put aside</Text>
               </Pressable>
               <Pressable
@@ -90,7 +109,8 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
                   await load();
                   await resync();
                   onChanged();
-                }}>
+                }}
+              >
                 <Text style={{ color: t.sub, fontSize: 12 }}>Delete</Text>
               </Pressable>
             </View>
@@ -113,7 +133,13 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
             onChangeText={setTitle}
             placeholder="What would you like to return to?"
             placeholderTextColor={t.sub}
-            style={{ color: t.text, fontSize: 16, borderBottomWidth: 1, borderColor: t.line, paddingVertical: 8 }}
+            style={{
+              color: t.text,
+              fontSize: 16,
+              borderBottomWidth: 1,
+              borderColor: t.line,
+              paddingVertical: 8,
+            }}
           />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
             {DOMAINS.map((d) => (
@@ -121,7 +147,15 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
                 key={d.id}
                 accessibilityRole="button"
                 onPress={() => setDomain(d.id)}
-                style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 14, backgroundColor: domain === d.id ? d.color : 'transparent', borderWidth: 1, borderColor: d.color }}>
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 14,
+                  backgroundColor: domain === d.id ? d.color : 'transparent',
+                  borderWidth: 1,
+                  borderColor: d.color,
+                }}
+              >
                 <Text style={{ color: domain === d.id ? '#fff' : t.text, fontSize: 13 }}>{d.label}</Text>
               </Pressable>
             ))}
@@ -132,7 +166,15 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
                 key={s.id}
                 accessibilityRole="button"
                 onPress={() => setSchedule(s.id)}
-                style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 14, borderWidth: 1, borderColor: schedule === s.id ? t.accent : t.line, backgroundColor: schedule === s.id ? t.accent : 'transparent' }}>
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 14,
+                  borderWidth: 1,
+                  borderColor: schedule === s.id ? t.accent : t.line,
+                  backgroundColor: schedule === s.id ? t.accent : 'transparent',
+                }}
+              >
                 <Text style={{ color: schedule === s.id ? '#fff' : t.text, fontSize: 13 }}>{s.label}</Text>
               </Pressable>
             ))}
@@ -144,10 +186,20 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
               placeholder="Remind me at (HH:MM, optional)"
               placeholderTextColor={t.sub}
               autoCapitalize="none"
-              style={{ color: t.text, fontSize: 16, borderBottomWidth: 1, borderColor: timeInvalid ? '#C2785F' : t.line, paddingVertical: 8 }}
+              style={{
+                color: t.text,
+                fontSize: 16,
+                borderBottomWidth: 1,
+                borderColor: timeInvalid ? '#C2785F' : t.line,
+                paddingVertical: 8,
+              }}
             />
-            {timeInvalid && <Text style={{ color: '#C2785F', fontSize: 12 }}>Use a 24-hour time like 08:30.</Text>}
-            {!REMINDERS_SUPPORTED && <Text style={{ color: t.sub, fontSize: 12 }}>Reminders do not run in the web preview.</Text>}
+            {timeInvalid && (
+              <Text style={{ color: '#C2785F', fontSize: 12 }}>Use a 24-hour time like 08:30.</Text>
+            )}
+            {!REMINDERS_SUPPORTED && (
+              <Text style={{ color: t.sub, fontSize: 12 }}>Reminders do not run in the web preview.</Text>
+            )}
           </View>
           <View style={{ flexDirection: 'row', gap: 10 }}>
             <View style={{ flex: 1 }}>
@@ -155,7 +207,12 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
                 label="Keep it"
                 disabled={!title.trim() || timeInvalid}
                 onPress={async () => {
-                  await createHabit(title.trim(), domain, schedule, parseTime(remindAt) ? remindAt.trim() : null);
+                  await createHabit(
+                    title.trim(),
+                    domain,
+                    schedule,
+                    parseTime(remindAt) ? remindAt.trim() : null,
+                  );
                   setTitle('');
                   setRemindAt('');
                   setSchedule('daily');
@@ -183,7 +240,9 @@ export function Habits({ onChanged }: { onChanged: () => void }) {
       )}
 
       {!!msg && <Sub>{msg}</Sub>}
-      <Sub>Each habit you tick is +{XP_PER_HABIT} XP. Ticking is optional; the day still counts as yours.</Sub>
+      <Sub>
+        Each habit you tick is +{XP_PER_HABIT} XP. Ticking is optional; the day still counts as yours.
+      </Sub>
     </ScrollView>
   );
 }

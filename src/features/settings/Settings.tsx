@@ -2,17 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { Character } from '../../components/Character';
 import { Button, Card, H, Sub } from '../../components/ui';
-import { CHARACTERS, CharacterId, levelFor } from '../../domain';
+import { CHARACTERS, CharacterId, EQUIPPED_SETTING, UNLOCKABLES, equippedItem, levelFor } from '../../domain';
 import { useTheme } from '../../theme';
-import { EQUIPPED_SETTING, UNLOCKABLES, equippedItem } from '../../domain';
-import {
-  Profile,
-  getProfile,
-  getSetting,
-  listHabits,
-  setCharacter,
-  setSetting,
-} from '../../db/repo';
+import { Profile, getProfile, getSetting, listHabits, setCharacter, setSetting } from '../../db/repo';
 import {
   REMINDERS_SUPPORTED,
   cancelDailyCheckin,
@@ -53,7 +45,9 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
     setEquipped((await getSetting(EQUIPPED_SETTING)) ?? 'none');
     setPermission(await getPermission());
   }, []);
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (!profile) return null;
   const level = levelFor(profile.xp);
@@ -80,7 +74,9 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
     const ok = await scheduleDailyCheckin(parsed.hour, parsed.minute);
     setPermission(await getPermission());
     if (!ok) {
-      say('Android has notifications turned off for ReorgLife. You can allow them in system settings, or leave them off — the app works either way.');
+      say(
+        'Android has notifications turned off for ReorgLife. You can allow them in system settings, or leave them off — the app works either way.',
+      );
       return;
     }
     await setSetting(REMINDER_SETTING, formatTime(parsed.hour, parsed.minute));
@@ -89,7 +85,11 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: t.bg }} contentContainerStyle={{ padding: 24, paddingTop: 64, gap: 16 }} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      style={{ backgroundColor: t.bg }}
+      contentContainerStyle={{ padding: 24, paddingTop: 64, gap: 16 }}
+      keyboardShouldPersistTaps="handled"
+    >
       <H>Settings</H>
 
       <Card style={{ gap: 10 }}>
@@ -101,14 +101,30 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
             placeholder="20:00"
             placeholderTextColor={t.sub}
             autoCapitalize="none"
-            style={{ color: t.text, fontSize: 18, borderBottomWidth: 1, borderColor: timeInvalid ? '#C2785F' : t.line, paddingVertical: 6, width: 90, textAlign: 'center' }}
+            style={{
+              color: t.text,
+              fontSize: 18,
+              borderBottomWidth: 1,
+              borderColor: timeInvalid ? '#C2785F' : t.line,
+              paddingVertical: 6,
+              width: 90,
+              textAlign: 'center',
+            }}
           />
           <View style={{ flex: 1 }}>
-            <Button label={remindersOn ? 'Update' : 'Turn on'} disabled={timeInvalid} onPress={() => applyReminder(true, reminder)} />
+            <Button
+              label={remindersOn ? 'Update' : 'Turn on'}
+              disabled={timeInvalid}
+              onPress={() => applyReminder(true, reminder)}
+            />
           </View>
         </View>
-        {timeInvalid && <Text style={{ color: '#C2785F', fontSize: 12 }}>Use a 24-hour time like 20:00.</Text>}
-        {remindersOn && <Button label="Turn reminders off" kind="ghost" onPress={() => applyReminder(false, reminder)} />}
+        {timeInvalid && (
+          <Text style={{ color: '#C2785F', fontSize: 12 }}>Use a 24-hour time like 20:00.</Text>
+        )}
+        {remindersOn && (
+          <Button label="Turn reminders off" kind="ghost" onPress={() => applyReminder(false, reminder)} />
+        )}
         {!REMINDERS_SUPPORTED && <Sub>Notifications are not part of the web preview.</Sub>}
         {REMINDERS_SUPPORTED && permission === 'denied' && (
           <Sub>Notifications are currently blocked for ReorgLife in your system settings.</Sub>
@@ -118,8 +134,16 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
       <Card style={{ gap: 12 }}>
         <Text style={{ color: t.text, fontWeight: '700', fontSize: 16 }}>Your companion</Text>
         <View style={{ alignItems: 'center' }}>
-          <Character id={current.id} color={current.body} mood={4} size={120} item={equippedItem(equipped, level)} />
-          <Text style={{ color: t.sub, marginTop: 6 }}>{current.name} · Level {level}</Text>
+          <Character
+            id={current.id}
+            color={current.body}
+            mood={4}
+            size={120}
+            item={equippedItem(equipped, level)}
+          />
+          <Text style={{ color: t.sub, marginTop: 6 }}>
+            {current.name} · Level {level}
+          </Text>
         </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
           {CHARACTERS.map((x) => (
@@ -133,7 +157,14 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
                 onChanged();
                 say(`${x.name} it is. Your progress carries over.`);
               }}
-              style={{ borderWidth: 2, borderColor: current.id === x.id ? t.accent : t.line, borderRadius: 18, padding: 6, backgroundColor: t.card }}>
+              style={{
+                borderWidth: 2,
+                borderColor: current.id === x.id ? t.accent : t.line,
+                borderRadius: 18,
+                padding: 6,
+                backgroundColor: t.card,
+              }}
+            >
               <Character id={x.id} color={x.body} size={56} />
             </Pressable>
           ))}
@@ -158,9 +189,19 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
                   setEquipped(u.id);
                   onChanged();
                 }}
-                style={{ opacity: locked ? 0.45 : 1, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 14, borderWidth: 1, borderColor: on ? t.accent : t.line, backgroundColor: on ? t.accent : 'transparent' }}>
+                style={{
+                  opacity: locked ? 0.45 : 1,
+                  paddingHorizontal: 12,
+                  paddingVertical: 8,
+                  borderRadius: 14,
+                  borderWidth: 1,
+                  borderColor: on ? t.accent : t.line,
+                  backgroundColor: on ? t.accent : 'transparent',
+                }}
+              >
                 <Text style={{ color: on ? '#fff' : t.text, fontSize: 13 }}>
-                  {u.name}{locked ? ` · level ${u.level}` : ''}
+                  {u.name}
+                  {locked ? ` · level ${u.level}` : ''}
                 </Text>
               </Pressable>
             );
@@ -187,7 +228,9 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
               const { payload, recoveryKey: rk, filename } = await createBackup();
               await saveBackup(filename, payload);
               setRecoveryKey(rk);
-              say('Backup created. Copy the recovery key below and keep it somewhere safe — it is not stored anywhere and cannot be recovered.');
+              say(
+                'Backup created. Copy the recovery key below and keep it somewhere safe — it is not stored anywhere and cannot be recovered.',
+              );
             } catch (e) {
               say(`Export did not finish: ${e instanceof Error ? e.message : 'unknown error'}`);
             } finally {
@@ -204,7 +247,11 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
               editable={false}
               multiline
               selectTextOnFocus
-              style={{ color: t.text, fontSize: 13, fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}
+              style={{
+                color: t.text,
+                fontSize: 13,
+                fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+              }}
             />
             <Button label="I have saved it" kind="ghost" onPress={() => setRecoveryKey(null)} />
           </View>
@@ -220,7 +267,15 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
           autoCapitalize="none"
           autoCorrect={false}
           multiline
-          style={{ color: t.text, fontSize: 13, borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 10, minHeight: 60 }}
+          style={{
+            color: t.text,
+            fontSize: 13,
+            borderWidth: 1,
+            borderColor: t.line,
+            borderRadius: 12,
+            padding: 10,
+            minHeight: 60,
+          }}
         />
         <Button
           label={busy ? 'Working…' : 'Restore from a backup'}
@@ -242,15 +297,22 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
                 onChanged();
                 say(`Restored ${describeSnapshot(restored)}.`);
               } catch (e) {
-                say(e instanceof BackupError ? e.message : `Restore did not finish: ${e instanceof Error ? e.message : 'unknown error'}`);
+                say(
+                  e instanceof BackupError
+                    ? e.message
+                    : `Restore did not finish: ${e instanceof Error ? e.message : 'unknown error'}`,
+                );
               } finally {
                 setBusy(false);
               }
             };
             // Restoring replaces what is here, so it always asks first.
             if (Platform.OS === 'web') {
-              // eslint-disable-next-line no-alert
-              if (typeof confirm === 'function' && !confirm('Restoring replaces everything currently in this preview. Continue?')) return;
+              if (
+                typeof confirm === 'function' &&
+                !confirm('Restoring replaces everything currently in this preview. Continue?')
+              )
+                return;
               go();
               return;
             }
@@ -259,12 +321,21 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
               'Restoring a backup replaces the check-ins, habits and timeline on this device.',
               [
                 { text: 'Cancel', style: 'cancel' },
-                { text: 'Restore', style: 'destructive', onPress: () => { go(); } },
+                {
+                  text: 'Restore',
+                  style: 'destructive',
+                  onPress: () => {
+                    go();
+                  },
+                },
               ],
             );
           }}
         />
-        <Sub>A backup can only be opened with its own recovery key. Without the key the file is unreadable, including by you.</Sub>
+        <Sub>
+          A backup can only be opened with its own recovery key. Without the key the file is unreadable,
+          including by you.
+        </Sub>
       </Card>
 
       {!!note && (
@@ -280,7 +351,11 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
         onPress={async () => {
           const ok = await syncHabitReminders(await listHabits(true));
           setPermission(await getPermission());
-          say(ok ? 'Habit reminders are up to date.' : 'Notifications are off, so no habit reminders are scheduled.');
+          say(
+            ok
+              ? 'Habit reminders are up to date.'
+              : 'Notifications are off, so no habit reminders are scheduled.',
+          );
         }}
       />
     </ScrollView>
