@@ -168,7 +168,16 @@ def reachable_background(is_backdrop: np.ndarray) -> np.ndarray:
 # gap reads further from the backdrop than its own eyes do), so position is
 # what the split is made on.
 FILL_BAND = (0.15, 0.80)
-FILL_MAX_AREA = 0.05  # of the figure; anything larger is structural, not an eye
+
+# Height does the real work: every genuine gap measured on these sheets sits
+# outside the band (Sprout's leaf gap at 10%, foot gaps at 89-93%), while eyes
+# sit at 20-55%. The area cap is only a safety net against filling a large
+# structural hole, so it is set well clear of anything real.
+#
+# It was 5% and that was too tight by a hair: the glow around Dusk's right eye
+# in the thriving pose makes that socket 5.36% of the figure, so it was
+# rejected and the eye came out translucent over the dark theme.
+FILL_MAX_AREA = 0.12
 
 
 def components(mask: np.ndarray) -> list[np.ndarray]:
