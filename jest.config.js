@@ -33,7 +33,7 @@ module.exports = {
     {
       displayName: 'component',
       preset: 'jest-expo',
-      testMatch: ['<rootDir>/tests/component/**/*.test.tsx'],
+      testMatch: ['<rootDir>/tests/component/**/*.test.tsx', '<rootDir>/tests/component/**/*.test.ts'],
       setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
     },
   ],

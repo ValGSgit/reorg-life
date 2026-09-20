@@ -45,6 +45,29 @@ the same session.
 
 Comet, Moss and Blaze have no art at all. Dusk has none that is usable.
 
+### What is currently processed and wired in
+
+`scripts/process-character-sheets.py` cuts the usable sheets into per-mood
+PNGs. It is run by hand:
+
+```sh
+python scripts/process-character-sheets.py
+```
+
+| Files                           | Character                | Status                                        |
+| ------------------------------- | ------------------------ | --------------------------------------------- |
+| `sprout-1.png` … `sprout-5.png` | Sprout                   | Placeholder, wired into `src/characterArt.ts` |
+| `ember-1.png` … `ember-5.png`   | Ember                    | Placeholder, wired in                         |
+| —                               | Dusk, Comet, Moss, Blaze | No art; the blob fallback renders instead     |
+
+Mood runs 1 (rough) to 5 (thriving), matching the check-in scale.
+
+> **These ten PNGs do not themselves carry the Higgsfield watermark**, because
+> it sits in the corner of the sheet rather than on each figure. That does not
+> make them shippable. They are derived from watermarked source art, their
+> provenance is recorded here, and they must be replaced before release —
+> task T-010. Do not treat the absence of a visible watermark as a licence.
+
 ### Rules for processing
 
 - **Do not remove, paint over, or crop out watermarks** to make an asset look
