@@ -50,3 +50,7 @@ What else was considered, and the specific reason it lost.
 | -------------------------------------- | ------------------------------------------------- | -------- |
 | [0001](0001-time-of-day-companions.md) | Companions rotate with the time of day            | accepted |
 | [0002](0002-backup-recovery.md)        | What happens when a backup's recovery key is lost | proposed |
+| [0003](0003-recovery-key-format.md)    | What a recovery key looks like                    | proposed |
+| [0004](0004-streaks-not-threads.md)    | The word stays "streak"                           | accepted |
+| [0005](0005-engagement-model.md)       | Engaging, not coercive                            | proposed |
+| [0006](0006-monetisation.md)           | How the app charges money                         | proposed |

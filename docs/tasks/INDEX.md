@@ -2,13 +2,13 @@
 
 # Task index
 
-22 tasks. The source of truth for each is its own file; this is a view.
+26 tasks. The source of truth for each is its own file; this is a view.
 
 **Next up:** [T-020](T-020-companion-domain-logic.md) — Add time-of-day companion logic to src/domain
 
 Run `npm run next-task` to get the same answer on the command line.
 
-## To do (21)
+## To do (24)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
@@ -16,6 +16,7 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-021](T-021-period-migration.md) | Store a period on check-ins and events | P1 | W3-4 | waiting on T-020 |
 | [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | waiting on T-021 |
 | [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | waiting on T-020 |
+| [T-033](T-033-light-palette-contrast.md) | Fix the three WCAG failures in the light palette | P1 | W3-4 | — |
 | [T-031](T-031-closed-test-prep.md) | Prepare and start the Google Play closed test | P1 | W5-6 | waiting on T-030 |
 | [T-010](T-010-replace-placeholder-art.md) | Replace the watermarked placeholder character art | P1 | W9-10 | — |
 | [T-012](T-012-accessibility-pass.md) | Accessibility pass over every screen | P1 | W9-10 | — |
@@ -30,14 +31,17 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-015](T-015-calendar-sync.md) | Read-only device calendar sync | P2 | W5-6 | — |
 | [T-002](T-002-extract-rewards-ui.md) | Move the unlockables picker into features/rewards | P3 | W3-4 | cut candidate |
 | [T-011](T-011-process-placeholder-sheets.md) | Cut the placeholder sheets into per-mood transparent PNGs | P3 | W3-4 | cut candidate |
+| [T-034](T-034-app-typeface.md) | Decide and wire the app typeface | P3 | W5-6 | cut candidate |
 | [T-013](T-013-animations.md) | Idle animations — breathing and a bounce on reward | P3 | W7-8 | cut candidate; waiting on T-023 |
 | [T-016](T-016-notion-sync.md) | Notion sync | P3 | W7-8 | cut candidate |
 | [T-017](T-017-footprint-inventory.md) | Digital footprint inventory | P3 | W7-8 | cut candidate |
+| [T-036](T-036-web-companion-viewer.md) | Web viewer for exported backups | P3 | Unscheduled | cut candidate |
 
-## Blocked (1)
+## Blocked (2)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
+| [T-035](T-035-recovery-key-format.md) | Show the recovery key in a format people can copy by hand | P2 | W3-4 | blocked |
 | [T-026](T-026-backup-recovery-sheet.md) | Add a printed/PDF recovery sheet to backup export | P2 | Unscheduled | blocked |
 
 ## Statuses
