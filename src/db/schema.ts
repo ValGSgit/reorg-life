@@ -1,5 +1,3 @@
-import type * as SQLite from 'expo-sqlite';
-
 /**
  * One schema for every platform. The native database is SQLCipher-encrypted
  * and the web one is not, but their tables are identical so `repo.ts` stays a
@@ -60,7 +58,19 @@ CREATE TABLE IF NOT EXISTS settings (
 `,
 };
 
-type Migratable = Pick<SQLite.SQLiteDatabase, 'execAsync' | 'getFirstAsync'>;
+/**
+ * The two methods `migrate` actually calls, neither with bound parameters.
+ *
+ * Deliberately a hand-written interface rather than
+ * `Pick<SQLiteDatabase, ...>`: the real methods are heavily overloaded, so
+ * picking them would drag in signatures migrate never uses and would stop a
+ * simple test double from satisfying the type. Narrow dependencies are easier
+ * to test, which is the whole reason this takes its database as an argument.
+ */
+export type Migratable = {
+  execAsync(sql: string): Promise<void>;
+  getFirstAsync<T>(sql: string): Promise<T | null>;
+};
 
 /** Applies any migrations the database has not seen yet. Safe to call on every launch. */
 export async function migrate(db: Migratable): Promise<void> {

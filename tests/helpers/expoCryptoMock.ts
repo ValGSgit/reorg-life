@@ -1,5 +1,3 @@
-import { webcrypto } from 'node:crypto';
-
 /**
  * Stand-in for the AES surface of `expo-crypto`, backed by Node's WebCrypto.
  *
@@ -12,21 +10,35 @@ import { webcrypto } from 'node:crypto';
  * mirrors production on web closely and production on native semantically.
  */
 
-const subtle = webcrypto.subtle;
+// Node 22 exposes WebCrypto as the global `crypto`, which is typed by the DOM
+// lib. Importing `webcrypto` from node:crypto instead gives a parallel set of
+// types that will not unify with BufferSource/CryptoKey.
+const subtle = globalThis.crypto.subtle;
 const IV_BYTES = 12;
 const TAG_BYTES = 16;
 
-const toBytes = (input: string | Uint8Array | ArrayBuffer): Uint8Array => {
-  if (typeof input === 'string') return Uint8Array.from(Buffer.from(input, 'base64'));
+/**
+ * Always returns an array backed by a plain ArrayBuffer. `Uint8Array.from`
+ * widens to ArrayBufferLike, which WebCrypto's BufferSource will not accept.
+ */
+const toBytes = (input: string | Uint8Array | ArrayBuffer): Uint8Array<ArrayBuffer> => {
+  if (typeof input === 'string') {
+    const buf = Buffer.from(input, 'base64');
+    const out = new Uint8Array(buf.byteLength);
+    out.set(buf);
+    return out;
+  }
   if (input instanceof ArrayBuffer) return new Uint8Array(input);
-  return input;
+  const out = new Uint8Array(input.byteLength);
+  out.set(input);
+  return out;
 };
 
 const b64 = (bytes: Uint8Array) => Buffer.from(bytes).toString('base64');
 
 export class AESEncryptionKey {
   constructor(
-    private readonly raw: Uint8Array,
+    private readonly raw: Uint8Array<ArrayBuffer>,
     private readonly cryptoKey: CryptoKey,
   ) {}
 
@@ -35,15 +47,14 @@ export class AESEncryptionKey {
   }
 
   static async generate(bits = 256): Promise<AESEncryptionKey> {
-    const raw = webcrypto.getRandomValues(new Uint8Array(bits / 8));
+    const raw = globalThis.crypto.getRandomValues(new Uint8Array(bits / 8));
     return AESEncryptionKey.import(raw);
   }
 
   static async import(input: Uint8Array | string, encoding?: 'hex' | 'base64'): Promise<AESEncryptionKey> {
-    const raw =
-      typeof input === 'string'
-        ? Uint8Array.from(Buffer.from(input, encoding === 'hex' ? 'hex' : 'base64'))
-        : input;
+    const buf = typeof input === 'string' ? Buffer.from(input, encoding === 'hex' ? 'hex' : 'base64') : input;
+    const raw = new Uint8Array(buf.byteLength);
+    raw.set(buf);
     if (![16, 24, 32].includes(raw.length)) {
       throw new Error(`invalid AES key length: ${raw.length} bytes`);
     }
@@ -51,7 +62,7 @@ export class AESEncryptionKey {
     return new AESEncryptionKey(raw, key);
   }
 
-  async bytes(): Promise<Uint8Array> {
+  async bytes(): Promise<Uint8Array<ArrayBuffer>> {
     return this.raw;
   }
 
@@ -66,7 +77,7 @@ export class AESEncryptionKey {
 }
 
 export class AESSealedData {
-  constructor(private readonly bytes: Uint8Array) {}
+  constructor(private readonly bytes: Uint8Array<ArrayBuffer>) {}
 
   static fromCombined(combined: string | Uint8Array | ArrayBuffer): AESSealedData {
     const bytes = toBytes(combined);
@@ -118,7 +129,7 @@ export async function aesEncryptAsync(
   plaintext: string | Uint8Array | ArrayBuffer,
   key: AESEncryptionKey,
 ): Promise<AESSealedData> {
-  const iv = webcrypto.getRandomValues(new Uint8Array(IV_BYTES));
+  const iv = globalThis.crypto.getRandomValues(new Uint8Array(IV_BYTES));
   const ct = new Uint8Array(
     await subtle.encrypt({ name: 'AES-GCM', iv, tagLength: TAG_BYTES * 8 }, key.key, toBytes(plaintext)),
   );
@@ -130,14 +141,14 @@ export async function aesDecryptAsync(
   key: AESEncryptionKey,
   options?: { output?: 'bytes' | 'base64' },
 ): Promise<string | Uint8Array> {
-  const iv = (await sealed.iv()) as Uint8Array;
-  const ct = (await sealed.ciphertext()) as Uint8Array;
+  const iv = (await sealed.iv()) as Uint8Array<ArrayBuffer>;
+  const ct = (await sealed.ciphertext()) as Uint8Array<ArrayBuffer>;
   const plain = new Uint8Array(
     await subtle.decrypt({ name: 'AES-GCM', iv, tagLength: TAG_BYTES * 8 }, key.key, ct),
   );
   return options?.output === 'base64' ? b64(plain) : plain;
 }
 
-export function getRandomBytes(n: number): Uint8Array {
-  return webcrypto.getRandomValues(new Uint8Array(n));
+export function getRandomBytes(n: number): Uint8Array<ArrayBuffer> {
+  return globalThis.crypto.getRandomValues(new Uint8Array(n));
 }

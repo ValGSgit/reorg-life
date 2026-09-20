@@ -1,10 +1,55 @@
 #!/bin/sh
-# Blocks commits containing secrets or personal data. Install: sh scripts/install-hooks.sh
+# Blocks commits containing secrets or personal data, then runs the fast
+# checks. Install with: sh scripts/install-hooks.sh
+#
+# Husky runs .husky/pre-commit, which calls this file, so there is one hook
+# whether or not node_modules is installed.
+set -e
+
+# --- secrets -------------------------------------------------------------
 if command -v gitleaks >/dev/null 2>&1; then
   gitleaks protect --staged --redact -v || exit 1
 else
   echo "warning: gitleaks not installed (https://github.com/gitleaks/gitleaks); skipping secret scan"
 fi
-if git diff --cached --name-only | grep -Ei '\.(db|sqlite)$|(^|/)exports/|private-data/'; then
-  echo "error: personal data files staged. Aborting."; exit 1
+
+# --- personal data -------------------------------------------------------
+if git diff --cached --name-only | grep -Ei '\.(db|sqlite|sqlite3)$|(^|/)exports/|private-data/|\.backup$'; then
+  echo "error: personal data files staged. Aborting."
+  exit 1
 fi
+
+# --- raw placeholder art -------------------------------------------------
+if git diff --cached --name-only | grep -E 'assets/characters/_raw/'; then
+  echo "error: raw character sheets are watermarked placeholders and must stay"
+  echo "       out of git. See docs/ASSETS.md."
+  exit 1
+fi
+
+# --- fast checks ---------------------------------------------------------
+# Skipped when dependencies are not installed, so a clone can still commit.
+if [ -d node_modules ] && command -v npx >/dev/null 2>&1; then
+  echo "pre-commit: lint"
+  npx --no-install eslint . --max-warnings=0 || {
+    echo "error: lint failed. Fix it, or run: npm run lint:fix"
+    exit 1
+  }
+
+  echo "pre-commit: typecheck"
+  npx --no-install tsc --noEmit || {
+    echo "error: typecheck failed."
+    exit 1
+  }
+
+  # Unit tests only. The e2e suite needs a browser and a dev server, so it
+  # belongs in CI rather than in the path of every commit.
+  echo "pre-commit: unit tests"
+  npx --no-install jest --selectProjects domain db --silent || {
+    echo "error: tests failed. Do not weaken a test to get past this hook."
+    exit 1
+  }
+else
+  echo "pre-commit: node_modules missing, skipping lint/typecheck/tests"
+fi
+
+echo "pre-commit: ok"
