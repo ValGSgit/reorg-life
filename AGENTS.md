@@ -127,6 +127,18 @@ an ADR.
   still forgives one missed day.**
 - **Reminder copy is written in the companion's voice and never induces
   guilt.**
+- **Engaging, never coercive.** Retention comes from craft and warmth — the
+  companions, art worth looking at, a timeline worth re-reading. It never
+  comes from making it uncomfortable to leave. Specifically forbidden:
+  streak-loss pressure, variable or random rewards, loss aversion, artificial
+  scarcity, notifications designed to pull rather than remind, and social
+  comparison. If asked to make the app "more engaging", build from the first
+  list, not the second.
+  ([ADR 0005](docs/DECISIONS/0005-engagement-model.md))
+- **The core is never behind a paywall.** Check-in, notes, habits, timeline,
+  export and backup stay free, and anyone who stops paying keeps access to
+  what they have already written and can still export it.
+  ([ADR 0006](docs/DECISIONS/0006-monetisation.md))
 
 ---
 
