@@ -68,8 +68,10 @@ not deleted, so the decision is still visible later.
   reminders, level unlockables, settings with encrypted export/import. Web dev
   preview working with non-secure fallbacks.
 - **20 Sep** — Repo foundation: flattened layout, `src/domain` split out as pure
-  logic, Jest + ESLint + Prettier + Playwright, 89 tests, CI, task system, agent
-  rules. Time-of-day companions designed and split into tasks (ADR 0001).
+  logic, Jest + ESLint + Prettier + Playwright, 100 tests, CI, 20-task backlog,
+  agent rules. Time-of-day companions designed and split into tasks (ADR 0001).
+  Sprout and Ember wired in as placeholder art; Dusk still falls back to the
+  blob. Next task: T-020.
 
 ## How this file is kept up to date
 
