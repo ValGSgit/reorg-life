@@ -27,7 +27,7 @@ animal, so it doesn't read as a companion and doesn't age when a new one is
 added later.
 
 **Why it survives 48px.** Two shapes, two colours, no internal detail, no
-thin strokes. The circle sits *on* the shelf with a plain tangent contact
+thin strokes. The circle sits _on_ the shelf with a plain tangent contact
 (not buried into it), which was a deliberate second pass — the first draft had
 the circle overlapping the bar and read as a head-and-shoulders avatar glyph
 at small sizes. Pulling it up to a clean rest position and offsetting it
@@ -45,11 +45,11 @@ rule already in force for character art.
 
 **Files.**
 
-| File | Size | Use |
-| --- | --- | --- |
-| `assets/brand/icon-1024.png` | 1024×1024 | Master / iOS App Store |
-| `assets/brand/icon-play-512.png` | 512×512 | Google Play Store listing |
-| `assets/brand/icon.svg` | vector | Source; re-export if the palette changes |
+| File                             | Size      | Use                                      |
+| -------------------------------- | --------- | ---------------------------------------- |
+| `assets/brand/icon-1024.png`     | 1024×1024 | Master / iOS App Store                   |
+| `assets/brand/icon-play-512.png` | 512×512   | Google Play Store listing                |
+| `assets/brand/icon.svg`          | vector    | Source; re-export if the palette changes |
 
 Both PNGs are full-bleed flat colour with no pre-rounded corners, per Apple
 and Google's own guidance — each store applies its own mask, and a second
@@ -76,7 +76,7 @@ files in the same folder).
 
 1. **Greeting + streak line**, left-aligned, matching the tone rule in
    AGENTS.md — "Rest days are built in," not "don't break your streak." A
-   small pill in the top-right names the current period (*Afternoon*), a
+   small pill in the top-right names the current period (_Afternoon_), a
    quiet nod to the time-of-day rotation without needing a clock icon.
 2. **Companion card** — the companion (Ember shown as the example), name and
    level, and an XP bar. This mirrors what `Home.tsx` already renders; the
@@ -93,7 +93,7 @@ mapped to recent activity — using the exact colours already defined in
 `DOMAINS` (`src/domain/domains.ts`), so no new domain palette is needed.
 
 A tall stem next to a short one reads the same information as a long bar next
-to a short one, but it *looks* like a garden bed instead of a dashboard,
+to a short one, but it _looks_ like a garden bed instead of a dashboard,
 which is the point of the name. Quiet domains are short stems, not red bars
 or empty slots — nothing in the visual language implies failure, matching the
 "quiet areas are not failures" caption already in the copy.
