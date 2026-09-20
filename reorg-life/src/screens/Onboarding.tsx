@@ -20,7 +20,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
         <Sub>Choose a companion. It grows as you look after the parts of your life that matter to you. Everything stays on this phone.</Sub>
       </View>
       <View style={{ alignItems: 'center', paddingVertical: 12 }}>
-        <Character color={c.body} mood={4} size={170} />
+        <Character id={c.id} color={c.body} mood={4} size={170} />
         <Text style={{ color: t.text, fontSize: 20, fontWeight: '700', marginTop: 8 }}>{c.name}</Text>
         <Text style={{ color: t.sub }}>{c.trait}</Text>
       </View>
@@ -28,7 +28,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
         {CHARACTERS.map((x) => (
           <Pressable key={x.id} accessibilityRole="button" accessibilityLabel={`Choose ${x.name}`} onPress={() => setSel(x.id)}
             style={{ borderWidth: 2, borderColor: sel === x.id ? t.accent : t.line, borderRadius: 18, padding: 6, backgroundColor: t.card }}>
-            <Character color={x.body} size={64} />
+            <Character id={x.id} color={x.body} size={64} />
           </Pressable>
         ))}
       </View>

@@ -38,7 +38,14 @@ saying so:
 The native path is untouched by all of this.
 
 ## Characters
-Placeholder blobs live in `src/components/Character.tsx`. To use Higgsfield art, generate images, put them in `assets/characters/`, and add `image: require(...)` to entries in `src/domain.ts` (then pass it to `<Character image=... />`).
+Six companions, defined in `src/domain.ts`. Until artwork exists each is drawn
+as a coloured blob by `src/components/Character.tsx`.
+
+`Character` picks generated art by mood — happy (4-5), neutral (3), tired (1-2)
+— and falls back to the blob for any character without art, so a partial set is
+fine. To add art: drop `assets/characters/<id>-<mood>.png` in place and
+uncomment that character's entry in `src/characterArt.ts`. See
+`assets/characters/README.md`.
 
 ## Roadmap
 2. Habits and richer reminders, avatar items/unlocks  3. Read-only device calendar sync (expo-calendar)  4. Notion sync (token in secure store)  5. Digital footprint inventory, encrypted export/import.

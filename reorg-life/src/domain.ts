@@ -8,7 +8,10 @@ export const DOMAINS = [
 ] as const;
 export type DomainId = (typeof DOMAINS)[number]['id'];
 
-// Swap `image` for Higgsfield art later: image: require('../assets/characters/sprout.png')
+/**
+ * The six companions. `body` is the blob colour used until artwork exists;
+ * generated art is registered separately in `characterArt.ts`, keyed by these ids.
+ */
 export const CHARACTERS = [
   { id: 'sprout', name: 'Sprout', trait: 'Calm', body: '#A8D5BA' },
   { id: 'comet', name: 'Comet', trait: 'Curious', body: '#9DB8F0' },

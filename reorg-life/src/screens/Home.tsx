@@ -33,7 +33,7 @@ export function Home({ refreshKey }: { refreshKey: number }) {
       <H>Hi, {profile.display_name}</H>
       <Sub>{streak > 0 ? `${streak} day${streak === 1 ? '' : 's'} of showing up. Rest days are built in.` : 'Whenever you are ready, a check-in is a good place to start.'}</Sub>
       <Card style={{ alignItems: 'center', gap: 8 }}>
-        <Character color={ch.body} mood={mood} size={160} />
+        <Character id={ch.id} color={ch.body} mood={mood} size={160} />
         <Text style={{ color: t.text, fontWeight: '700' }}>{ch.name} · Level {level}</Text>
         <View style={{ height: 8, alignSelf: 'stretch', backgroundColor: t.line, borderRadius: 4 }}>
           <View style={{ width: `${pct * 100}%`, height: 8, backgroundColor: t.good, borderRadius: 4 }} />

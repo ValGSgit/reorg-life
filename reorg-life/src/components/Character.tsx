@@ -1,11 +1,26 @@
 import React from 'react';
 import { View, Image, ImageSourcePropType } from 'react-native';
+import { characterArt } from '../characterArt';
+import type { CharacterId } from '../domain';
 
-type Props = { color: string; mood?: number; size?: number; image?: ImageSourcePropType };
+type Props = {
+  color: string;
+  mood?: number;
+  size?: number;
+  /** Looks up generated art for this character; falls back to the blob. */
+  id?: CharacterId;
+  /** Explicit override, mostly for previews. */
+  image?: ImageSourcePropType;
+};
 
-/** Placeholder blob character. Pass `image` (e.g. Higgsfield art) to replace it. */
-export function Character({ color, mood = 3, size = 120, image }: Props) {
-  if (image) return <Image source={image} style={{ width: size, height: size }} resizeMode="contain" />;
+/**
+ * Draws the companion: generated artwork when `assets/characters/` has it,
+ * otherwise the hand-rolled blob so the app is never missing a character.
+ */
+export function Character({ color, mood = 3, size = 120, id, image }: Props) {
+  const source = image ?? characterArt(id, mood);
+  if (source) return <Image source={source} style={{ width: size, height: size }} resizeMode="contain" />;
+
   const eye = size * 0.09;
   const smile = mood >= 4 ? 1 : mood <= 2 ? -1 : 0;
   return (
