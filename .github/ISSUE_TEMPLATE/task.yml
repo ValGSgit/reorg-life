@@ -1,0 +1,111 @@
+name: Task
+description: A unit of work Claude or a human can pick up and finish
+title: '[T-000] '
+labels: ['task']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Mirrors the template in `docs/tasks/`. If a task file already exists,
+        paste its fields here and link it — the file stays the source of truth.
+
+  - type: input
+    id: task-file
+    attributes:
+      label: Task file
+      description: Path in docs/tasks/, if one exists
+      placeholder: docs/tasks/T-020-companion-domain-logic.md
+    validations:
+      required: false
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - 'W3-4 (5-18 Oct) — habits, reminders, time-of-day companions'
+        - 'W5-6 (19 Oct - 1 Nov) — calendar sync, closed test prep'
+        - 'W7-8 (2-15 Nov) — Notion, footprint, animations'
+        - 'W9-10 (16-29 Nov) — feedback, accessibility, privacy, store listing'
+        - 'W11 (30 Nov - 6 Dec) — freeze, release candidate'
+        - 'W12 (7-13 Dec) — submit'
+        - 'Unscheduled'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: P1 blocks the release. P2 is planned. P3 is nice to have.
+      options: ['P1', 'P2', 'P3']
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: One or two sentences. What is true when this is done?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checkable bullets. Each one observable, not a feeling.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: textarea
+    id: tests
+    attributes:
+      label: Tests to write first
+      description: |
+        Name the tests before the code. Red, green, refactor — see AGENTS.md.
+      value: |
+        - [ ]
+    validations:
+      required: true
+
+  - type: textarea
+    id: files
+    attributes:
+      label: Files likely touched
+      placeholder: |
+        src/domain/companion.ts (new)
+        tests/unit/domain/companion.test.ts (new)
+    validations:
+      required: false
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: What this task deliberately does not do. Keeps the PR small.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: flags
+    attributes:
+      label: Flags
+      options:
+        - label: Cut candidate — can be dropped if the schedule slips
+          required: false
+        - label: Blocked — cannot start yet; say what on below
+          required: false
+        - label: Touches a protected product rule (streaks, encryption, backups, privacy)
+          required: false
+
+  - type: textarea
+    id: blocked-on
+    attributes:
+      label: Blocked on
+      description: If blocked, exactly what is needed and from whom.
+    validations:
+      required: false

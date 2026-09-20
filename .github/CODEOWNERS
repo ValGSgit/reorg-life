@@ -1,0 +1,12 @@
+# One maintainer. This makes review assignment automatic and, once branch
+# protection requires a code-owner review, makes it impossible to merge a
+# change to these paths without the owner seeing it.
+* @ValGSgit
+
+# The parts where a mistake is expensive rather than annoying.
+/src/db/            @ValGSgit
+/src/backup.ts      @ValGSgit
+/src/kv.ts          @ValGSgit
+/.github/           @ValGSgit
+/docs/SECURITY.md   @ValGSgit
+/docs/PRIVACY.md    @ValGSgit

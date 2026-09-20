@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Roadmap and dates
+    url: https://github.com/ValGSgit/reorg-life/blob/main/docs/ROADMAP.md
+    about: What is planned when, and the cut order if things slip
+  - name: How to work in this repo
+    url: https://github.com/ValGSgit/reorg-life/blob/main/AGENTS.md
+    about: TDD rules, definition of done, how to pick the next task
+  - name: Security
+    url: https://github.com/ValGSgit/reorg-life/blob/main/docs/SECURITY.md
+    about: Report anything sensitive as a private security advisory, not a public issue
