@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { Button, Card, H, Sub } from '../components/ui';
-import { DOMAINS } from '../domain';
-import { useTheme } from '../theme';
-import { Checkin, EventRow, addEvent, listEvents, recentCheckins, toggleEventDone } from '../db/repo';
+import { Button, Card, H, Sub } from '../../components/ui';
+import { DOMAINS } from '../../domain';
+import { useTheme } from '../../theme';
+import { Checkin, EventRow, addEvent, listEvents, recentCheckins, toggleEventDone } from '../../db/repo';
 
 type Item = { key: string; when: string; kind: 'event' | 'checkin'; event?: EventRow; checkin?: Checkin };
 

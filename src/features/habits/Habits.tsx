@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { Button, Card, H, Sub } from '../components/ui';
-import { DOMAINS, SCHEDULES, XP_PER_HABIT, scheduleLabel } from '../domain';
-import { useTheme } from '../theme';
-import { HabitView, createHabit, deleteHabit, habitViews, listHabits, setHabitDone, updateHabit } from '../db/repo';
-import { REMINDERS_SUPPORTED, parseTime, syncHabitReminders } from '../reminders';
+import { Button, Card, H, Sub } from '../../components/ui';
+import { DOMAINS, SCHEDULES, XP_PER_HABIT, scheduleLabel } from '../../domain';
+import { useTheme } from '../../theme';
+import { HabitView, createHabit, deleteHabit, habitViews, listHabits, setHabitDone, updateHabit } from '../../db/repo';
+import { REMINDERS_SUPPORTED, parseTime, syncHabitReminders } from '../../reminders';
 
 export function Habits({ onChanged }: { onChanged: () => void }) {
   const t = useTheme();

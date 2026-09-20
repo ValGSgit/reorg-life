@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { WebNotice } from './src/components/WebNotice';
-import { Onboarding } from './src/screens/Onboarding';
-import { Home } from './src/screens/Home';
-import { CheckIn } from './src/screens/CheckIn';
-import { Habits } from './src/screens/Habits';
-import { Timeline } from './src/screens/Timeline';
-import { Settings } from './src/screens/Settings';
+import { Onboarding } from './src/features/onboarding/Onboarding';
+import { Home } from './src/features/home/Home';
+import { CheckIn } from './src/features/checkin/CheckIn';
+import { Habits } from './src/features/habits/Habits';
+import { Timeline } from './src/features/timeline/Timeline';
+import { Settings } from './src/features/settings/Settings';
 import { getProfile } from './src/db/repo';
 import { useTheme } from './src/theme';
 

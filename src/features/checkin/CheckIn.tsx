@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TextInput, Pressable, View } from 'react-native';
-import { Button, H, Sub } from '../components/ui';
-import { MOODS, XP_PER_CHECKIN } from '../domain';
-import { useTheme } from '../theme';
-import { getTodayCheckin, saveCheckin } from '../db/repo';
+import { Button, H, Sub } from '../../components/ui';
+import { MOODS, XP_PER_CHECKIN } from '../../domain';
+import { useTheme } from '../../theme';
+import { getTodayCheckin, saveCheckin } from '../../db/repo';
 
 export function CheckIn({ onSaved }: { onSaved: () => void }) {
   const t = useTheme();

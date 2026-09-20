@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { Character } from '../components/Character';
-import { Button, Card, H, Sub } from '../components/ui';
-import { CHARACTERS, CharacterId, levelFor } from '../domain';
-import { useTheme } from '../theme';
-import { EQUIPPED_SETTING, UNLOCKABLES, equippedItem } from '../unlockables';
+import { Character } from '../../components/Character';
+import { Button, Card, H, Sub } from '../../components/ui';
+import { CHARACTERS, CharacterId, levelFor } from '../../domain';
+import { useTheme } from '../../theme';
+import { EQUIPPED_SETTING, UNLOCKABLES, equippedItem } from '../../domain';
 import {
   Profile,
   getProfile,
@@ -12,7 +12,7 @@ import {
   listHabits,
   setCharacter,
   setSetting,
-} from '../db/repo';
+} from '../../db/repo';
 import {
   REMINDERS_SUPPORTED,
   cancelDailyCheckin,
@@ -22,10 +22,10 @@ import {
   scheduleDailyCheckin,
   syncHabitReminders,
   type PermissionState,
-} from '../reminders';
-import { BackupError, createBackup, describeSnapshot, restoreBackup } from '../backup';
-import { loadBackup, saveBackup } from '../backupFile';
-import { DB_IS_ENCRYPTED } from '../db';
+} from '../../reminders';
+import { BackupError, createBackup, describeSnapshot, restoreBackup } from '../../backup';
+import { loadBackup, saveBackup } from '../../backupFile';
+import { DB_IS_ENCRYPTED } from '../../db';
 
 const REMINDER_SETTING = 'checkin_reminder';
 const DEFAULT_REMINDER = '20:00';

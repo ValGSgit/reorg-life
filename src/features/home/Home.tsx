@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Character } from '../components/Character';
-import { Card, H, Sub } from '../components/ui';
-import { CHARACTERS, DOMAINS, gentleStreak, levelFor, xpForLevel } from '../domain';
-import { useTheme } from '../theme';
-import { EQUIPPED_SETTING, equippedItem, nextUnlock } from '../unlockables';
+import { Character } from '../../components/Character';
+import { Card, H, Sub } from '../../components/ui';
+import { CHARACTERS, DOMAINS, gentleStreak, levelFor, xpForLevel } from '../../domain';
+import { useTheme } from '../../theme';
+import { EQUIPPED_SETTING, equippedItem, nextUnlock } from '../../domain';
 import {
   HabitView,
   Profile,
@@ -14,7 +14,7 @@ import {
   getSetting,
   habitViews,
   recentCheckins,
-} from '../db/repo';
+} from '../../db/repo';
 
 export function Home({ refreshKey }: { refreshKey: number }) {
   const t = useTheme();

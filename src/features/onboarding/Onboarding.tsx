@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, View, Pressable } from 'react-native';
-import { Character } from '../components/Character';
-import { Button, H, Sub } from '../components/ui';
-import { CHARACTERS, CharacterId } from '../domain';
-import { useTheme } from '../theme';
-import { createProfile } from '../db/repo';
-import { scheduleDailyCheckin } from '../reminders';
+import { Character } from '../../components/Character';
+import { Button, H, Sub } from '../../components/ui';
+import { CHARACTERS, CharacterId } from '../../domain';
+import { useTheme } from '../../theme';
+import { createProfile } from '../../db/repo';
+import { scheduleDailyCheckin } from '../../reminders';
 
 export function Onboarding({ onDone }: { onDone: () => void }) {
   const t = useTheme();

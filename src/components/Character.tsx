@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, ImageSourcePropType } from 'react-native';
 import { characterArt } from '../characterArt';
 import type { CharacterId } from '../domain';
-import { NO_ITEM, Unlockable } from '../unlockables';
+import { NO_ITEM, Unlockable } from '../domain';
 
 type Props = {
   color: string;
