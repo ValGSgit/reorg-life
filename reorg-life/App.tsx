@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { WebNotice } from './src/components/WebNotice';
 import { Onboarding } from './src/screens/Onboarding';
 import { Home } from './src/screens/Home';
 import { CheckIn } from './src/screens/CheckIn';
@@ -21,10 +22,20 @@ export default function App() {
   useEffect(() => { getProfile().then((p) => { setHasProfile(!!p); setReady(true); }); }, []);
 
   if (!ready) return <View style={{ flex: 1, justifyContent: 'center', backgroundColor: t.bg }}><ActivityIndicator /></View>;
-  if (!hasProfile) return <><Onboarding onDone={() => setHasProfile(true)} /><StatusBar style="auto" /></>;
+  if (!hasProfile)
+    return (
+      <View style={{ flex: 1, backgroundColor: t.bg }}>
+        <WebNotice />
+        <View style={{ flex: 1 }}>
+          <Onboarding onDone={() => setHasProfile(true)} />
+        </View>
+        <StatusBar style="auto" />
+      </View>
+    );
 
   return (
     <View style={{ flex: 1, backgroundColor: t.bg }}>
+      <WebNotice />
       <View style={{ flex: 1 }}>
         {tab === 'Home' && <Home refreshKey={refreshKey} />}
         {tab === 'Check-in' && <CheckIn onSaved={bump} />}

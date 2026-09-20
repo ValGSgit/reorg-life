@@ -21,6 +21,22 @@ npx expo prebuild && npx expo run:android
 ```
 (Expo Go uses standard SQLite, so encryption is only active in a dev build.)
 
+### Web (dev preview only)
+```
+npm run web
+```
+The browser build exists so screens can be checked quickly on a laptop. It is
+**not** a secure place for real entries, and the app shows a permanent banner
+saying so:
+
+- No SQLCipher. `src/db/index.web.ts` opens the same schema unencrypted, via
+  expo-sqlite's wa-sqlite backend, persisted in the browser's origin-private
+  file system.
+- No OS keystore. `src/kv.web.ts` falls back to `localStorage`.
+- No notifications. `src/reminders.ts` is a no-op when `Platform.OS === 'web'`.
+
+The native path is untouched by all of this.
+
 ## Characters
 Placeholder blobs live in `src/components/Character.tsx`. To use Higgsfield art, generate images, put them in `assets/characters/`, and add `image: require(...)` to entries in `src/domain.ts` (then pass it to `<Character image=... />`).
 
