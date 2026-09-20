@@ -2,13 +2,13 @@
 
 # Task index
 
-20 tasks. The source of truth for each is its own file; this is a view.
+22 tasks. The source of truth for each is its own file; this is a view.
 
 **Next up:** [T-020](T-020-companion-domain-logic.md) — Add time-of-day companion logic to src/domain
 
 Run `npm run next-task` to get the same answer on the command line.
 
-## To do (20)
+## To do (21)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
@@ -21,6 +21,7 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-012](T-012-accessibility-pass.md) | Accessibility pass over every screen | P1 | W9-10 | — |
 | [T-018](T-018-privacy-policy.md) | Finish and publish the privacy policy | P1 | W9-10 | — |
 | [T-019](T-019-store-listing.md) | Store listing and screenshots | P1 | W9-10 | waiting on T-010 |
+| [T-032](T-032-open-source-licences-screen.md) | Add an open-source licences screen | P1 | W9-10 | — |
 | [T-030](T-030-release-build.md) | First EAS release build and the manual device checks | P1 | W11 | — |
 | [T-001](T-001-habits-polish.md) | Polish habits — edit, reorder and an archive view | P2 | W3-4 | — |
 | [T-014](T-014-cancel-safe-screen-loading.md) | Make screen data loading cancel-safe and re-enable the lint rule | P2 | W3-4 | — |
@@ -32,6 +33,12 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-013](T-013-animations.md) | Idle animations — breathing and a bounce on reward | P3 | W7-8 | cut candidate; waiting on T-023 |
 | [T-016](T-016-notion-sync.md) | Notion sync | P3 | W7-8 | cut candidate |
 | [T-017](T-017-footprint-inventory.md) | Digital footprint inventory | P3 | W7-8 | cut candidate |
+
+## Blocked (1)
+
+| Task | Title | Priority | Milestone | Notes |
+| --- | --- | --- | --- | --- |
+| [T-026](T-026-backup-recovery-sheet.md) | Add a printed/PDF recovery sheet to backup export | P2 | Unscheduled | blocked |
 
 ## Statuses
 
