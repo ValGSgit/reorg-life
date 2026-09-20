@@ -56,3 +56,7 @@ coverage/
 playwright-report/
 test-results/
 .playwright/
+
+# Python bytecode from the asset processing script
+__pycache__/
+*.pyc

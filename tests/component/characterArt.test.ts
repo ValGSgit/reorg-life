@@ -59,9 +59,14 @@ describe('characterArt', () => {
     expect(characterArt('ember', 1)).toBeTruthy();
   });
 
+  it('has art for all three companions the time-of-day rotation needs', () => {
+    // ADR 0001: Sprout in the morning, Ember in the afternoon, Dusk at night.
+    for (const id of ['sprout', 'ember', 'dusk'] as const) {
+      expect([id, characterArt(id, 3)]).toEqual([id, expect.anything()]);
+    }
+  });
+
   it('returns nothing for a character with no art, so the blob is used', () => {
-    // Dusk is needed every night by the time-of-day rotation.
-    expect(characterArt('dusk', 3)).toBeUndefined();
     expect(characterArt('comet', 3)).toBeUndefined();
     expect(characterArt('moss', 3)).toBeUndefined();
     expect(characterArt('blaze', 3)).toBeUndefined();
