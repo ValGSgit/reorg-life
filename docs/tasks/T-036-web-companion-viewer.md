@@ -15,7 +15,8 @@ blocked_by: null
 Someone can open their exported backup on a laptop and read their history.
 The phone stays the only place anything is created or edited.
 
-This is **not** the existing web dev preview. That runs the whole app in a
+This is **not** the existing web dev preview, and **not** the preview
+harness in T-037. That runs the whole app in a
 browser with unencrypted storage and exists for development. This is a
 separate, read-only viewer — and it can keep the privacy promise completely,
 which the preview cannot.

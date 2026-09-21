@@ -1,7 +1,7 @@
 ---
 id: T-030
 title: First EAS release build and the manual device checks
-milestone: W11
+milestone: W5-6
 priority: P1
 status: todo
 cut_candidate: false
@@ -47,6 +47,16 @@ docs/RELEASE.md (record the results)
 ```
 
 ## Notes
+
+**Moved from W11 to W5-6.** T-031 (closed test, W5-6) is blocked by this task,
+so leaving it in W11 meant the closed test could not start until after the
+thing it depends on — and the closed test must be running by 2 November. The
+device checks below can be repeated at W11 on the release candidate; what
+moves earlier is producing a build testers can install.
+
+The `app.json` version test listed above now lands earlier, in T-039, so this
+task inherits it rather than discovering on release day that
+`android.versionCode` was never set.
 
 The restore-after-reinstall check is the important one. It is the only way to
 find out whether the key really is in the keystore and whether a backup really

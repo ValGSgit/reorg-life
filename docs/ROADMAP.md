@@ -25,7 +25,7 @@ it starts early.
 | ----- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | W1–2  | 21 Sep – 4 Oct | Web preview **done**. Character art for the three creatures drawn and wired in **done** (placeholders — see below). Milestone 1 on the Android phone (dev build) **still open** — needs the owner's device                    |
 | W3–4  | 5 – 18 Oct     | Habits with gentle streaks, richer reminders, avatar unlocks by level, settings, encrypted export/import. **Time-of-day companions and notes organised by period** (see [ADR 0001](DECISIONS/0001-time-of-day-companions.md)) |
-| W5–6  | 19 Oct – 1 Nov | Device calendar sync (read-only). Create Play Console account and verify identity. Recruit 12+ testers. **Closed test must start by 2 Nov**                                                                                   |
+| W5–6  | 19 Oct – 1 Nov | Device calendar sync (read-only). Create Play Console account and verify identity. Recruit 12+ testers. Installable builds testers can fetch and roll back (T-030, T-038–T-040). **Closed test must start by 2 Nov**          |
 | W7–8  | 2 – 15 Nov     | Notion sync, digital footprint inventory, animations. Closed test running                                                                                                                                                     |
 | W9–10 | 16 – 29 Nov    | Tester feedback, accessibility pass, privacy policy, store listing, screenshots. Closed test reaches 14 days ~16 Nov; apply for production access                                                                             |
 | W11   | 30 Nov – 6 Dec | Feature freeze. Release candidate, backup/restore test on a real device, security review (gitleaks clean, no secrets)                                                                                                         |
@@ -103,6 +103,13 @@ not deleted, so the decision is still visible later.
   nonsense setting. `src/domain` stays at 100% coverage; the Jest suite now pins
   `TZ=Europe/Vienna` so the DST cases are real. Nothing renders differently yet —
   that is T-023. Next task: T-021.
+- **21 Sep** — Two capabilities scoped so work can be reviewed rather than
+  taken on trust: a local web preview harness with seeded demo data (T-037,
+  W3-4) and downloadable versioned builds (T-038, T-039, T-040, W5-6). T-030
+  moved from W11 to W5-6 — T-031 is blocked by it and must be running by
+  2 November, so a W11 dependency was impossible. Nothing implemented yet;
+  this is scope only. Rollback warning added to RELEASE.md: uninstalling to
+  downgrade wipes the encrypted database.
 
 ## How this file is kept up to date
 
