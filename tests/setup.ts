@@ -13,3 +13,12 @@ jest.mock('expo-notifications', () => ({
   AndroidImportance: { DEFAULT: 3 },
   SchedulableTriggerInputTypes: { DAILY: 'daily' },
 }));
+
+/**
+ * Reanimated 4 needs a native worklets runtime it cannot have in Jest, and the
+ * mock it ships pulls that runtime in through its own index — so it is stubbed
+ * locally. With it, animated styles resolve to their end values
+ * immediately — which is what the companion tests want: they assert the
+ * opacity a blend produces, not the frames on the way there.
+ */
+jest.mock('react-native-reanimated', () => require('./helpers/reanimatedMock'));

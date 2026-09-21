@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import { Character } from '../../components/Character';
+import { ScrollView, Text, View, useColorScheme } from 'react-native';
+import { Companion } from '../../components/Companion';
 import { Card, H, Sub } from '../../components/ui';
 import {
   CHARACTERS,
   DOMAINS,
+  companionForPeriod,
+  periodFor,
   EQUIPPED_SETTING,
   equippedItem,
   gentleStreak,
@@ -12,7 +14,7 @@ import {
   nextUnlock,
   xpForLevel,
 } from '../../domain';
-import { useTheme } from '../../theme';
+import { periodTint, useTheme } from '../../theme';
 import {
   HabitView,
   Profile,
@@ -26,6 +28,8 @@ import {
 
 export function Home({ refreshKey }: { refreshKey: number }) {
   const t = useTheme();
+  // A hook, so it stays above the early return below.
+  const isDark = useColorScheme() === 'dark';
   const [profile, setProfile] = useState<Profile | null>(null);
   const [streak, setStreak] = useState(0);
   const [mood, setMood] = useState(3);
@@ -55,6 +59,12 @@ export function Home({ refreshKey }: { refreshKey: number }) {
   const item = equippedItem(equipped, level);
   const next = nextUnlock(level);
 
+  // Who is on screen now comes from the clock (ADR 0001), not from the
+  // profile. The saved character becomes the pinned companion in T-024.
+  const period = periodFor();
+  const companionName = CHARACTERS.find((c) => c.id === companionForPeriod(period))?.name ?? ch.name;
+  const tint = periodTint(period, isDark);
+
   const dueToday = habits.filter((h) => h.dueToday);
   const doneToday = dueToday.filter((h) => h.doneToday).length;
 
@@ -69,10 +79,10 @@ export function Home({ refreshKey }: { refreshKey: number }) {
           ? `${streak} day${streak === 1 ? '' : 's'} of showing up. Rest days are built in.`
           : 'Whenever you are ready, a check-in is a good place to start.'}
       </Sub>
-      <Card style={{ alignItems: 'center', gap: 8 }}>
-        <Character id={ch.id} color={ch.body} mood={mood} size={160} item={item} />
+      <Card style={{ alignItems: 'center', gap: 8, backgroundColor: tint }}>
+        <Companion mood={mood} size={160} item={item} />
         <Text style={{ color: t.text, fontWeight: '700' }}>
-          {ch.name} · Level {level}
+          {companionName} · Level {level}
         </Text>
         <View style={{ height: 8, alignSelf: 'stretch', backgroundColor: t.line, borderRadius: 4 }}>
           <View style={{ width: `${pct * 100}%`, height: 8, backgroundColor: t.good, borderRadius: 4 }} />
