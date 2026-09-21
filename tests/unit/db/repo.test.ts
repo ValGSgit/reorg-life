@@ -1,6 +1,13 @@
 import { createTestDb, type TestDb } from '../../helpers/testDb';
 import { migrate } from '../../../src/db/schema';
-import { XP_PER_CHECKIN, XP_PER_HABIT, XP_PER_TASK, dayKey } from '../../../src/domain';
+import {
+  XP_PER_CHECKIN,
+  XP_PER_HABIT,
+  XP_PER_REPEAT_CHECKIN,
+  XP_PER_TASK,
+  dayKey,
+  gentleStreak,
+} from '../../../src/domain';
 
 let mockDb: TestDb;
 jest.mock('../../../src/db/index', () => ({
@@ -48,13 +55,15 @@ describe('profile', () => {
 });
 
 describe('check-ins', () => {
-  it('awards XP the first time a day is saved, and not again', async () => {
+  it('awards XP the first time a day is saved, and not again for an edit', async () => {
     const first = await repo.saveCheckin(4, 'hello');
-    expect(first).toEqual({ firstToday: true });
+    expect(first).toMatchObject({ firstToday: true });
     expect(await xp()).toBe(XP_PER_CHECKIN);
 
+    // Same period, so this is an edit rather than a second check-in: no
+    // further award, and nothing taken away either.
     const second = await repo.saveCheckin(2, 'changed my mind');
-    expect(second).toEqual({ firstToday: false });
+    expect(second).toMatchObject({ firstToday: false });
     expect(await xp()).toBe(XP_PER_CHECKIN);
   });
 
@@ -67,10 +76,10 @@ describe('check-ins', () => {
     expect(all[0]).toMatchObject({ mood: 1, note: 'second' });
   });
 
-  it('reports today, and nothing when today is untouched', async () => {
-    expect(await repo.getTodayCheckin()).toBeNull();
+  it('reports the current period, and nothing when it is untouched', async () => {
+    expect(await repo.getCurrentCheckin()).toBeNull();
     await repo.saveCheckin(5, 'good');
-    expect(await repo.getTodayCheckin()).toMatchObject({ day: dayKey(), mood: 5 });
+    expect(await repo.getCurrentCheckin()).toMatchObject({ day: dayKey(), mood: 5 });
   });
 
   it('lists days for the streak calculation', async () => {
@@ -314,5 +323,268 @@ describe('importSnapshot', () => {
     });
     const rows = await mockDb.getAllAsync('SELECT * FROM habit_logs');
     expect(rows).toEqual([]);
+  });
+});
+
+// ------------------------------------------------- periods on check-ins
+
+/**
+ * ADR 0001 changes the check-in rule from one a day to one per period, up to
+ * three. The rules that must survive that change: XP is generous once a day
+ * and small after, and the streak counts days rather than check-ins — three in
+ * a day is not a bigger streak than one, and one missed day is still forgiven.
+ */
+describe('check-ins by period', () => {
+  const at = (iso: string) => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date(iso));
+  };
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  // Local Europe/Vienna, which the Jest config pins.
+  const MORNING = '2026-04-01T09:00:00';
+  const AFTERNOON = '2026-04-01T14:00:00';
+  const NIGHT = '2026-04-01T20:00:00';
+
+  it('keeps three check-ins on one day, one per period', async () => {
+    at(MORNING);
+    await repo.saveCheckin(3, 'morning');
+    at(AFTERNOON);
+    await repo.saveCheckin(4, 'afternoon');
+    at(NIGHT);
+    await repo.saveCheckin(5, 'night');
+
+    const rows = await repo.checkinsOn('2026-04-01');
+    expect(rows.map((r) => [r.period, r.note])).toEqual([
+      ['morning', 'morning'],
+      ['afternoon', 'afternoon'],
+      ['night', 'night'],
+    ]);
+  });
+
+  it('updates rather than inserting when the period is already used', async () => {
+    at(MORNING);
+    await repo.saveCheckin(3, 'first thought');
+    await repo.saveCheckin(5, 'second thought');
+
+    const rows = await repo.checkinsOn('2026-04-01');
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ mood: 5, note: 'second thought', period: 'morning' });
+  });
+
+  it('awards full XP once a day and a smaller bonus after that', async () => {
+    at(MORNING);
+    const before = await xp();
+    const first = await repo.saveCheckin(3, '');
+    const afterFirst = await xp();
+
+    at(AFTERNOON);
+    const second = await repo.saveCheckin(4, '');
+    const afterSecond = await xp();
+
+    expect(first.firstToday).toBe(true);
+    expect(second.firstToday).toBe(false);
+    expect(afterFirst - before).toBe(XP_PER_CHECKIN);
+    expect(afterSecond - afterFirst).toBe(XP_PER_REPEAT_CHECKIN);
+    // Gentle by design: a repeat is still a reward, just a smaller one.
+    expect(XP_PER_REPEAT_CHECKIN).toBeGreaterThan(0);
+    expect(XP_PER_REPEAT_CHECKIN).toBeLessThan(XP_PER_CHECKIN);
+  });
+
+  it('never takes XP away for editing an existing check-in', async () => {
+    at(MORNING);
+    await repo.saveCheckin(3, '');
+    const after = await xp();
+
+    await repo.saveCheckin(1, 'worse than I thought');
+
+    expect(await xp()).toBeGreaterThanOrEqual(after);
+  });
+
+  it('counts a day once in the streak however many check-ins it holds', async () => {
+    at(MORNING);
+    await repo.saveCheckin(3, '');
+    const oneCheckin = gentleStreak(await repo.checkinDays());
+
+    at(AFTERNOON);
+    await repo.saveCheckin(4, '');
+    at(NIGHT);
+    await repo.saveCheckin(5, '');
+
+    expect(gentleStreak(await repo.checkinDays())).toBe(oneCheckin);
+  });
+
+  it('returns each day once, so nothing downstream can double-count', async () => {
+    at(MORNING);
+    await repo.saveCheckin(3, '');
+    at(AFTERNOON);
+    await repo.saveCheckin(4, '');
+
+    const days = await repo.checkinDays();
+    expect(days).toEqual([...new Set(days)]);
+  });
+
+  it('still forgives exactly one missed day, and stops at two', async () => {
+    // gentleStreakOn walks back from the real clock, so the clock is what has
+    // to move — passing a `today` only stops today counting as a miss.
+    at('2026-04-06T20:00:00');
+    // Written directly so the days are unambiguous: the 4th is missed.
+    for (const day of ['2026-04-06', '2026-04-05', '2026-04-03', '2026-04-02']) {
+      await mockDb.runAsync(
+        'INSERT INTO checkins (day, mood, note, created_at, period) VALUES (?, ?, ?, ?, ?)',
+        day,
+        3,
+        '',
+        day + 'T09:00:00.000Z',
+        'morning',
+      );
+    }
+    const days = await repo.checkinDays();
+
+    // One gap (the 4th) is forgiven, so the run reaches back to the 2nd.
+    expect(gentleStreak(days)).toBe(4);
+
+    // Two missed days in a row do stop it. Dropping the 3rd leaves the 3rd and
+    // 4th both missing, so the run ends at the 5th and the 2nd is not counted
+    // however present it is.
+    await mockDb.runAsync('DELETE FROM checkins WHERE day = ?', '2026-04-03');
+    expect(gentleStreak(await repo.checkinDays())).toBe(2);
+  });
+
+  it('finds the check-in for the period being lived in right now', async () => {
+    at(MORNING);
+    await repo.saveCheckin(3, 'the morning one');
+
+    at(AFTERNOON);
+    expect(await repo.getCurrentCheckin()).toBeNull();
+
+    at(MORNING);
+    expect(await repo.getCurrentCheckin()).toMatchObject({ note: 'the morning one' });
+  });
+});
+
+describe('events carry a period too', () => {
+  it('stamps a new event with the period its start time falls in', async () => {
+    await repo.addEvent('afternoon thing', 'life', new Date('2026-07-01T14:00:00'));
+
+    const row = await mockDb.getFirstAsync<{ period: string }>('SELECT period FROM events');
+    expect(row).toEqual({ period: 'afternoon' });
+  });
+
+  it('uses the event start, not the moment it was entered', async () => {
+    // Something written down at night that happens tomorrow morning belongs
+    // to the morning — the period describes the event, not the typing.
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-07-01T23:30:00'));
+    await repo.addEvent('breakfast', 'life', new Date('2026-07-02T08:00:00'));
+    jest.useRealTimers();
+
+    const row = await mockDb.getFirstAsync<{ period: string }>('SELECT period FROM events');
+    expect(row).toEqual({ period: 'morning' });
+  });
+});
+
+describe('recomputePeriods', () => {
+  it('moves a row to a different period when the boundaries move', async () => {
+    // 13:00 local is afternoon by default.
+    await mockDb.runAsync(
+      'INSERT INTO checkins (day, mood, note, created_at, period) VALUES (?, ?, ?, ?, ?)',
+      '2026-05-01',
+      3,
+      '',
+      new Date('2026-05-01T13:00:00').toISOString(),
+      'afternoon',
+    );
+
+    // Someone who counts the afternoon as starting at 14:00.
+    await repo.recomputePeriods({ afternoonStart: '14:00' });
+
+    const row = await mockDb.getFirstAsync<{ period: string }>('SELECT period FROM checkins');
+    expect(row).toEqual({ period: 'morning' });
+  });
+
+  it('derives from the timestamp, so it can be run again and again', async () => {
+    await mockDb.runAsync(
+      'INSERT INTO checkins (day, mood, note, created_at, period) VALUES (?, ?, ?, ?, ?)',
+      '2026-05-02',
+      3,
+      '',
+      new Date('2026-05-02T13:00:00').toISOString(),
+      'night',
+    );
+
+    await repo.recomputePeriods();
+    await repo.recomputePeriods();
+
+    const row = await mockDb.getFirstAsync<{ period: string }>('SELECT period FROM checkins');
+    expect(row).toEqual({ period: 'afternoon' });
+  });
+});
+
+describe('snapshots carry the period', () => {
+  it('round trips a v3 snapshot unchanged', async () => {
+    await mockDb.runAsync(
+      'INSERT INTO checkins (day, mood, note, created_at, period) VALUES (?, ?, ?, ?, ?)',
+      '2026-06-01',
+      4,
+      'kept',
+      '2026-06-01T07:00:00.000Z',
+      'morning',
+    );
+    const before = await repo.exportSnapshot();
+
+    await repo.importSnapshot(before);
+
+    const after = await repo.exportSnapshot();
+    // Row ids are re-issued by a restore, the same way habit ids are, so the
+    // comparison is of what was written rather than where it landed.
+    const content = (rows: typeof before.checkins) => rows.map(({ id: _id, ...rest }) => rest);
+    expect(content(after.checkins)).toEqual(content(before.checkins));
+    expect(after.checkins[0]).toMatchObject({ period: 'morning', created_at: '2026-06-01T07:00:00.000Z' });
+  });
+
+  it('restores a backup taken before this migration, deriving the periods', async () => {
+    // Exactly what a v2-era export looked like: no period field anywhere.
+    const old = {
+      profile: {
+        character_id: 'sprout',
+        display_name: 'Val',
+        xp: 40,
+        created_at: '2026-01-01T00:00:00.000Z',
+      },
+      checkins: [
+        { id: 1, day: '2026-02-01', mood: 4, note: 'old morning', created_at: '2026-02-01T08:00:00.000Z' },
+        { id: 2, day: '2026-02-02', mood: 2, note: 'old night', created_at: '2026-02-02T21:00:00.000Z' },
+      ],
+      events: [
+        {
+          id: 1,
+          title: 'old event',
+          domain: 'life',
+          starts_at: '2026-02-03T13:00:00.000Z',
+          source: 'manual',
+          done: 0,
+        },
+      ],
+      habits: [],
+      habit_logs: [],
+      settings: {},
+    };
+
+    await expect(repo.importSnapshot(old as never)).resolves.not.toThrow();
+
+    const rows = await mockDb.getAllAsync<{ note: string; period: string }>(
+      'SELECT note, period FROM checkins ORDER BY day',
+    );
+    expect(rows).toEqual([
+      { note: 'old morning', period: 'morning' },
+      { note: 'old night', period: 'night' },
+    ]);
+
+    const event = await mockDb.getFirstAsync<{ period: string }>('SELECT period FROM events');
+    expect(event).toEqual({ period: 'afternoon' });
   });
 });

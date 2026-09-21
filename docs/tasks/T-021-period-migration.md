@@ -3,7 +3,7 @@ id: T-021
 title: Store a period on check-ins and events
 milestone: W3-4
 priority: P1
-status: todo
+status: done
 cut_candidate: false
 blocked_by: T-020
 ---
@@ -25,43 +25,43 @@ three a day.
 
 ## Acceptance criteria
 
-- [ ] Migration 3 adds `period TEXT` to `checkins` and `events`, raising
+- [x] Migration 3 adds `period TEXT` to `checkins` and `events`, raising
       `LATEST_VERSION`
-- [ ] Existing rows are backfilled from their timestamp, not left null
-- [ ] `checkins` allows **one row per period per day** (the old one-per-day
+- [x] Existing rows are backfilled from their timestamp, not left null
+- [x] `checkins` allows **one row per period per day** (the old one-per-day
       unique constraint has to change)
-- [ ] The raw timestamp is still stored and still authoritative
-- [ ] `recomputePeriods(settings)` re-derives every stored period from its
+- [x] The raw timestamp is still stored and still authoritative
+- [x] `recomputePeriods(settings)` re-derives every stored period from its
       timestamp, for when boundaries change
-- [ ] **The first check-in of a day awards the normal XP; later ones award a
+- [x] **The first check-in of a day awards the normal XP; later ones award a
       smaller bonus**
-- [ ] **The streak counts any day with at least one check-in, and one missed
+- [x] **The streak counts any day with at least one check-in, and one missed
       day is still forgiven.** Three check-ins in a day is not a bigger streak
       than one
-- [ ] `exportSnapshot`/`importSnapshot` carry the new fields
-- [ ] **A backup taken before this migration still restores**, with periods
+- [x] `exportSnapshot`/`importSnapshot` carry the new fields
+- [x] **A backup taken before this migration still restores**, with periods
       derived on the way in
-- [ ] Coverage on `src/db` stays above the floor
+- [x] Coverage on `src/db` stays above the floor
 
 ## Tests to write first
 
 `tests/unit/db/migrations.test.ts` (extend) and `tests/unit/db/repo.test.ts`.
 
-- [ ] Migration on an **empty** database reaches version 3
-- [ ] Migration on a **populated v2** database backfills every existing
+- [x] Migration on an **empty** database reaches version 3
+- [x] Migration on a **populated v2** database backfills every existing
       check-in and event, and loses nothing — this is the case that would
       destroy real data
-- [ ] Migration is still idempotent
-- [ ] Three check-ins in one day, one per period, all persist
-- [ ] A fourth check-in in an already-used period updates rather than inserts
-- [ ] First check-in of the day gives full XP; the second gives the smaller
+- [x] Migration is still idempotent
+- [x] Three check-ins in one day, one per period, all persist
+- [x] A fourth check-in in an already-used period updates rather than inserts
+- [x] First check-in of the day gives full XP; the second gives the smaller
       bonus
-- [ ] **Streak is unchanged by a second or third check-in on the same day**
-- [ ] **Streak still forgives exactly one missed day** (guard against a
+- [x] **Streak is unchanged by a second or third check-in on the same day**
+- [x] **Streak still forgives exactly one missed day** (guard against a
       regression from the constraint change)
-- [ ] `recomputePeriods` moves a row to a different period when boundaries move
-- [ ] Round trip: export at v3, restore, everything matches
-- [ ] **Restore a v2-era backup** (no `period` field anywhere) and confirm
+- [x] `recomputePeriods` moves a row to a different period when boundaries move
+- [x] Round trip: export at v3, restore, everything matches
+- [x] **Restore a v2-era backup** (no `period` field anywhere) and confirm
       periods are derived and nothing throws
 
 ## Files likely touched

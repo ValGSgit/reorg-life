@@ -72,3 +72,10 @@ export async function userVersion(db: TestDb): Promise<number> {
   const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   return row?.user_version ?? 0;
 }
+
+/** Column names on a table, for asserting a migration actually added one. */
+export async function columnNames(db: TestDb, table: string): Promise<string[]> {
+  // PRAGMA does not take bound parameters; `table` is a literal in tests.
+  const rows = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(${table})`);
+  return rows.map((r) => r.name);
+}
