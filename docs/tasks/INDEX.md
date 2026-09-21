@@ -4,18 +4,17 @@
 
 26 tasks. The source of truth for each is its own file; this is a view.
 
-**Next up:** [T-020](T-020-companion-domain-logic.md) — Add time-of-day companion logic to src/domain
+**Next up:** [T-021](T-021-period-migration.md) — Store a period on check-ins and events
 
 Run `npm run next-task` to get the same answer on the command line.
 
-## To do (24)
+## To do (23)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
-| [T-020](T-020-companion-domain-logic.md) | Add time-of-day companion logic to src/domain | P1 | W3-4 | — |
-| [T-021](T-021-period-migration.md) | Store a period on check-ins and events | P1 | W3-4 | waiting on T-020 |
+| [T-021](T-021-period-migration.md) | Store a period on check-ins and events | P1 | W3-4 | — |
 | [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | waiting on T-021 |
-| [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | waiting on T-020 |
+| [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | — |
 | [T-033](T-033-light-palette-contrast.md) | Fix the three WCAG failures in the light palette | P1 | W3-4 | — |
 | [T-031](T-031-closed-test-prep.md) | Prepare and start the Google Play closed test | P1 | W5-6 | waiting on T-030 |
 | [T-010](T-010-replace-placeholder-art.md) | Replace the watermarked placeholder character art | P1 | W9-10 | — |
@@ -26,7 +25,7 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-030](T-030-release-build.md) | First EAS release build and the manual device checks | P1 | W11 | — |
 | [T-001](T-001-habits-polish.md) | Polish habits — edit, reorder and an archive view | P2 | W3-4 | — |
 | [T-014](T-014-cancel-safe-screen-loading.md) | Make screen data loading cancel-safe and re-enable the lint rule | P2 | W3-4 | — |
-| [T-024](T-024-period-settings-and-reminders.md) | Settings for periods, pinning and per-period reminders | P2 | W3-4 | cut candidate; waiting on T-020 |
+| [T-024](T-024-period-settings-and-reminders.md) | Settings for periods, pinning and per-period reminders | P2 | W3-4 | cut candidate |
 | [T-025](T-025-e2e-clock-tests.md) | End-to-end tests for each period using a mocked clock | P2 | W3-4 | waiting on T-023 |
 | [T-015](T-015-calendar-sync.md) | Read-only device calendar sync | P2 | W5-6 | — |
 | [T-002](T-002-extract-rewards-ui.md) | Move the unlockables picker into features/rewards | P3 | W3-4 | cut candidate |
@@ -43,6 +42,12 @@ Run `npm run next-task` to get the same answer on the command line.
 | --- | --- | --- | --- | --- |
 | [T-035](T-035-recovery-key-format.md) | Show the recovery key in a format people can copy by hand | P2 | W3-4 | blocked |
 | [T-026](T-026-backup-recovery-sheet.md) | Add a printed/PDF recovery sheet to backup export | P2 | Unscheduled | blocked |
+
+## Done (1)
+
+| Task | Title | Priority | Milestone | Notes |
+| --- | --- | --- | --- | --- |
+| [T-020](T-020-companion-domain-logic.md) | Add time-of-day companion logic to src/domain | P1 | W3-4 | done |
 
 ## Statuses
 

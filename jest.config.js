@@ -12,6 +12,11 @@
  * Playwright owns the end-to-end suite; Jest does not run it. See
  * `npm run test:e2e`.
  */
+// Pin the zone. Two of the companion tests assert behaviour that only exists
+// where the clocks change (ADR 0001), and a suite whose answers depend on the
+// machine's zone is a suite that passes locally and fails in CI.
+process.env.TZ = 'Europe/Vienna';
+
 const babelTransform = {
   '^.+\\.[jt]sx?$': ['babel-jest', { presets: ['babel-preset-expo'] }],
 };
