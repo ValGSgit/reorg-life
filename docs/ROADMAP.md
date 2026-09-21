@@ -23,7 +23,7 @@ it starts early.
 
 | Weeks | Dates          | Work                                                                                                                                                                                                                          |
 | ----- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| W1–2  | 21 Sep – 4 Oct | Web preview **done**. Character art for the three creatures drawn and wired in **done** (placeholders — see below). Milestone 1 on the Android phone (dev build) **still open** — needs the owner's device |
+| W1–2  | 21 Sep – 4 Oct | Web preview **done**. Character art for the three creatures drawn and wired in **done** (placeholders — see below). Milestone 1 on the Android phone (dev build) **still open** — needs the owner's device                    |
 | W3–4  | 5 – 18 Oct     | Habits with gentle streaks, richer reminders, avatar unlocks by level, settings, encrypted export/import. **Time-of-day companions and notes organised by period** (see [ADR 0001](DECISIONS/0001-time-of-day-companions.md)) |
 | W5–6  | 19 Oct – 1 Nov | Device calendar sync (read-only). Create Play Console account and verify identity. Recruit 12+ testers. **Closed test must start by 2 Nov**                                                                                   |
 | W7–8  | 2 – 15 Nov     | Notion sync, digital footprint inventory, animations. Closed test running                                                                                                                                                     |
