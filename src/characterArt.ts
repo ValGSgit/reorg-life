@@ -10,7 +10,7 @@ import type { CharacterId } from './domain';
  * Metro resolves `require()` at build time, so every path listed here must be
  * a real file or the bundle fails. A character with no entry falls back to the
  * blob drawn in `components/Character.tsx`, so a partial set is fine — which
- * is just as well, since only two companions are drawn so far.
+ * is just as well, since the three human avatars are not drawn at all.
  *
  * > Everything registered here today is a **watermark-derived placeholder**
  * > and must not ship. See docs/ASSETS.md and task T-010.

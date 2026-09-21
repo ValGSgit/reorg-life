@@ -55,3 +55,12 @@ retaken.
 ## Blockers
 
 Needs T-010 (final art).
+
+Every character image in the repo today is a **watermarked placeholder** and
+must not ship — see [docs/ASSETS.md](../ASSETS.md). That is a licensing
+blocker, not a cosmetic one: store screenshots and the feature graphic would
+carry someone else's watermark. It cannot be fixed by editing the images, and
+removing or cropping a watermark is explicitly forbidden.
+
+This sits on the critical path to 14 December, because the store listing is
+needed before production submission in W12.

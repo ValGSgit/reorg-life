@@ -8,9 +8,9 @@ import { CHARACTERS } from '../../src/domain';
  * resolution error rather than anything readable, so it is worth catching
  * here instead.
  *
- * The blob fallback is on the critical path: Dusk has no usable art, and the
- * time-of-day rotation shows Dusk every night (ADR 0001). If the fallback
- * breaks, the companion disappears after 18:00.
+ * The blob fallback is on the critical path: Comet, Moss and Blaze have no
+ * art at all, so the blob is what they render. If it breaks, those avatars
+ * become a blank space where the companion should be.
  */
 describe('CHARACTER_ART', () => {
   it('only registers known characters', () => {
