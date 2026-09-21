@@ -3,6 +3,7 @@
 | File                                     | What it is for                                                     |
 | ---------------------------------------- | ------------------------------------------------------------------ |
 | [ROADMAP.md](ROADMAP.md)                 | Dates, the closed-test constraint, cut order, status log           |
+| [status/](status/)                       | One file per status log entry; the log itself is generated         |
 | [ARCHITECTURE.md](ARCHITECTURE.md)       | How the code fits together and why                                 |
 | [DECISIONS/](DECISIONS/)                 | ADRs — decisions that would otherwise be re-argued                 |
 | [tasks/](tasks/)                         | One file per unit of work; `INDEX.md` is the view                  |

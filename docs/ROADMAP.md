@@ -83,9 +83,12 @@ not deleted, so the decision is still visible later.
 
 - **Monday** — plan the week.
 - **Friday** — review, commit, push.
-- Keep the status log below current. One line per session is plenty.
+- Keep the status log below current — add a file to `docs/status/`, never
+  edit the generated log. One entry per session is plenty.
 
 ## Status log
+
+<!-- Generated from docs/status/ by scripts/next-task.mjs --generate. Do not edit by hand. -->
 
 - **20 Sep** — Milestone 1 scaffold built (onboarding, check-in, timeline, home,
   reminder, encrypted DB). Character art in progress on Higgsfield.
@@ -116,8 +119,16 @@ not deleted, so the decision is still visible later.
   2 November, so a W11 dependency was impossible. Nothing implemented yet;
   this is scope only. Rollback warning added to RELEASE.md: uninstalling to
   downgrade wipes the encrypted database.
+- **21 Sep** — Status log moved out of `docs/ROADMAP.md` into one file per
+  entry under `docs/status/`, assembled by `next-task.mjs --generate`. Every task
+  PR used to append to the same few lines, so every pair of open PRs conflicted,
+  and resolving one of those conflicts had already dropped an entry into nothing
+  on the way into main. A branch now adds a file and touches no shared line. The
+  six existing entries were migrated and the assembled output is byte-identical
+  to what was there. Also added `enables_review_of`, so the script — not a
+  standing manual override — knows T-037 comes before T-022 and T-023.
 
 ## How this file is kept up to date
 
-Every finished task appends one line to the status log and updates the task's
+Every finished task adds one file to [status/](status/) and updates the task's
 own file. See [../AGENTS.md](../AGENTS.md), "session end checklist".

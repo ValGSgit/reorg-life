@@ -21,7 +21,9 @@ already seen.
 
 ## Acceptance criteria
 
-- [ ] `app.json` has an `android.versionCode`, starting at 1
+- [ ] `app.json` has an `android.versionCode`, **starting at 1**, bumped by
+      hand per release and never auto-incremented — the point is to be able to
+      tell versions apart, which a bot bumping on merge destroys
 - [ ] The Settings screen shows the version and the build number, somewhere
       unobtrusive — this is a diagnostic, not a headline
 - [ ] It reads the real values at runtime rather than a hardcoded string, so

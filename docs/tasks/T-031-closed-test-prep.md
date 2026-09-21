@@ -34,7 +34,7 @@ around it. See `docs/ROADMAP.md` and `docs/RELEASE.md`.
 - [ ] **Test running by 2 November**
 - [ ] A way for testers to send feedback that does not require them to share
       personal entries
-- [ ] Start date recorded in the ROADMAP status log, so the 14 days can be
+- [ ] Start date recorded as a `docs/status/` entry, so the 14 days can be
       counted
 
 ## Tests to write first
@@ -47,7 +47,7 @@ Not a code task. The verifiable artefact is:
 
 ```
 docs/RELEASE.md          (record dates and the verified rule)
-docs/ROADMAP.md          (status log)
+docs/status/             (one new entry)
 docs/tester-guide.md     (new)
 ```
 

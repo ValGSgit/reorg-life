@@ -99,7 +99,7 @@ Treat it like any other pull request. In particular:
 - Did it weaken any existing test? Check the diff for deleted or loosened
   assertions — that is the one thing that must never be waved through.
 - Are the task's acceptance criteria actually ticked, and true?
-- Is `docs/ROADMAP.md`'s status log updated?
+- Is there a new entry file in `docs/status/`, with `--generate` run?
 
 ## Cost
 

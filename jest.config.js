@@ -1,5 +1,5 @@
 /**
- * Three projects, because the three kinds of test need different environments.
+ * Four projects, because the four kinds of test need different environments.
  *
  * - `domain` — pure logic in plain Node. No renderer, no Expo. Fast, and the
  *   suite the coverage floor leans on.
@@ -8,6 +8,9 @@
  *   real rather than against a fake that would accept invalid SQL.
  * - `component` — screens through jest-expo, so react-native and Expo modules
  *   resolve.
+ * - `scripts` — the repository's own tooling. It generates
+ *   `docs/tasks/INDEX.md` and the ROADMAP status log, and decides what to work
+ *   on next, so a bug there quietly misroutes work or loses a log entry.
  *
  * Playwright owns the end-to-end suite; Jest does not run it. See
  * `npm run test:e2e`.
@@ -18,7 +21,8 @@
 process.env.TZ = 'Europe/Vienna';
 
 const babelTransform = {
-  '^.+\\.[jt]sx?$': ['babel-jest', { presets: ['babel-preset-expo'] }],
+  // .mjs included so the scripts suite can import scripts/lib/*.mjs.
+  '^.+\\.(mjs|[jt]sx?)$': ['babel-jest', { presets: ['babel-preset-expo'] }],
 };
 
 module.exports = {
@@ -34,6 +38,13 @@ module.exports = {
       testEnvironment: 'node',
       testMatch: ['<rootDir>/tests/unit/db/**/*.test.ts'],
       transform: babelTransform,
+    },
+    {
+      displayName: 'scripts',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/tests/unit/scripts/**/*.test.ts'],
+      transform: babelTransform,
+      moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'mjs', 'json'],
     },
     {
       displayName: 'component',
