@@ -185,6 +185,13 @@ not deleted, so the decision is still visible later.
   someone can turn it on while the app is open. Home now shows the rotating
   companion rather than the one picked in Settings, which is what ADR 0001 asks
   for; wiring that picker back up as the pin is T-024. Next task: T-025.
+- **21 Sep** — Raised the component suite's test timeout. The first
+  test in `Timeline.test.tsx` was failing on CI with "exceeded timeout of
+  5000 ms" — on two unrelated PRs in a row, which makes it systematic rather
+  than bad luck. It is the cold-start cost of standing up the react-native
+  module graph, paid by whichever test runs first in a file; the whole file
+  takes about nine seconds. Nothing in the app got slower and no assertion
+  changed.
 - **21 Sep** — T-033 done: every colour pair the app puts on screen now
   meets WCAG AA, measured rather than assumed — `contrastRatio` is in the domain
   layer and a test computes every pair in both themes. The three recorded
