@@ -44,7 +44,7 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-035](T-035-recovery-key-format.md) | Show the recovery key in a format people can copy by hand | P2 | W3-4 | blocked |
 | [T-026](T-026-backup-recovery-sheet.md) | Add a printed/PDF recovery sheet to backup export | P2 | Unscheduled | blocked |
 
-## Done (5)
+## Done (6)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
@@ -53,6 +53,7 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-037](T-037-web-preview-harness.md) | Web preview harness — one command to launch, seed and test | P1 | W3-4 | done |
 | [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | done |
 | [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | done |
+| [T-033](T-033-light-palette-contrast.md) | Fix the three WCAG failures in the light palette | P1 | W3-4 | done |
 
 ## Statuses
 

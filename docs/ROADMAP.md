@@ -192,6 +192,23 @@ not deleted, so the decision is still visible later.
   module graph, paid by whichever test runs first in a file; the whole file
   takes about nine seconds. Nothing in the app got slower and no assertion
   changed.
+- **21 Sep** — T-033 done: every colour pair the app puts on screen now
+  meets WCAG AA, measured rather than assumed — `contrastRatio` is in the domain
+  layer and a test computes every pair in both themes. The three recorded
+  failures are fixed by darkening along their own hue. Two more turned up on the
+  way: all six life-area colours were text colours all along, because a selected
+  filter chip puts white text on them, and the primary button hard-coded white
+  text so it was unreadable in dark mode at 2.22. The night tint added with the
+  companions had never been measured and sat at 4.42. Companion bodies were
+  reviewed and left alone — they are illustration, not information. Next task:
+  T-030.
+- **21 Sep** — Fixed the demo seeder writing life areas that do not
+  exist. It used `social`, `home`, `life` and `growth`, none of which are in
+  DOMAINS, so seeded entries rendered without a colour or label and could not be
+  reached by the timeline filters added in T-022 — demo data quietly making a
+  working feature look broken. The seed now spreads across all six real areas so
+  every filter chip has something behind it, and a test refuses any life area
+  that is not in DOMAINS. Found by the agent working T-022.
 
 ## How this file is kept up to date
 
