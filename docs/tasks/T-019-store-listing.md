@@ -5,7 +5,7 @@ milestone: W9-10
 priority: P1
 status: todo
 cut_candidate: false
-blocked_by: T-010
+blocked_by: T-010, T-037
 ---
 
 # T-019 — Store listing and screenshots
@@ -34,7 +34,9 @@ declarations.
 Not testable. Instead:
 
 - [ ] A demo-data script so screenshots are reproducible and contain nothing
-      personal
+      personal. **Built in T-037** for the web preview harness — use it here
+      rather than writing a second one, so screenshots and the preview show
+      the same known-fictional content
 
 ## Files likely touched
 

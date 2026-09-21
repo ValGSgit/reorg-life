@@ -57,6 +57,28 @@ This is the single constraint the whole schedule hangs on:
 > differs between personal and organisation accounts. If it has changed, update
 > [ROADMAP.md](ROADMAP.md) in the same commit as this file.
 
+## Rolling back — read this before you downgrade
+
+> **Uninstalling wipes the encrypted database. Export a backup first.**
+>
+> Android refuses to install an older `versionCode` over a newer one. So
+> rolling back means **uninstalling the newer build first** — and uninstalling
+> takes the app's data with it. The encryption key lives in the OS keystore
+> and goes with the app, so the data is not recoverable afterwards even if the
+> files were.
+>
+> Before installing any older build:
+>
+> 1. Open the newer build, export a backup, and **write the recovery key
+>    down**. It is shown once and stored nowhere.
+> 2. Copy the backup file off the device.
+> 3. Only then uninstall and install the older version.
+> 4. Restore from the backup.
+>
+> A backup from a newer version restored into an older one may be missing
+> fields the older build does not understand. Restoring forward — older backup
+> into newer app — is the supported direction and is tested.
+
 ## Cutting a release
 
 1. **Freeze.** No new features (W11 in the roadmap).
@@ -67,6 +89,14 @@ This is the single constraint the whole schedule hangs on:
 5. Tag: `git tag -a v0.1.0 -m "v0.1.0" && git push --tags`.
 6. Run **Actions → release → Run workflow**, choosing the profile.
 7. Download the artefact from the EAS build page.
+
+Where to find a build:
+
+- **Any commit, for a quick look** — the CI `build` job's workflow artifacts
+  (T-038). A JS bundle, not installable on a phone.
+- **Any tagged version, installable** — the GitHub Release for that tag
+  (T-040). This is the one to use for reinstalling a past version, and the
+  rollback warning above applies.
 
 ## Manual checks on a real device before submitting
 

@@ -2,13 +2,13 @@
 
 # Task index
 
-26 tasks. The source of truth for each is its own file; this is a view.
+30 tasks. The source of truth for each is its own file; this is a view.
 
 **Next up:** [T-021](T-021-period-migration.md) — Store a period on check-ins and events
 
 Run `npm run next-task` to get the same answer on the command line.
 
-## To do (23)
+## To do (27)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
@@ -16,13 +16,17 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | waiting on T-021 |
 | [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | — |
 | [T-033](T-033-light-palette-contrast.md) | Fix the three WCAG failures in the light palette | P1 | W3-4 | — |
+| [T-037](T-037-web-preview-harness.md) | Web preview harness — static serve and seeded demo data | P1 | W3-4 | waiting on T-021 |
+| [T-030](T-030-release-build.md) | First EAS release build and the manual device checks | P1 | W5-6 | — |
 | [T-031](T-031-closed-test-prep.md) | Prepare and start the Google Play closed test | P1 | W5-6 | waiting on T-030 |
+| [T-038](T-038-ci-build-artifacts.md) | Upload the web and Android exports as downloadable CI artifacts | P1 | W5-6 | — |
+| [T-039](T-039-version-visible-and-deliberate.md) | Show the version and build number, and make versioning deliberate | P1 | W5-6 | — |
+| [T-040](T-040-tagged-release-downloads.md) | Tagged releases with a downloadable Android build and a safe rollback path | P1 | W5-6 | waiting on T-030 |
 | [T-010](T-010-replace-placeholder-art.md) | Replace the watermarked placeholder character art | P1 | W9-10 | — |
 | [T-012](T-012-accessibility-pass.md) | Accessibility pass over every screen | P1 | W9-10 | — |
 | [T-018](T-018-privacy-policy.md) | Finish and publish the privacy policy | P1 | W9-10 | — |
-| [T-019](T-019-store-listing.md) | Store listing and screenshots | P1 | W9-10 | waiting on T-010 |
+| [T-019](T-019-store-listing.md) | Store listing and screenshots | P1 | W9-10 | waiting on T-010, T-037 |
 | [T-032](T-032-open-source-licences-screen.md) | Add an open-source licences screen | P1 | W9-10 | — |
-| [T-030](T-030-release-build.md) | First EAS release build and the manual device checks | P1 | W11 | — |
 | [T-001](T-001-habits-polish.md) | Polish habits — edit, reorder and an archive view | P2 | W3-4 | — |
 | [T-014](T-014-cancel-safe-screen-loading.md) | Make screen data loading cancel-safe and re-enable the lint rule | P2 | W3-4 | — |
 | [T-024](T-024-period-settings-and-reminders.md) | Settings for periods, pinning and per-period reminders | P2 | W3-4 | cut candidate |
