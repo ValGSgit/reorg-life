@@ -15,7 +15,7 @@
  *    left is unmistakable rather than quietly mixed in with real entries.
  */
 import { getDb } from './index';
-import { XP_PER_CHECKIN, dayKey, periodFor, type PeriodSettings } from '../domain';
+import { XP_PER_CHECKIN, dayKey, periodFor, type DomainId, type PeriodSettings } from '../domain';
 
 /** Thrown instead of writing anything, so a refusal is never silent. */
 export class DemoDataError extends Error {
@@ -79,19 +79,26 @@ const CHECKINS: [number, number, number, string][] = [
   [6, 19, 3, 'DEMO — placeholder entry from last week.'],
 ];
 
-const EVENTS: [number, number, string, string, number][] = [
+/**
+ * Events, as [days ago, hour, title, life area, done].
+ *
+ * The life areas are spread across all six in DOMAINS on purpose: the
+ * timeline's filter chips are only worth looking at if every one of them has
+ * something behind it.
+ */
+const EVENTS: [number, number, string, DomainId, number][] = [
   [0, 11, 'DEMO: pretend dentist appointment', 'health', 0],
-  [1, 16, 'DEMO: imaginary coffee with a friend', 'social', 1],
+  [1, 16, 'DEMO: imaginary coffee with a friend', 'relationships', 1],
   [3, 10, 'DEMO: fictional admin afternoon', 'work', 1],
-  [5, 18, 'DEMO: made-up grocery run', 'home', 1],
-  [-2, 9, 'DEMO: invented thing happening later this week', 'life', 0],
+  [5, 18, 'DEMO: made-up budget review', 'finances', 1],
+  [-2, 9, 'DEMO: invented thing happening later this week', 'digital', 0],
 ];
 
-const HABITS: [string, string, string, number[]][] = [
-  // [title, domain, schedule, days-ago it was done]
-  ['DEMO: stretch for five minutes', 'health', 'daily', [0, 1, 2, 3, 5, 6]],
-  ['DEMO: water the pretend plants', 'home', 'daily', [0, 1, 3, 4]],
-  ['DEMO: write one made-up sentence', 'growth', 'daily', [1, 2]],
+const HABITS: [string, string, DomainId, number[]][] = [
+  // [title, schedule, life area, days-ago it was done]
+  ['DEMO: stretch for five minutes', 'daily', 'health', [0, 1, 2, 3, 5, 6]],
+  ['DEMO: write one made-up sentence', 'daily', 'creativity', [1, 2]],
+  ['DEMO: message someone imaginary', 'daily', 'relationships', [0, 1, 3, 4]],
 ];
 
 /**
@@ -147,7 +154,7 @@ export async function seedDemoData({
       );
     }
 
-    for (const [title, domain, schedule, doneDays] of HABITS) {
+    for (const [title, schedule, domain, doneDays] of HABITS) {
       const result = await db.runAsync(
         'INSERT INTO habits (title, domain, schedule, remind_at, archived, created_at) VALUES (?, ?, ?, ?, 0, ?)',
         title,
