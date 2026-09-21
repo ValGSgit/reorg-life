@@ -3,7 +3,7 @@ id: T-023
 title: Cross-fade the companion when the period changes
 milestone: W3-4
 priority: P1
-status: todo
+status: done
 cut_candidate: false
 blocked_by: T-020
 ---
@@ -21,32 +21,33 @@ motion gets an instant switch instead.
 
 ## Acceptance criteria
 
-- [ ] Two companion images cross-fade using `react-native-reanimated`
-- [ ] A change while the app is open animates over ~1.5s, ease in-out
-- [ ] Opening the app **inside** a transition window shows the static blend
+- [x] Two companion images cross-fade using `react-native-reanimated`
+- [x] A change while the app is open animates over ~1.5s, ease in-out
+- [x] Opening the app **inside** a transition window shows the static blend
       from `companionFor().blend` — no animation replaying on launch
-- [ ] A soft background tint per period (warm sunrise, bright afternoon, deep
+- [x] A soft background tint per period (warm sunrise, bright afternoon, deep
       dusk) fades on the same curve
-- [ ] **Reduce motion on: switch instantly, no animation, no partial opacity**
-- [ ] A period change is noticed while the app is open — a timer or
+- [x] **Reduce motion on: switch instantly, no animation, no partial opacity**
+- [x] A period change is noticed while the app is open — a timer or
       `AppState` listener, whichever proves reliable — and on resume
-- [ ] The companion carries an accessible label naming the companion and the
+- [x] The companion carries an accessible label naming the companion and the
       period
-- [ ] A companion with no artwork falls back to the blob, including mid-fade.
-      **Dusk has no usable art, so this path is live**
-- [ ] Mood still comes from recent check-ins, independent of period
+- [x] A companion with no artwork falls back to the blob, including mid-fade.
+      **Dusk has art now; Comet, Moss and Blaze have none, so the path is
+      still live and is tested with one of them**
+- [x] Mood still comes from recent check-ins, independent of period
 
 ## Tests to write first
 
-- [ ] `tests/component/Companion.test.tsx` — renders both companions during a
+- [x] `tests/component/Companion.test.tsx` — renders both companions during a
       blend, and only one outside a window
-- [ ] Opacity reflects `blend` for a static mid-window render
-- [ ] With reduce-motion mocked on, only one companion renders and no
+- [x] Opacity reflects `blend` for a static mid-window render
+- [x] With reduce-motion mocked on, only one companion renders and no
       animation is started
-- [ ] Accessible label names companion and period
-- [ ] Falls back to the blob when art is missing, **including during a blend**
-- [ ] Mood 1 and mood 5 render differently for the same period
-- [ ] A simulated period change while mounted swaps the companion
+- [x] Accessible label names companion and period
+- [x] Falls back to the blob when art is missing, **including during a blend**
+- [x] Mood 1 and mood 5 render differently for the same period
+- [x] A simulated period change while mounted swaps the companion
 
 ## Files likely touched
 
@@ -65,8 +66,9 @@ tests/component/Companion.test.tsx  (new)
 
 ## Notes
 
-`react-native-reanimated` needs its Babel plugin, and `babel.config.js` must
-list it **last**. Adding it will need `jest.config.js` to mock it in the
+**Superseded:** on SDK 57 with reanimated 4, `babel-preset-expo` adds
+`react-native-worklets/plugin` automatically when the package is installed, so
+`babel.config.js` needs no change at all. Adding it will need `jest.config.js` to mock it in the
 component project — reanimated ships a mock for exactly this.
 
 Use `AccessibilityInfo.isReduceMotionEnabled()` and subscribe to changes;
