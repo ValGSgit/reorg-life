@@ -17,7 +17,7 @@ Closes: <!-- #issue, if any -->
 - [ ] `npm run verify` passes (lint, typecheck, coverage, both exports)
 - [ ] `npm run test:e2e` passes, or is not affected by this change
 - [ ] No existing test was weakened, loosened or deleted
-- [ ] Docs updated (task file, `docs/ROADMAP.md` status log, ADR if a decision was made)
+- [ ] Docs updated (task file, a new entry file in `docs/status/`, ADR if a decision was made)
 - [ ] No secrets, no personal data, no `.db` files
 - [ ] Under ~400 changed lines, or says below why not
 

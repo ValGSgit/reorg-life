@@ -13,10 +13,10 @@ Run `npm run next-task` to get the same answer on the command line.
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
 | [T-021](T-021-period-migration.md) | Store a period on check-ins and events | P1 | W3-4 | — |
+| [T-037](T-037-web-preview-harness.md) | Web preview harness — one command to launch, seed and test | P1 | W3-4 | waiting on T-021 |
 | [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | waiting on T-021 |
 | [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | — |
 | [T-033](T-033-light-palette-contrast.md) | Fix the three WCAG failures in the light palette | P1 | W3-4 | — |
-| [T-037](T-037-web-preview-harness.md) | Web preview harness — static serve and seeded demo data | P1 | W3-4 | waiting on T-021 |
 | [T-030](T-030-release-build.md) | First EAS release build and the manual device checks | P1 | W5-6 | — |
 | [T-031](T-031-closed-test-prep.md) | Prepare and start the Google Play closed test | P1 | W5-6 | waiting on T-030 |
 | [T-038](T-038-ci-build-artifacts.md) | Upload the web and Android exports as downloadable CI artifacts | P1 | W5-6 | — |

@@ -1,14 +1,15 @@
 ---
 id: T-037
-title: Web preview harness — static serve and seeded demo data
+title: Web preview harness — one command to launch, seed and test
 milestone: W3-4
 priority: P1
 status: todo
 cut_candidate: false
 blocked_by: T-021
+enables_review_of: T-022, T-023
 ---
 
-# T-037 — Web preview harness: static serve and seeded demo data
+# T-037 — Web preview harness: one command to launch, seed and test
 
 ## Goal
 
@@ -21,6 +22,11 @@ It is a **testing surface**, never a real journal.
 
 ## Acceptance criteria
 
+- [ ] **One obvious command launches the app**, so looking at a change does
+      not mean remembering four scripts. It should be able to start the web
+      preview, seed it, wipe it, and run the tests, and it should say what it
+      is doing and print the URL
+- [ ] It works on Windows, since that is the development machine
 - [ ] `npm run web:build` produces the static export
 - [ ] `npm run web:serve` serves that export over plain HTTP, with no Metro
       dev server running, and prints the URL to open
@@ -44,13 +50,18 @@ It is a **testing surface**, never a real journal.
       data reaching a real install
 - [ ] The seed produces data in all three periods, derived with `periodFor()`
       rather than hardcoded hours, so it stays correct if boundaries change
-- [ ] The wipe leaves the database empty and leaves no orphaned rows
+- [ ] **The wipe genuinely empties the database** — asserted against a
+      seeded database, row counts back to zero across every table, with no
+      orphaned rows left behind. Proven by a test, never by looking at the
+      screen: demo moods stranded in a real timeline would be worse than
+      having no demo data at all
 - [ ] `tests/e2e/` — the served static build loads and shows seeded content,
       and the non-secure banner is visible
 
 ## Files likely touched
 
 ```
+scripts/dev.mjs              (new — the one command)
 package.json                 (web:build, web:serve scripts)
 scripts/seed-demo-data.mjs   (new — also used by T-019)
 src/db/                      (seed and wipe, dev-guarded)
@@ -74,6 +85,15 @@ why T-019 now lists this task as a blocker instead of creating its own.
 
 Derive periods with `periodFor()` from `src/domain/companion.ts`. Do not
 reimplement clock arithmetic to place seeded entries.
+
+The launcher is a convenience over the existing scripts, not a replacement for
+them. `npm run web`, `npm test` and the rest keep working on their own, so CI
+and anyone reading `package.json` are unaffected.
+
+`enables_review_of: T-022, T-023` is why this is offered before them despite a
+higher id: neither a timeline grouped by period nor a cross-fade can be
+_judged_ without something to look at. See "How the next task is chosen" in
+AGENTS.md.
 
 ## Blockers
 

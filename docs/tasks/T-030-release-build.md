@@ -29,6 +29,9 @@ cannot do done by hand on a real phone.
 - [ ] A wrong recovery key is refused and leaves existing data intact
 - [ ] Reminders fire, and survive a device restart
 - [ ] `app.json` version and `android.versionCode` bumped
+- [ ] The build **fails loudly** if `android.versionCode` is missing, rather
+      than producing an artefact Play will reject. Release day must never be
+      when this is discovered
 
 ## Tests to write first
 
@@ -48,7 +51,12 @@ docs/RELEASE.md (record the results)
 
 ## Notes
 
-**Moved from W11 to W5-6.** T-031 (closed test, W5-6) is blocked by this task,
+**Moved from W11 to W5-6, confirmed by the owner.** W11 still produces the
+release candidate and still runs the full device checklist below; what moved
+earlier is only the **first** build, because T-031 cannot distribute something
+that does not exist yet.
+
+The original reason: T-031 (closed test, W5-6) is blocked by this task,
 so leaving it in W11 meant the closed test could not start until after the
 thing it depends on — and the closed test must be running by 2 November. The
 device checks below can be repeated at W11 on the release candidate; what

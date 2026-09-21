@@ -31,8 +31,12 @@ project uses the new ones.
 
 1. Acceptance criteria in the task file ticked — genuinely, not optimistically.
 2. `status:` updated in the task front matter (`doing` → `done`).
-3. `node scripts/next-task.mjs --index` to regenerate `docs/tasks/INDEX.md`.
-4. One line appended to the status log in `docs/ROADMAP.md`.
+3. Add one status entry as a **new file** in `docs/status/`, named
+   `YYYY-MM-DD-NN-slug.md`. Never edit the log in `docs/ROADMAP.md` directly —
+   it is generated, and appending to it by hand is what lost an entry in a
+   merge on 21 September. See [docs/status/README.md](docs/status/README.md).
+4. `node scripts/next-task.mjs --generate` to rewrite `docs/tasks/INDEX.md`
+   and the ROADMAP status log together.
 5. `npm run verify` green.
 6. Commit, push the branch, open a pull request. **Never push to `main`.**
 
@@ -145,6 +149,33 @@ an ADR.
 
 ---
 
+## How the next task is chosen
+
+`node scripts/next-task.mjs` is **authoritative**. If its answer looks wrong,
+fix the data, not the answer — a tool that gets overridden by hand every
+session stops being trusted, and then nobody runs it.
+
+Ordering is priority, then milestone, then id.
+
+| Priority | Means                                                              |
+| -------- | ------------------------------------------------------------------ |
+| `P1`     | On the critical path to 14 December. Slipping it slips the release |
+| `P2`     | Wanted for launch, but the release survives without it             |
+| `P3`     | Worth doing. First to be cut, and usually `cut_candidate: true`    |
+
+Three front-matter fields affect what comes next:
+
+- **`blocked_by`** — a hard dependency. The task cannot be _built_ until those
+  are `done`, and it is not offered until then.
+- **`enables_review_of`** — a soft one. The task is not required to build the
+  listed tasks, but it is required to **judge** them: T-037 builds the preview
+  harness, and without it a timeline grouped by period (T-022) or a cross-fade
+  (T-023) cannot be looked at and approved. An enabler is ordered immediately
+  in front of the earliest task it enables. It never affects readiness, so it
+  cannot deadlock.
+- **`cut_candidate`** — shown in the index, so what goes first is visible
+  before the schedule forces the decision.
+
 ## Definition of done
 
 A task is done when **all** of these are true:
@@ -155,7 +186,7 @@ A task is done when **all** of these are true:
 - [ ] `npm run test:e2e` passes, or the change cannot affect it
 - [ ] No existing test was weakened
 - [ ] Task file `status:` updated; `INDEX.md` regenerated
-- [ ] `docs/ROADMAP.md` status log has a new line
+- [ ] A new entry file exists in `docs/status/`, and `--generate` has been run
 - [ ] An ADR exists if a decision was made that constrains future work
 - [ ] No secrets, no personal data, no `.db` files
 
