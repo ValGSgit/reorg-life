@@ -17,7 +17,7 @@ src/
     characters.ts       the companions and the mood scale
     domains.ts          life areas
     time.ts             local-time day keys
-    companion.ts        (planned) time-of-day rotation — see ADR 0001
+    companion.ts        time-of-day rotation and cross-fade — see ADR 0001
 
   db/
     schema.ts           one schema for all platforms + user_version migrations

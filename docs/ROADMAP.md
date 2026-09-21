@@ -72,6 +72,12 @@ not deleted, so the decision is still visible later.
   agent rules. Time-of-day companions designed and split into tasks (ADR 0001).
   Sprout and Ember wired in as placeholder art; Dusk still falls back to the
   blob. Next task: T-020.
+- **21 Sep** — T-020 done: `src/domain/companion.ts` decides the period and the
+  cross-fading companion pair from the local clock, with 38 tests covering both
+  daylight-saving days, the midnight wrap, a night-shift wake time and every
+  nonsense setting. `src/domain` stays at 100% coverage; the Jest suite now pins
+  `TZ=Europe/Vienna` so the DST cases are real. Nothing renders differently yet —
+  that is T-023. Next task: T-021.
 
 ## How this file is kept up to date
 
