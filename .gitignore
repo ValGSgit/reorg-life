@@ -51,6 +51,12 @@ private-data/
 # placeholder-only. Kept out of git deliberately — see docs/ASSETS.md.
 assets/characters/_raw/
 
+# Loose HTML dropped in the repo root — design mockups, bundled artifact
+# exports, saved pages. None of it is source, and the repository is public, so
+# a careless `git add .` must not be able to publish one. Real HTML lives in
+# dist/ or web-build/, both already ignored above.
+/*.html
+
 # Test and build output
 coverage/
 playwright-report/
