@@ -21,12 +21,16 @@ export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const bump = () => setRefreshKey((k) => k + 1);
 
+  // Re-read on every bump, not just on mount. The profile can go away as well
+  // as appear — restoring a backup replaces it, and the development-only wipe
+  // removes it — and an app that only ever checks once carries on showing a
+  // name and a level for data that is no longer there.
   useEffect(() => {
     getProfile().then((p) => {
       setHasProfile(!!p);
       setReady(true);
     });
-  }, []);
+  }, [refreshKey]);
 
   if (!ready)
     return (
