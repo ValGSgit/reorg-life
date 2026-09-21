@@ -3,7 +3,7 @@ id: T-022
 title: Group the timeline by day and period
 milestone: W3-4
 priority: P1
-status: todo
+status: done
 cut_candidate: false
 blocked_by: T-021
 ---
@@ -21,31 +21,31 @@ organised by time" actually looks like to the person using it.
 
 ## Acceptance criteria
 
-- [ ] Entries group under a day heading, then a period sub-heading, in the
+- [x] Entries group under a day heading, then a period sub-heading, in the
       order Morning, Afternoon, Night
-- [ ] Each period sub-heading shows that period's companion
-- [ ] A period with no entries is not rendered as an empty section
-- [ ] Filter by period (one, several, or all)
-- [ ] Filter by life area, combinable with the period filter
-- [ ] Filters read as a view, not a judgement — no empty-state text implying
+- [x] Each period sub-heading shows that period's companion
+- [x] A period with no entries is not rendered as an empty section
+- [x] Filter by period (one, several, or all)
+- [x] Filter by life area, combinable with the period filter
+- [x] Filters read as a view, not a judgement — no empty-state text implying
       a gap is a failure
-- [ ] Every section has an accessible label naming the period
-- [ ] Period is never conveyed by colour alone
-- [ ] Search respects the active filters
+- [x] Every section has an accessible label naming the period
+- [x] Period is never conveyed by colour alone
+- [x] Search respects the active filters
 
 ## Tests to write first
 
-- [ ] `tests/unit/domain/grouping.test.ts` — the grouping is pure logic and
+- [x] `tests/unit/domain/grouping.test.ts` — the grouping is pure logic and
       belongs in `domain`: entries in, grouped structure out
-- [ ] Ordering: periods always Morning, Afternoon, Night regardless of insert
+- [x] Ordering: periods always Morning, Afternoon, Night regardless of insert
       order
-- [ ] A day with entries in only one period renders one section
-- [ ] Period filter narrows correctly; combined with a life-area filter,
+- [x] A day with entries in only one period renders one section
+- [x] Period filter narrows correctly; combined with a life-area filter,
       narrows on both
-- [ ] Clearing filters restores everything
-- [ ] `tests/component/Timeline.test.tsx` — headings render, each carries an
+- [x] Clearing filters restores everything
+- [x] `tests/component/Timeline.test.tsx` — headings render, each carries an
       accessible label
-- [ ] An entry from before the migration (period backfilled) still groups
+- [x] An entry from before the migration (period backfilled) still groups
 
 ## Files likely touched
 
@@ -71,4 +71,4 @@ that. If this task touches the same lines, do T-014 first.
 
 ## Blockers
 
-Needs T-021 for the stored period.
+None. T-021 landed the stored period, which unblocked this.

@@ -4,15 +4,14 @@
 
 31 tasks. The source of truth for each is its own file; this is a view.
 
-**Next up:** [T-022](T-022-timeline-by-period.md) — Group the timeline by day and period
+**Next up:** [T-023](T-023-companion-crossfade.md) — Cross-fade the companion when the period changes
 
 Run `npm run next-task` to get the same answer on the command line.
 
-## To do (26)
+## To do (25)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
-| [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | — |
 | [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | — |
 | [T-033](T-033-light-palette-contrast.md) | Fix the three WCAG failures in the light palette | P1 | W3-4 | — |
 | [T-030](T-030-release-build.md) | First EAS release build and the manual device checks | P1 | W5-6 | — |
@@ -46,13 +45,14 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-035](T-035-recovery-key-format.md) | Show the recovery key in a format people can copy by hand | P2 | W3-4 | blocked |
 | [T-026](T-026-backup-recovery-sheet.md) | Add a printed/PDF recovery sheet to backup export | P2 | Unscheduled | blocked |
 
-## Done (3)
+## Done (4)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
 | [T-020](T-020-companion-domain-logic.md) | Add time-of-day companion logic to src/domain | P1 | W3-4 | done |
 | [T-021](T-021-period-migration.md) | Store a period on check-ins and events | P1 | W3-4 | done |
 | [T-037](T-037-web-preview-harness.md) | Web preview harness — one command to launch, seed and test | P1 | W3-4 | done |
+| [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | done |
 
 ## Statuses
 

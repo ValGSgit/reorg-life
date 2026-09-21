@@ -8,6 +8,7 @@
 export * from './characters';
 export * from './companion';
 export * from './domains';
+export * from './grouping';
 export * from './streaks';
 export * from './time';
 export * from './unlockables';
