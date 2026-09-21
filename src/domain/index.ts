@@ -6,8 +6,10 @@
  * coverage floor here. See src/domain/README.md.
  */
 export * from './characters';
+export * from './contrast';
 export * from './companion';
 export * from './domains';
+export * from './palette';
 export * from './grouping';
 export * from './streaks';
 export * from './time';
