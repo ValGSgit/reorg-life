@@ -86,8 +86,27 @@ carries an accessible label too.
 - `react-native-reanimated` is added for the cross-fade.
 - The check-in screen changes from "today" to "this period", which is the
   largest single behavioural change in the set.
-- Dusk has no artwork yet, so the blob fallback stays on the critical path and
-  is covered by a test.
+- The blob fallback stays on the critical path and is covered by a test. Dusk
+  has placeholder art now, but Comet, Moss and Blaze — the human avatars — have
+  none, so the fallback is still what they render.
+
+## Accepted during implementation
+
+Both of these came up while building T-020 and are **settled**. They are
+recorded here so a later session does not reopen them.
+
+**An awake span shorter than four hours falls back to the defaults — not
+"bedtime earlier than wake time".** The original wording called bedtime before
+wake time nonsense. Read literally that rejects wake 09:00 with bedtime 02:00,
+which is precisely the night owl this ADR exists to support. So the rule is the
+span, not the ordering: 09:00 to 02:00 is a seventeen-hour day and is honoured,
+while 09:00 to 11:00 is a typo and falls back. See `MIN_AWAKE_MINUTES` in
+`src/domain/companion.ts`.
+
+**`blend` eases with a smoothstep curve rather than linearly.** It is still
+exactly 0 and 1 at the window edges and 0.5 at the boundary, so every assertion
+the contract makes still holds; only the shape in between differs. A linear
+cross-fade reads as a mechanical wipe, which is not the tone this ADR asks for.
 
 ## Rejected alternatives
 

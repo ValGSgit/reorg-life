@@ -18,10 +18,13 @@ project uses the new ones.
 ## Session start checklist
 
 1. `git pull` and start a branch: `git checkout -b <type>/<short-name>`.
-2. `npm ci` if `package-lock.json` has moved.
-3. `node scripts/next-task.mjs` — this tells you what to work on.
-4. Read the task file it names, in full, including "out of scope".
-5. `npm run verify` to confirm you are starting from green. **If it is already
+2. `git status -sb` — confirm `main` is **level with `origin`**, not behind. A
+   `git pull` that fails on authentication says so once and is easily missed,
+   and a session spent building on a stale base is expensive to unpick.
+3. `npm ci` if `package-lock.json` has moved.
+4. `node scripts/next-task.mjs` — this tells you what to work on.
+5. Read the task file it names, in full, including "out of scope".
+6. `npm run verify` to confirm you are starting from green. **If it is already
    red, fix that first or say so — never build on top of a red build.**
 
 ## Session end checklist
@@ -164,6 +167,12 @@ A task is done when **all** of these are true:
 - **Under about 400 changed lines.** If it is growing past that, stop and
   split the remainder into new task files. A large PR does not get reviewed
   properly, which defeats the point of having review.
+- **That guide counts non-test lines.** Working test-first routinely lands a
+  large specification beside a small implementation, and splitting the pair
+  means landing a spec with nothing implementing it, or an implementation with
+  nothing specifying it — both worse than one long PR. `T-020` is the case that
+  prompted this: 350 lines of test against 249 of implementation. Say in the PR
+  which part of the total is test.
 - Conventional Commits: `feat:` `fix:` `test:` `refactor:` `chore:` `docs:`
   `style:` `perf:` `ci:`. Enforced by commitlint.
 - The commit body says _why_, not what the diff already shows.
