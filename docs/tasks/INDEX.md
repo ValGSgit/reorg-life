@@ -2,14 +2,13 @@
 
 # Task index
 
-30 tasks. The source of truth for each is its own file; this is a view.
+31 tasks. The source of truth for each is its own file; this is a view.
 
 **Next up:** [T-037](T-037-web-preview-harness.md) — Web preview harness — one command to launch, seed and test
 
 Run `npm run next-task` to get the same answer on the command line.
 
-## To do (26)
-
+## To do (28)
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
 | [T-037](T-037-web-preview-harness.md) | Web preview harness — one command to launch, seed and test | P1 | W3-4 | — |
@@ -31,6 +30,7 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-024](T-024-period-settings-and-reminders.md) | Settings for periods, pinning and per-period reminders | P2 | W3-4 | cut candidate |
 | [T-025](T-025-e2e-clock-tests.md) | End-to-end tests for each period using a mocked clock | P2 | W3-4 | waiting on T-023 |
 | [T-015](T-015-calendar-sync.md) | Read-only device calendar sync | P2 | W5-6 | — |
+| [T-041](T-041-biometric-app-lock.md) | Unlock the app with a fingerprint or face, with a passcode fallback | P2 | W9-10 | — |
 | [T-002](T-002-extract-rewards-ui.md) | Move the unlockables picker into features/rewards | P3 | W3-4 | cut candidate |
 | [T-011](T-011-process-placeholder-sheets.md) | Cut the placeholder sheets into per-mood transparent PNGs | P3 | W3-4 | cut candidate |
 | [T-034](T-034-app-typeface.md) | Decide and wire the app typeface | P3 | W5-6 | cut candidate |
