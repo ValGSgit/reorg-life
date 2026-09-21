@@ -35,8 +35,9 @@ off-centre removed that reading and made it look like an object placed down,
 not a person.
 
 **Colour.** Pulled directly from `src/theme.ts` rather than inventing a new
-palette: cream `bg` (`#F7F4EF`) as the field, `accent` blue (`#6C8EBF`) for
-the shelf, `good` green (`#7DB88B`) for the circle. Using the app's own tokens
+palette: cream `bg` (`#F7F4EF`) as the field, `accent` blue (`#4A71AA`) for
+the shelf, `good` green (`#447C51`) for the circle. **Both were darkened by
+T-033 for contrast, so the icon needs re-exporting** — see below. Using the app's own tokens
 means the icon and the app it opens into are visibly the same object, and a
 future retheme only has to touch one file.
 
@@ -63,6 +64,62 @@ scope. The adaptive-icon split would reuse the same two shapes: shelf +
 circle as the foreground layer, cream as the background layer.
 
 ---
+
+## The palette, and why it changed (T-033)
+
+Three colour pairs failed WCAG AA, and two more turned up while fixing them.
+Measured, not guessed: `contrastRatio` lives in
+[`src/domain/contrast.ts`](../src/domain/contrast.ts) and every pair the app
+puts on screen is asserted in `tests/unit/domain/palette.test.ts`, with the
+ratios computed. Change a colour and the test says what it did.
+
+Light theme. Darkened along their own hue — lightness only, no extra
+saturation — so the palette reads the same and can be read.
+
+| Token    | Was       | Now       | On the page | On a card | White text on it |
+| -------- | --------- | --------- | ----------- | --------- | ---------------- |
+| `accent` | `#6C8EBF` | `#4A71AA` | 4.52        | 4.96      | 4.96             |
+| `good`   | `#7DB88B` | `#447C51` | 4.51        | 4.94      | 4.94             |
+
+The page background is very slightly darker than a card, so it is the harder
+target — a colour tuned against `#FFFFFF` alone lands at about 4.1 on the
+page and still fails.
+
+**The life areas were text colours all along.** A selected filter chip fills
+with the area's colour and puts white text on it, so all six needed 4.5:1 and
+all six failed, from 2.11 to 3.54.
+
+| Area          | Was       | Now       |
+| ------------- | --------- | --------- |
+| Health        | `#7DB88B` | `#447C51` |
+| Relationships | `#E28FA4` | `#CB375D` |
+| Work          | `#6C8EBF` | `#4A71AA` |
+| Creativity    | `#E0A85F` | `#9A641E` |
+| Finances      | `#8C7FC2` | `#7464B5` |
+| Digital       | `#5FB3B3` | `#3A7A7A` |
+
+They also have to work as dots on the dark card, where they land at 3.26–3.29
+— above the 3:1 that non-text indicators need, so one set serves both themes
+rather than needing a per-theme palette.
+
+**Two failures nobody had recorded.**
+
+- **The primary button was unreadable in dark mode.** It hard-coded white
+  text, and the dark accent is a pale blue: 2.22. The button now takes
+  `buttonText` from the theme — white in light, near-black in dark, 8.17.
+- **The night tint dropped muted text to 4.42.** It came in with the
+  time-of-day companions and had never been measured. Lifted from `#EEEBF4`
+  to `#F0EEF5`, which puts it back at 4.52.
+
+**The dark theme's own colours are untouched** and still pass, 6.15 to 15.90.
+
+**Companion bodies were reviewed and left alone.** They are illustration
+rather than information — the name is always written next to them — so WCAG
+sets no ratio. The test only checks they do not vanish into the card.
+
+The colours now live in [`src/domain/palette.ts`](../src/domain/palette.ts)
+rather than `src/theme.ts`, so they can be measured without a renderer.
+`theme.ts` re-exports them and nothing else changed.
 
 ## Home screen: companion, level, life garden
 

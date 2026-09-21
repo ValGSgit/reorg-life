@@ -45,7 +45,9 @@ export function Button({
         alignItems: 'center',
       }}
     >
-      <Text style={{ color: primary ? '#fff' : t.accent, fontSize: 16, fontWeight: '600' }}>{label}</Text>
+      <Text style={{ color: primary ? t.buttonText : t.accent, fontSize: 16, fontWeight: '600' }}>
+        {label}
+      </Text>
     </Pressable>
   );
 }
