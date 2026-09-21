@@ -23,7 +23,7 @@ it starts early.
 
 | Weeks | Dates          | Work                                                                                                                                                                                                                          |
 | ----- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| W1–2  | 21 Sep – 4 Oct | Milestone 1 on the Android phone (dev build), web preview, character art for the three creatures, wire images in                                                                                                              |
+| W1–2  | 21 Sep – 4 Oct | Web preview **done**. Character art for the three creatures drawn and wired in **done** (placeholders — see below). Milestone 1 on the Android phone (dev build) **still open** — needs the owner's device |
 | W3–4  | 5 – 18 Oct     | Habits with gentle streaks, richer reminders, avatar unlocks by level, settings, encrypted export/import. **Time-of-day companions and notes organised by period** (see [ADR 0001](DECISIONS/0001-time-of-day-companions.md)) |
 | W5–6  | 19 Oct – 1 Nov | Device calendar sync (read-only). Create Play Console account and verify identity. Recruit 12+ testers. **Closed test must start by 2 Nov**                                                                                   |
 | W7–8  | 2 – 15 Nov     | Notion sync, digital footprint inventory, animations. Closed test running                                                                                                                                                     |
@@ -35,6 +35,31 @@ it starts early.
 Milestones 1 and 2 are already built (onboarding, check-in, timeline, home,
 habits, reminders, unlockables, settings, encrypted backups). W3–4 now carries
 the time-of-day companion work.
+
+### Where W1–2 actually stands (checked against the repo, 21 Sep)
+
+Checked by reading the repo rather than the planning doc, because the two had
+drifted apart and the doc was the stale one.
+
+- **Web dev preview — done.** `npm run export:web` builds, and it runs as part
+  of `npm run verify`, so it cannot silently rot.
+- **Character art wired in — done.** `src/characterArt.ts` registers all fifteen
+  images: Sprout, Ember **and Dusk**, moods 1–5. Dusk no longer falls back to
+  the blob.
+- **Milestone 1 on a physical Android phone (dev build) — not done.** This is
+  the only genuinely outstanding W1–2 item. It needs the owner's device and the
+  owner's machine, so it stays with the owner rather than being agent work.
+
+Two things that are easy to misread as progress:
+
+- The art is **watermarked placeholder art** and must not ship. T-010 replaces
+  it, and until it does T-019 (store listing) cannot be finished either — that
+  puts a licence, not a drawing, on the critical path to 14 December.
+- The blob fallback is still live and still tested. Comet, Moss and Blaze, the
+  human avatars, have no art at all, so that path stays covered.
+
+The project is **ahead** of this timeline rather than behind it: W3–4 work
+(T-020 and the companion chain that follows it) is what is queued next.
 
 ## Cut list
 
@@ -72,6 +97,12 @@ not deleted, so the decision is still visible later.
   agent rules. Time-of-day companions designed and split into tasks (ADR 0001).
   Sprout and Ember wired in as placeholder art; Dusk still falls back to the
   blob. Next task: T-020.
+- **21 Sep** — Reconciled this file against the repo. Dusk art landed after the
+  line above was written, so all fifteen images are now wired in; corrected the
+  same stale claim in ADR 0001. Web preview confirmed working and covered by
+  `npm run verify`. Milestone 1 on a physical Android phone is the only W1–2
+  item still open, and it stays with the owner. Noted in T-019 that the
+  watermarked placeholder art blocks the store listing as well as T-010.
 
 ## How this file is kept up to date
 

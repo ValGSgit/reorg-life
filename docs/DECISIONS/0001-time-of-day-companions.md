@@ -86,8 +86,9 @@ carries an accessible label too.
 - `react-native-reanimated` is added for the cross-fade.
 - The check-in screen changes from "today" to "this period", which is the
   largest single behavioural change in the set.
-- Dusk has no artwork yet, so the blob fallback stays on the critical path and
-  is covered by a test.
+- The blob fallback stays on the critical path and is covered by a test. Dusk
+  has placeholder art now, but Comet, Moss and Blaze — the human avatars — have
+  none, so the fallback is still what they render.
 
 ## Rejected alternatives
 
