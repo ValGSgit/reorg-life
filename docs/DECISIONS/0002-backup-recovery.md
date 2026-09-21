@@ -25,7 +25,7 @@ anyone, including the owner of this project.** There is no support flow, no
 back after replacing a phone, that is a real cost, and it is worth writing
 down deliberately rather than leaving as an accident of the crypto design.
 
-This ADR compares five ways to reduce that risk. For each, the entire
+This ADR compares six ways to reduce that risk. For each, the entire
 decision is **who can decrypt the backup, and under what circumstances** —
 security, usability and privacy all fall out of answering that one question
 precisely.
@@ -133,10 +133,46 @@ departure from what "local-first, no backend" currently means for this
 project, and the option that requires amending protected rule 2, not just
 rule 1.
 
+### (f) A second, device-bound copy of the key, unwrapped by biometrics
+
+**Mechanism:** the backup file carries the key twice — once wrapped by the
+recovery key as today, and once wrapped by a key held in this device's
+keystore and gated by fingerprint or face. Restoring on the same phone asks
+for a fingerprint; restoring anywhere else needs the recovery key exactly as
+now.
+
+**Who can decrypt:** the user on that specific phone, with a fingerprint —
+plus anyone holding the recovery key, from anywhere, unchanged. Note that
+biometrics never decrypt anything themselves: they gate a key that has to be
+**stored**, which is the direct collision with protected rule 1's "stored
+nowhere".
+
+**What it buys:** the common case stops being painful. Restoring after a
+reinstall on the same device — which is also the rollback path in
+[RELEASE.md](../RELEASE.md) — no longer needs a piece of paper.
+
+**What it costs:** the device-bound copy is worthless in every scenario a
+backup is actually for. A lost, stolen, wiped or broken phone takes its
+keystore with it, so the recovery key remains the only real recovery path and
+the same "do not lose this" failure mode survives intact. It also widens the
+attack surface slightly: a backup file now contains key material that
+something on that device can unwrap, so an attacker with both the file and a
+compromised unlocked phone needs one less thing. And it is more code in the
+part of the system where a bug is unrecoverable.
+
+**Verdict:** a convenience, not a recovery mechanism, and it should never be
+described as one. It does not solve the problem in Context — (b) still does
+that — so it is worth considering only _in addition_ to whichever option is
+chosen, never instead of one. Requires amending rule 1 either way.
+
 ## Decision
 
 **Recommended: (b), the printed/PDF recovery sheet.** Not implemented here —
 this ADR is the input to that decision, not the decision itself.
+
+Option (f) was added after the owner asked for fingerprint unlocking. The app
+lock half of that request has no conflict with any rule and is `T-041`; the
+backup half is (f) and waits on this ADR like everything else here.
 
 ## Why these choices
 
