@@ -3,6 +3,14 @@
  * removed, so undoing something is a correction rather than a punishment.
  */
 export const XP_PER_CHECKIN = 10;
+/**
+ * A second or third check-in on the same day (ADR 0001).
+ *
+ * Smaller than the first, so there is no pressure to check in three times to
+ * "do the day properly" — but never zero, because showing up again on a hard
+ * day is worth something. It is a bonus, not a quota.
+ */
+export const XP_PER_REPEAT_CHECKIN = 3;
 export const XP_PER_TASK = 15;
 export const XP_PER_HABIT = 5;
 

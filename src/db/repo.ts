@@ -1,8 +1,28 @@
 import { getDb } from './index';
-import { XP_PER_CHECKIN, XP_PER_HABIT, XP_PER_TASK, dayKey, gentleStreakOn, isDueOn } from '../domain';
+import {
+  PERIODS,
+  XP_PER_CHECKIN,
+  XP_PER_HABIT,
+  XP_PER_REPEAT_CHECKIN,
+  XP_PER_TASK,
+  dayKey,
+  gentleStreakOn,
+  isDueOn,
+  periodFor,
+  type PeriodId,
+  type PeriodSettings,
+} from '../domain';
 
 export type Profile = { character_id: string; display_name: string; xp: number };
-export type Checkin = { id: number; day: string; mood: number; note: string };
+export type Checkin = {
+  id: number;
+  day: string;
+  mood: number;
+  note: string;
+  created_at?: string;
+  // Optional because a backup taken before T-021 has no period at all.
+  period?: PeriodId | null;
+};
 export type EventRow = {
   id: number;
   title: string;
@@ -10,6 +30,7 @@ export type EventRow = {
   starts_at: string;
   source: string;
   done: number;
+  period?: PeriodId | null;
 };
 
 export async function getProfile(): Promise<Profile | null> {
@@ -37,48 +58,134 @@ async function addXp(amount: number) {
   await db.runAsync('UPDATE profile SET xp = xp + ? WHERE id = 1', amount);
 }
 
-export async function getTodayCheckin(): Promise<Checkin | null> {
+/** Sort order for periods within a day, so a timeline reads morning to night. */
+const PERIOD_RANK: Record<string, number> = Object.fromEntries(PERIODS.map((p, i) => [p.id, i]));
+
+const byPeriod = (a: Checkin, b: Checkin) =>
+  (PERIOD_RANK[a.period ?? ''] ?? 99) - (PERIOD_RANK[b.period ?? ''] ?? 99);
+
+/** Every check-in on a given day, earliest period first. Up to three (ADR 0001). */
+export async function checkinsOn(day: string): Promise<Checkin[]> {
   const db = await getDb();
-  return db.getFirstAsync<Checkin>('SELECT * FROM checkins WHERE day = ?', dayKey());
+  const rows = await db.getAllAsync<Checkin>('SELECT * FROM checkins WHERE day = ?', day);
+  return rows.sort(byPeriod);
 }
 
-/** Saves today's check-in; XP is awarded only the first time each day. */
-export async function saveCheckin(mood: number, note: string): Promise<{ firstToday: boolean }> {
+/**
+ * The check-in for the period being lived in right now, if there is one.
+ *
+ * `settings` is threaded through rather than read here so the boundaries stay
+ * a decision of the caller; T-024 will pass the owner's.
+ */
+export async function getCurrentCheckin(settings: Partial<PeriodSettings> = {}): Promise<Checkin | null> {
   const db = await getDb();
-  const existing = await getTodayCheckin();
+  return db.getFirstAsync<Checkin>(
+    'SELECT * FROM checkins WHERE day = ? AND period = ?',
+    dayKey(),
+    periodFor(new Date(), settings),
+  );
+}
+
+/**
+ * Saves the check-in for the current period, up to three a day (ADR 0001).
+ *
+ * The first check-in of a day earns the full award and later ones a smaller
+ * bonus, so there is no reason to feel behind for checking in once. Editing an
+ * existing check-in earns nothing further and takes nothing away — a
+ * correction is not a punishment.
+ */
+export async function saveCheckin(
+  mood: number,
+  note: string,
+  settings: Partial<PeriodSettings> = {},
+): Promise<{ firstToday: boolean; period: PeriodId; xpAwarded: number }> {
+  const db = await getDb();
+  const now = new Date();
+  const day = dayKey(now);
+  const period = periodFor(now, settings);
+
+  const existing = await db.getFirstAsync<Checkin>(
+    'SELECT * FROM checkins WHERE day = ? AND period = ?',
+    day,
+    period,
+  );
   if (existing) {
     await db.runAsync('UPDATE checkins SET mood = ?, note = ? WHERE id = ?', mood, note, existing.id);
-    return { firstToday: false };
+    return { firstToday: false, period, xpAwarded: 0 };
   }
+
+  const earlier = await db.getFirstAsync<{ n: number }>(
+    'SELECT COUNT(*) AS n FROM checkins WHERE day = ?',
+    day,
+  );
+  const firstToday = (earlier?.n ?? 0) === 0;
+
   await db.runAsync(
-    'INSERT INTO checkins (day, mood, note, created_at) VALUES (?, ?, ?, ?)',
-    dayKey(),
+    'INSERT INTO checkins (day, mood, note, created_at, period) VALUES (?, ?, ?, ?, ?)',
+    day,
     mood,
     note,
-    new Date().toISOString(),
+    now.toISOString(),
+    period,
   );
-  await addXp(XP_PER_CHECKIN);
-  return { firstToday: true };
+  const xpAwarded = firstToday ? XP_PER_CHECKIN : XP_PER_REPEAT_CHECKIN;
+  await addXp(xpAwarded);
+  return { firstToday, period, xpAwarded };
 }
 
 export async function recentCheckins(limit = 60): Promise<Checkin[]> {
   const db = await getDb();
-  return db.getAllAsync<Checkin>('SELECT * FROM checkins ORDER BY day DESC LIMIT ?', limit);
+  return db.getAllAsync<Checkin>('SELECT * FROM checkins ORDER BY day DESC, created_at DESC LIMIT ?', limit);
 }
 
+/**
+ * The distinct days that hold at least one check-in.
+ *
+ * Distinct matters: the streak counts days, not check-ins, so three check-ins
+ * on one day must not look like a three-day run (ADR 0001).
+ */
 export async function checkinDays(): Promise<string[]> {
   const db = await getDb();
-  const rows = await db.getAllAsync<{ day: string }>('SELECT day FROM checkins');
+  const rows = await db.getAllAsync<{ day: string }>('SELECT DISTINCT day FROM checkins');
   return rows.map((r) => r.day);
 }
 
-export async function addEvent(title: string, domain: string, startsAt: Date) {
+/**
+ * Re-derives every stored period from the timestamp that row already carries.
+ *
+ * This is why the timestamp stays authoritative and the period is only ever a
+ * derived convenience: change the boundaries and the history can be rebuilt to
+ * match, rather than being stuck describing a day that was never lived.
+ */
+export async function recomputePeriods(settings: Partial<PeriodSettings> = {}): Promise<void> {
+  const db = await getDb();
+  for (const [table, column] of [
+    ['checkins', 'created_at'],
+    ['events', 'starts_at'],
+  ]) {
+    const rows = await db.getAllAsync<{ id: number; at: string }>(`SELECT id, ${column} AS at FROM ${table}`);
+    for (const row of rows) {
+      const when = new Date(row.at);
+      if (Number.isNaN(when.getTime())) continue;
+      await db.runAsync(`UPDATE ${table} SET period = ? WHERE id = ?`, periodFor(when, settings), row.id);
+    }
+  }
+}
+
+export async function addEvent(
+  title: string,
+  domain: string,
+  startsAt: Date,
+  settings: Partial<PeriodSettings> = {},
+) {
   const db = await getDb();
   await db.runAsync(
-    'INSERT INTO events (title, domain, starts_at) VALUES (?, ?, ?)',
+    'INSERT INTO events (title, domain, starts_at, period) VALUES (?, ?, ?, ?)',
     title,
     domain,
     startsAt.toISOString(),
+    // Derived from when the event happens, not from when it was typed in.
+    periodFor(startsAt, settings),
   );
 }
 
@@ -260,7 +367,9 @@ export async function exportSnapshot(): Promise<Snapshot> {
     db.getFirstAsync<Profile & { created_at: string }>(
       'SELECT character_id, display_name, xp, created_at FROM profile WHERE id = 1',
     ),
-    db.getAllAsync<Checkin>('SELECT id, day, mood, note FROM checkins ORDER BY day'),
+    db.getAllAsync<Checkin>(
+      'SELECT id, day, mood, note, created_at, period FROM checkins ORDER BY day, period',
+    ),
     db.getAllAsync<EventRow>('SELECT * FROM events ORDER BY starts_at'),
     db.getAllAsync<Habit>('SELECT * FROM habits ORDER BY created_at'),
     db.getAllAsync<{ habit_id: number; day: string; created_at: string }>(
@@ -291,22 +400,30 @@ export async function importSnapshot(s: Snapshot): Promise<void> {
       );
     }
     for (const c of s.checkins ?? []) {
+      // A backup taken before T-021 carries no period and no created_at on its
+      // check-ins. That is a normal thing to be handed, not an error: the
+      // period is derived from whatever timestamp the row does have, and the
+      // day is the fallback so an old backup still lands on the right date
+      // rather than being stamped with the moment it was restored.
+      const at = c.created_at ?? `${c.day}T12:00:00.000Z`;
       await db.runAsync(
-        'INSERT OR REPLACE INTO checkins (day, mood, note, created_at) VALUES (?, ?, ?, ?)',
+        'INSERT OR REPLACE INTO checkins (day, mood, note, created_at, period) VALUES (?, ?, ?, ?, ?)',
         c.day,
         c.mood,
         c.note ?? '',
-        new Date().toISOString(),
+        at,
+        c.period ?? periodFor(new Date(at)),
       );
     }
     for (const e of s.events ?? []) {
       await db.runAsync(
-        'INSERT INTO events (title, domain, starts_at, source, done) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO events (title, domain, starts_at, source, done, period) VALUES (?, ?, ?, ?, ?, ?)',
         e.title,
         e.domain,
         e.starts_at,
         e.source ?? 'manual',
         e.done ? 1 : 0,
+        e.period ?? periodFor(new Date(e.starts_at)),
       );
     }
     // Habit ids are re-issued, so logs are remapped onto the new ids.

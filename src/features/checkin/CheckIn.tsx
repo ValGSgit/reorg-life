@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TextInput, Pressable, View } from 'react-native';
 import { Button, H, Sub } from '../../components/ui';
-import { MOODS, XP_PER_CHECKIN } from '../../domain';
+import { MOODS, XP_PER_CHECKIN, XP_PER_REPEAT_CHECKIN } from '../../domain';
 import { useTheme } from '../../theme';
-import { getTodayCheckin, saveCheckin } from '../../db/repo';
+import { getCurrentCheckin, saveCheckin } from '../../db/repo';
 
 export function CheckIn({ onSaved }: { onSaved: () => void }) {
   const t = useTheme();
@@ -12,7 +12,7 @@ export function CheckIn({ onSaved }: { onSaved: () => void }) {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
-    getTodayCheckin().then((c) => {
+    getCurrentCheckin().then((c) => {
       if (c) {
         setMood(c.mood);
         setNote(c.note);
@@ -72,7 +72,16 @@ export function CheckIn({ onSaved }: { onSaved: () => void }) {
         disabled={mood === null}
         onPress={async () => {
           const r = await saveCheckin(mood!, note.trim());
-          setMsg(r.firstToday ? `Saved. +${XP_PER_CHECKIN} XP. Thanks for showing up.` : 'Updated.');
+          // Three states now, not two: the first of the day, a later period,
+          // and an edit. None of them is a telling-off — coming back later in
+          // the day is a good thing, and changing your mind is not a mistake.
+          setMsg(
+            r.xpAwarded === 0
+              ? 'Updated.'
+              : r.firstToday
+                ? `Saved. +${XP_PER_CHECKIN} XP. Thanks for showing up.`
+                : `Saved. +${XP_PER_REPEAT_CHECKIN} XP. Good to see you again today.`,
+          );
           onSaved();
         }}
       />
