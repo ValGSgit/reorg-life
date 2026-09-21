@@ -1,6 +1,6 @@
 import { createTestDb, type TestDb } from '../../helpers/testDb';
 import { migrate } from '../../../src/db/schema';
-import { levelFor, xpForLevel } from '../../../src/domain';
+import { DOMAINS, levelFor, xpForLevel } from '../../../src/domain';
 
 let mockDb: TestDb;
 jest.mock('../../../src/db/index', () => ({
@@ -123,6 +123,29 @@ describe('seedDemoData', () => {
     // Nothing here should ever be mistakable for something the owner wrote.
     for (const { note } of notes) expect(note).toMatch(/demo/i);
     for (const { title } of titles) expect(title).toMatch(/demo/i);
+  });
+
+  it('only uses life areas that actually exist', async () => {
+    // A seeded domain that is not in DOMAINS renders without a colour or a
+    // label, and cannot be reached by the timeline's life-area filter — so the
+    // demo data quietly makes working features look broken.
+    await demo.seedDemoData({ dev: true, now: NOW });
+    const known = DOMAINS.map((d) => d.id) as string[];
+
+    const rows = await mockDb.getAllAsync<{ domain: string }>(
+      'SELECT domain FROM events UNION SELECT domain FROM habits',
+    );
+    expect(rows.length).toBeGreaterThan(0);
+    for (const { domain } of rows) expect(known).toContain(domain);
+  });
+
+  it('spreads across every life area, so the filters all have something', async () => {
+    await demo.seedDemoData({ dev: true, now: NOW });
+
+    const rows = await mockDb.getAllAsync<{ domain: string }>(
+      'SELECT DISTINCT domain FROM events UNION SELECT DISTINCT domain FROM habits',
+    );
+    expect(new Set(rows.map((r) => r.domain)).size).toBe(DOMAINS.length);
   });
 
   it('can be run twice without falling over the one-per-period rule', async () => {
