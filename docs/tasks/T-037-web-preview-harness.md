@@ -3,7 +3,7 @@ id: T-037
 title: Web preview harness — one command to launch, seed and test
 milestone: W3-4
 priority: P1
-status: todo
+status: done
 cut_candidate: false
 blocked_by: T-021
 enables_review_of: T-022, T-023
@@ -22,40 +22,40 @@ It is a **testing surface**, never a real journal.
 
 ## Acceptance criteria
 
-- [ ] **One obvious command launches the app**, so looking at a change does
+- [x] **One obvious command launches the app**, so looking at a change does
       not mean remembering four scripts. It should be able to start the web
       preview, seed it, wipe it, and run the tests, and it should say what it
       is doing and print the URL
-- [ ] It works on Windows, since that is the development machine
-- [ ] `npm run web:build` produces the static export
-- [ ] `npm run web:serve` serves that export over plain HTTP, with no Metro
+- [x] It works on Windows, since that is the development machine
+- [x] `npm run web:build` produces the static export
+- [x] `npm run web:serve` serves that export over plain HTTP, with no Metro
       dev server running, and prints the URL to open
-- [ ] A seed command fills the preview with obviously fictional data:
+- [x] A seed command fills the preview with obviously fictional data:
       check-ins across **all three periods**, at least two habits with streaks
       in progress, timeline entries spanning several days, and XP partway to a
       level so the reward states are visible
-- [ ] The seeded content is **unmistakably demo data** on sight — no text that
+- [x] The seeded content is **unmistakably demo data** on sight — no text that
       could be mistaken for a real entry
-- [ ] Wipeable in one command or one button, and the wipe is obvious to find
-- [ ] **Impossible to run in a release build.** Guarded so the seed and wipe
+- [x] Wipeable in one command or one button, and the wipe is obvious to find
+- [x] **Impossible to run in a release build.** Guarded so the seed and wipe
       cannot be reached from a production bundle, and a test proves it
-- [ ] The existing non-secure banner stays, and stays prominent: the web
+- [x] The existing non-secure banner stays, and stays prominent: the web
       database is unencrypted by design
-- [ ] Nothing is deployed anywhere. Local only
+- [x] Nothing is deployed anywhere. Local only
 
 ## Tests to write first
 
-- [ ] `tests/unit/` — the seed guard refuses to run when the build is not a
+- [x] `tests/unit/` — the seed guard refuses to run when the build is not a
       development build. This is the one that matters: it is what stops demo
       data reaching a real install
-- [ ] The seed produces data in all three periods, derived with `periodFor()`
+- [x] The seed produces data in all three periods, derived with `periodFor()`
       rather than hardcoded hours, so it stays correct if boundaries change
-- [ ] **The wipe genuinely empties the database** — asserted against a
+- [x] **The wipe genuinely empties the database** — asserted against a
       seeded database, row counts back to zero across every table, with no
       orphaned rows left behind. Proven by a test, never by looking at the
       screen: demo moods stranded in a real timeline would be worse than
       having no demo data at all
-- [ ] `tests/e2e/` — the served static build loads and shows seeded content,
+- [x] `tests/e2e/` — the served static build loads and shows seeded content,
       and the non-secure banner is visible
 
 ## Files likely touched

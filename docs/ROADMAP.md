@@ -127,12 +127,6 @@ not deleted, so the decision is still visible later.
   six existing entries were migrated and the assembled output is byte-identical
   to what was there. Also added `enables_review_of`, so the script — not a
   standing manual override — knows T-037 comes before T-022 and T-023.
-- **21 Sep** — Biometric unlock scoped. T-041 covers unlocking the app
-  with a fingerprint or face, with a device passcode always available as a
-  fallback, off by default and failing locked rather than open. Decrypting an
-  export with a fingerprint is a different problem: biometrics gate a stored
-  key, and the recovery key is required to be stored nowhere, so it is written
-  up as option (f) in ADR 0002 rather than built. Nothing implemented.
 - **21 Sep** — T-021 done: check-ins and events carry the period they
   happened in. Migration 3 rebuilds `checkins` to move the UNIQUE constraint from
   `day` to `(day, period)`, backfilling every existing row from the timestamp it
@@ -143,6 +137,21 @@ not deleted, so the decision is still visible later.
   bonus; the streak still counts days rather than check-ins and still forgives
   one missed day. A backup taken before the migration restores with its periods
   derived on the way in. Next task: T-037.
+- **21 Sep** — Biometric unlock scoped. T-041 covers unlocking the app
+  with a fingerprint or face, with a device passcode always available as a
+  fallback, off by default and failing locked rather than open. Decrypting an
+  export with a fingerprint is a different problem: biometrics gate a stored
+  key, and the recovery key is required to be stored nowhere, so it is written
+  up as option (f) in ADR 0002 rather than built. Nothing implemented.
+- **21 Sep** — T-037 done: the app can be looked at without typing
+  entries for ten minutes. `npm run dev` is one command for launching, building,
+  serving and testing; `npm run web:build` and `web:serve` give a static preview
+  with no Metro running. Demo data seeds from Settings — everything it writes is
+  labelled DEMO, every entry point refuses outside a development build, and the
+  wipe is proven by test and by an end-to-end run to leave every table empty.
+  Fixed a rough edge it exposed: the app only checked for a profile on mount, so
+  it kept showing a name and a level for data that had been removed. Next task:
+  T-022 or T-023.
 
 ## How this file is kept up to date
 

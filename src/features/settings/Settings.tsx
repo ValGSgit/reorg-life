@@ -18,6 +18,7 @@ import {
 import { BackupError, createBackup, describeSnapshot, restoreBackup } from '../../backup';
 import { loadBackup, saveBackup } from '../../backupFile';
 import { DB_IS_ENCRYPTED } from '../../db';
+import { DEMO_SUMMARY, isDevBuild, seedDemoData, wipeAllData } from '../../db/demo';
 
 const REMINDER_SETTING = 'checkin_reminder';
 const DEFAULT_REMINDER = '20:00';
@@ -341,6 +342,69 @@ export function Settings({ onChanged }: { onChanged: () => void }) {
       {!!note && (
         <Card>
           <Sub>{note}</Sub>
+        </Card>
+      )}
+
+      {isDevBuild() && (
+        <Card style={{ gap: 10 }}>
+          <Text style={{ color: t.text, fontWeight: '700', fontSize: 16 }}>Demo data</Text>
+          <Sub>
+            For looking at the app with something in it. Everything it writes is labelled DEMO and is entirely
+            made up. This card only exists in a development build.
+          </Sub>
+
+          <Button
+            label={busy ? 'Working…' : 'Fill with demo data'}
+            disabled={busy}
+            onPress={async () => {
+              setBusy(true);
+              setNote('');
+              try {
+                await seedDemoData();
+                say(`Filled with demo data. ${DEMO_SUMMARY}`);
+                onChanged();
+              } catch (e) {
+                say(`Could not seed: ${e instanceof Error ? e.message : 'unknown error'}`);
+              } finally {
+                setBusy(false);
+              }
+            }}
+          />
+
+          <Button
+            label="Wipe everything"
+            kind="ghost"
+            disabled={busy}
+            onPress={() => {
+              const go = async () => {
+                setBusy(true);
+                try {
+                  await wipeAllData();
+                  say('Wiped. Every table is empty; the app starts from onboarding again.');
+                  onChanged();
+                } catch (e) {
+                  say(`Could not wipe: ${e instanceof Error ? e.message : 'unknown error'}`);
+                } finally {
+                  setBusy(false);
+                }
+              };
+              // This removes real entries too, not only demo ones, so it asks.
+              if (Platform.OS === 'web') {
+                if (typeof confirm === 'function' && !confirm('This deletes everything here. Continue?'))
+                  return;
+                go();
+                return;
+              }
+              Alert.alert(
+                'Delete everything?',
+                'This removes every check-in, habit and timeline entry on this device — demo or not.',
+                [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Delete', style: 'destructive', onPress: () => void go() },
+                ],
+              );
+            }}
+          />
         </Card>
       )}
 
