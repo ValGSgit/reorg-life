@@ -3,7 +3,7 @@ id: T-017
 title: Digital footprint inventory
 milestone: W7-8
 priority: P3
-status: todo
+status: cut
 cut_candidate: true
 blocked_by: null
 ---
@@ -53,3 +53,11 @@ support. Say so in the UI.
 ## Blockers
 
 None.
+
+## Why this was cut
+
+Post-launch. It is a second product wearing the same icon, and nothing
+about the closed test or the store listing needs it.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).

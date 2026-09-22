@@ -1,7 +1,7 @@
 ---
 id: T-032
 title: Add an open-source licences screen
-milestone: W9-10
+milestone: W7-8
 priority: P1
 status: todo
 cut_candidate: false

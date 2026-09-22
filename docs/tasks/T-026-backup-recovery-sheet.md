@@ -1,9 +1,9 @@
 ---
 id: T-026
 title: Add a printed/PDF recovery sheet to backup export
-milestone: Unscheduled
-priority: P2
-status: blocked
+milestone: W5-6
+priority: P1
+status: todo
 cut_candidate: false
 blocked_by: null
 ---
@@ -66,9 +66,23 @@ None of this task's work should read a password or reach the network.
 against <https://docs.expo.dev/versions/v57.0.0/> before writing code, per
 the "Expo has changed" note in AGENTS.md.
 
-## Blockers
+## Was blocked, now settled
 
-Blocked on the owner reviewing [ADR 0002](../DECISIONS/0002-backup-recovery.md)
-and signing off on amending the protected backup-recovery rule in AGENTS.md.
-No code should be written against this task until that sign-off is recorded
-in the ADR (status changed from "proposed").
+ADR 0002 was accepted on 22 September 2026: **option (b)**, the printed/PDF
+recovery sheet. The protected rule in AGENTS.md has been reworded to "generated
+per export, shown once, and **never stored by the app**. The user may take a
+printable copy." This task is unblocked.
+
+## Why this is launch-blocking
+
+Same reasoning as [T-035](T-035-recovery-key-format.md): the everyday failure
+is not a broken cipher, it is a person who wrote the key on the back of
+something and threw it away. A sheet they can print and file reduces that
+without changing who can decrypt anything.
+
+It must say plainly, and without softening it, what happens if the key is
+lost — and it must not imply the sheet solves the problem. A sheet kept beside
+the phone is lost in the same flood as the phone.
+
+**Second to be cut** if the sequence to 2 November does not fit, after the
+landing page. T-035 is not cuttable; this is.

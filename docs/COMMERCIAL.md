@@ -9,27 +9,45 @@
 
 ## Where this stands today
 
-No monetisation model has been chosen yet. Nothing in the codebase or the
-task backlog implies one — there is no paywall, no purchase flow, no
-subscription check anywhere in `src/`. This document exists so that whichever
-model gets picked, the legal groundwork it needs is already written down
-somewhere, instead of discovered during Play Console review.
+**The model is decided.** [ADR 0006](DECISIONS/0006-monetisation.md) was
+accepted on 22 September 2026:
 
-**The one thing that already blocks any release, paid or free:** the
-character art shipped today is unlicensed, watermarked placeholder work (see
-[docs/ASSETS.md](ASSETS.md), task [T-010](tasks/T-010-replace-placeholder-art.md)).
-A store cannot be told to charge money for, or even give away, an app
-containing art with no distribution licence. This is a release blocker
-independent of anything below.
+- **Free forever:** check-in, notes, habits, timeline, local insights, and
+  **manual** export, backup and restore.
+- **One paid unlock, "Continuity", €8.99, one-off, no subscription:**
+  scheduled encrypted backup to a folder the user picks, restore onto a new
+  device, device-to-device transfer.
+- **An optional supporter tip**, one-off, unlocking nothing.
+- **Local entitlement verification**, knowingly, with no backend.
+
+Still no code: there is no paywall, purchase flow or entitlement check
+anywhere in `src/`, and there deliberately will not be until after the closed
+test ([T-047](tasks/T-047-continuity-billing.md)). This document is the legal
+groundwork that has to be in place before the first sale.
+
+**The art licence blocker is resolved, by removal.**
+[ADR 0007](DECISIONS/0007-one-companion.md) drops the commissioned-art route
+entirely in favour of one companion drawn as a designed abstract character
+needing no external licence ([T-042](tasks/T-042-one-companion.md)). Until that
+task lands, the watermarked placeholders are still in the repository and still
+must not ship — to production **or to a closed test**, which also goes through
+Play review.
 
 ## Two different questions
 
 1. **Selling the app itself** (a paid download, no ongoing purchases).
 2. **Selling something inside a free app** (subscription, one-time unlock,
-   consumable). This project's design — companions, XP, unlockables — leans
-   toward option 2 if monetisation happens at all, so most of this document
-   assumes that shape, but the paid-download path is simpler and is noted
-   where it differs.
+   consumable).
+
+**This project is option 2:** a free app with one non-consumable one-time
+unlock and one non-consumable tip. Not a subscription, and not a paid download
+— a paid download would kill the free tier, which is the entire distribution
+strategy, because people have to be able to write in it before they trust it.
+
+Note that the design this document originally assumed — "companions, XP,
+unlockables" — no longer exists. XP and unlockables are removed from the UI
+([T-045](tasks/T-045-remove-xp-display.md)) and there is one companion, not six
+([ADR 0007](DECISIONS/0007-one-companion.md)). What is sold is automation.
 
 ## Google Play billing vs. a third-party processor
 

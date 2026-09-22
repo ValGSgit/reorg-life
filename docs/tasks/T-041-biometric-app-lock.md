@@ -1,7 +1,7 @@
 ---
 id: T-041
 title: Unlock the app with a fingerprint or face, with a passcode fallback
-milestone: W9-10
+milestone: W7-8
 priority: P2
 status: todo
 cut_candidate: false

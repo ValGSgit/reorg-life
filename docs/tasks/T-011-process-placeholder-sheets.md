@@ -3,7 +3,7 @@ id: T-011
 title: Cut the placeholder sheets into per-mood transparent PNGs
 milestone: W3-4
 priority: P3
-status: todo
+status: cut
 cut_candidate: true
 blocked_by: null
 ---
@@ -60,3 +60,12 @@ Mood order on the sheets runs left to right, rough to thriving.
 ## Blockers
 
 None. Cut this freely — blobs are a perfectly good stand-in.
+
+## Why this was cut
+
+[ADR 0007](../DECISIONS/0007-one-companion.md) drops the three rotating
+creatures, so there are no placeholder sheets left to process. Dusk's sheet
+was unusable in any case — "Stage 1…5" is baked into the image.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).

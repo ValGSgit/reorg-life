@@ -3,8 +3,8 @@ id: T-001
 title: Polish habits — edit, reorder and an archive view
 milestone: W3-4
 priority: P2
-status: todo
-cut_candidate: false
+status: cut
+cut_candidate: true
 blocked_by: null
 ---
 
@@ -52,3 +52,11 @@ Per-period habits. That follows the time-of-day work, not this task.
 ## Blockers
 
 None.
+
+## Why this was cut
+
+Post-launch. Habits work; edit, reorder and archive are comfort, and the
+sequence to 2 November has no room for comfort.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).
