@@ -185,13 +185,13 @@ not deleted, so the decision is still visible later.
   someone can turn it on while the app is open. Home now shows the rotating
   companion rather than the one picked in Settings, which is what ADR 0001 asks
   for; wiring that picker back up as the pin is T-024. Next task: T-025.
-- **21 Sep** — Raised the component suite's test timeout. The first
-  test in `Timeline.test.tsx` was failing on CI with "exceeded timeout of
-  5000 ms" — on two unrelated PRs in a row, which makes it systematic rather
-  than bad luck. It is the cold-start cost of standing up the react-native
-  module graph, paid by whichever test runs first in a file; the whole file
-  takes about nine seconds. Nothing in the app got slower and no assertion
-  changed.
+- **21 Sep** — Fixed the demo seeder writing life areas that do not
+  exist. It used `social`, `home`, `life` and `growth`, none of which are in
+  DOMAINS, so seeded entries rendered without a colour or label and could not be
+  reached by the timeline filters added in T-022 — demo data quietly making a
+  working feature look broken. The seed now spreads across all six real areas so
+  every filter chip has something behind it, and a test refuses any life area
+  that is not in DOMAINS. Found by the agent working T-022.
 - **21 Sep** — T-033 done: every colour pair the app puts on screen now
   meets WCAG AA, measured rather than assumed — `contrastRatio` is in the domain
   layer and a test computes every pair in both themes. The three recorded
@@ -202,13 +202,43 @@ not deleted, so the decision is still visible later.
   companions had never been measured and sat at 4.42. Companion bodies were
   reviewed and left alone — they are illustration, not information. Next task:
   T-030.
-- **21 Sep** — Fixed the demo seeder writing life areas that do not
-  exist. It used `social`, `home`, `life` and `growth`, none of which are in
-  DOMAINS, so seeded entries rendered without a colour or label and could not be
-  reached by the timeline filters added in T-022 — demo data quietly making a
-  working feature look broken. The seed now spreads across all six real areas so
-  every filter chip has something behind it, and a test refuses any life area
-  that is not in DOMAINS. Found by the agent working T-022.
+- **21 Sep** — Raised the component suite's test timeout. The first
+  test in `Timeline.test.tsx` was failing on CI with "exceeded timeout of
+  5000 ms" — on two unrelated PRs in a row, which makes it systematic rather
+  than bad luck. It is the cold-start cost of standing up the react-native
+  module graph, paid by whichever test runs first in a file; the whole file
+  takes about nine seconds. Nothing in the app got slower and no assertion
+  changed. It is set in the component suite’s setup file rather than the Jest
+  config, because testTimeout is not a per-project option — Jest ignores it
+  there, which the first attempt at this did before the warning was noticed.
+- **22 Sep** — Gave the pre-commit hook one named escape hatch, `ALLOW_RED=1`, so the
+  failing-test commit the definition of done asks for can actually be made.
+  The hook runs the unit suite, so a red commit was rejected, and the only way
+  round it was `--no-verify` — which also switches off the gitleaks secret scan
+  and the personal-data guard. Two agents hit this independently, and the rule
+  as written was steering both of them towards the least safe option available.
+
+  The hatch skips the unit-test step and nothing else. Lint, formatting,
+  typecheck, the secret scan, the personal-data guard and the placeholder-art
+  guard all still run, and CI still runs the full suite, so nothing red can
+  reach `main` through it. `tests/unit/scripts/pre-commit.test.ts` is new and
+  holds it to that shape: it runs the real hook against a throwaway repository
+  with a stubbed `npx`, and fails if the hatch ever grows to cover lint or —
+  the case actually worth guarding — the secret and personal-data checks.
+
+  Decided by the owner over the alternative, which was to drop the
+  commit-history requirement from AGENTS.md and rely on the PR description
+  instead.
+
+  Worth knowing: the hook selects the `domain` and `db` projects only, so red
+  tests under `tests/unit/scripts/` and `tests/component/` were always
+  committable. The block only ever applied to domain and db tests.
+
+  Fixed one thing found on the way: `--generate` joined every status entry
+  tightly, so any entry running to more than one paragraph produced a ROADMAP
+  that `format:check` rejected. Running prettier fixed it until the next
+  `--generate` undid it again. `assembleStatusLog` now leaves the blank line
+  prettier wants, and three tests hold it there.
 
 ## How this file is kept up to date
 

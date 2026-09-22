@@ -52,11 +52,25 @@ if [ -d node_modules ] && command -v npx >/dev/null 2>&1; then
 
   # Unit tests only. The e2e suite needs a browser and a dev server, so it
   # belongs in CI rather than in the path of every commit.
-  echo "pre-commit: unit tests"
-  npx --no-install jest --selectProjects domain db --silent || {
-    echo "error: tests failed. Do not weaken a test to get past this hook."
-    exit 1
-  }
+  #
+  # ALLOW_RED=1 skips this one step, so the failing-test commit that AGENTS.md
+  # asks for can actually be made. It is deliberately narrower than
+  # --no-verify, which was the only alternative and which also switches off
+  # the secret scan and the personal-data guard above. Everything else in this
+  # hook still runs. See AGENTS.md, "The failing-test commit".
+  if [ "$ALLOW_RED" = "1" ]; then
+    echo "pre-commit: unit tests SKIPPED (ALLOW_RED=1)"
+    echo "            Legal for a test-only commit that is red on purpose."
+    echo "            CI still runs the full suite, so this cannot reach main."
+  else
+    echo "pre-commit: unit tests"
+    npx --no-install jest --selectProjects domain db --silent || {
+      echo "error: tests failed. Do not weaken a test to get past this hook."
+      echo "       If this commit is a failing test written first, and nothing"
+      echo "       else, commit it with: ALLOW_RED=1 git commit ..."
+      exit 1
+    }
+  fi
 else
   echo "pre-commit: node_modules missing, skipping lint/typecheck/tests"
 fi

@@ -48,17 +48,29 @@ export function formatEntryDate(isoDate) {
  * machines assemble the same log.
  */
 export function assembleStatusLog(entries) {
-  return entries
-    .map((entry) => ({ ...entry, meta: parseEntryName(entry.name) }))
-    .filter((entry) => entry.meta)
-    .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
-    .map((entry) => {
-      const lines = entry.body.replace(/\s+$/, '').split('\n');
-      const head = `- **${formatEntryDate(entry.meta.date)}** — ${lines[0]}`;
-      // Continuation lines are indented two spaces to sit under the bullet.
-      // Blank lines stay blank rather than becoming trailing whitespace.
-      const rest = lines.slice(1).map((line) => (line.trim() === '' ? '' : `  ${line}`));
-      return [head, ...rest].join('\n');
-    })
-    .join('\n');
+  return (
+    entries
+      .map((entry) => ({ ...entry, meta: parseEntryName(entry.name) }))
+      .filter((entry) => entry.meta)
+      .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
+      .map((entry) => {
+        const lines = entry.body.replace(/\s+$/, '').split('\n');
+        const head = `- **${formatEntryDate(entry.meta.date)}** — ${lines[0]}`;
+        // Continuation lines are indented two spaces to sit under the bullet.
+        // Blank lines stay blank rather than becoming trailing whitespace.
+        const rest = lines.slice(1).map((line) => (line.trim() === '' ? '' : `  ${line}`));
+        return [head, ...rest].join('\n');
+      })
+      // An entry that runs to more than one paragraph needs a blank line before
+      // the next bullet, which is what prettier does to this list by hand. Join
+      // them tightly and `--generate` writes a file that `format:check` then
+      // rejects, so every status entry broke the build until someone reran
+      // prettier — which the next `--generate` undid again. Single-paragraph
+      // entries stay tight, because that is also what prettier leaves alone.
+      .reduce(
+        (out, block, i, blocks) =>
+          i === 0 ? block : out + (blocks[i - 1].includes('\n\n') ? '\n\n' : '\n') + block,
+        '',
+      )
+  );
 }

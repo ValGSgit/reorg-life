@@ -102,6 +102,29 @@ Where each kind of test goes:
 enforced by CI. Currently well above it. Raising it is welcome; lowering it
 needs a sentence in the PR saying why.
 
+### The failing-test commit
+
+The definition of done asks for commit history showing the failing test. The
+pre-commit hook runs the unit suite, so that commit is rejected. Use:
+
+```sh
+ALLOW_RED=1 git commit -m "test: ..."
+```
+
+`ALLOW_RED=1` skips **the unit-test step and nothing else**. The secret scan,
+the personal-data guard, the placeholder-art guard, lint, formatting and
+typecheck all still run. That narrowness is the entire point: the alternative
+people were reaching for was `--no-verify`, which switches off the secret and
+personal-data checks too, so the rule as written was quietly pushing everyone
+towards the least safe option on the shelf.
+
+It is legal for **a commit that adds a failing test and nothing else**. It is
+not a way to land unfinished work — the next commit makes the test pass, and
+CI runs the full suite regardless, so nothing red reaches `main` either way.
+
+`tests/unit/scripts/pre-commit.test.ts` holds the hatch to this shape. If
+someone widens it, those tests fail.
+
 ### Never weaken a test
 
 Do not delete, skip, loosen or `.only` a test to get CI green. Do not widen a
@@ -182,6 +205,7 @@ A task is done when **all** of these are true:
 
 - [ ] Every acceptance criterion in the task file is ticked and actually true
 - [ ] A failing test was written first, and the commit history shows it
+      (commit it with `ALLOW_RED=1`; see "The failing-test commit")
 - [ ] `npm run verify` passes
 - [ ] `npm run test:e2e` passes, or the change cannot affect it
 - [ ] No existing test was weakened
