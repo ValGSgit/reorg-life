@@ -84,3 +84,34 @@ describe('assembleStatusLog', () => {
     expect(out).toBe('- **20 Sep** — A');
   });
 });
+
+/**
+ * The generated log has to come out of `--generate` already formatted. When
+ * it does not, `npm run verify` fails on `format:check` for a file nobody
+ * edited, and the fix — running prettier over generated output — lasts only
+ * until the next `--generate`.
+ */
+describe('assembleStatusLog, formatted the way prettier wants it', () => {
+  const entry = (name: string, body: string) => ({ name, body });
+
+  it('leaves a blank line after a multi-paragraph entry', () => {
+    const out = assembleStatusLog([
+      entry('2026-09-20-01-a.md', 'First line.\n\nSecond paragraph.'),
+      entry('2026-09-20-02-b.md', 'B'),
+    ]);
+    expect(out).toBe('- **20 Sep** — First line.\n\n  Second paragraph.\n\n- **20 Sep** — B');
+  });
+
+  it('keeps single-paragraph entries tight against each other', () => {
+    const out = assembleStatusLog([entry('2026-09-20-01-a.md', 'A'), entry('2026-09-20-02-b.md', 'B')]);
+    expect(out).toBe('- **20 Sep** — A\n- **20 Sep** — B');
+  });
+
+  it('does not leave a dangling blank when the multi-paragraph entry is last', () => {
+    const out = assembleStatusLog([
+      entry('2026-09-20-01-a.md', 'A'),
+      entry('2026-09-20-02-b.md', 'First.\n\nSecond.'),
+    ]);
+    expect(out).toBe('- **20 Sep** — A\n- **20 Sep** — First.\n\n  Second.');
+  });
+});

@@ -78,7 +78,10 @@ jobs:
 
             The rules that matter most:
             - Test first. Write a failing test, show it failing, then make it
-              pass, then refactor.
+              pass, then refactor. The pre-commit hook rejects a red commit,
+              so commit that first one with `ALLOW_RED=1 git commit ...`.
+              Never reach for `--no-verify`: it disables the secret and
+              personal-data scans too.
             - Never weaken or delete a test to get CI green. If a requirement
               looks wrong, stop and say so in the pull request description.
             - One task per pull request, ideally under 400 changed lines. If it
