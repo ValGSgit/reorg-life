@@ -36,6 +36,15 @@ updates:
       - dependency-name: 'react-dom'
       - dependency-name: 'react-native-web'
       - dependency-name: 'jest-expo'
+      # react-native-reanimated ships as part of the SDK too, and this one has
+      # already bitten: 4.7.0 was proposed, merged, and broke `npm ci` on main
+      # outright, so every CI job died at install. Reanimated 4.6+ needs
+      # react-native-worklets 0.13.x, while expo-modules-core 57 pins it to
+      # ^0.10.0. Worklets is a transitive dependency, so package.json showed
+      # nothing wrong — the conflict only appears when npm tries to resolve.
+      # Raising reanimated is an SDK upgrade, not a version bump.
+      - dependency-name: 'react-native-reanimated'
+      - dependency-name: 'react-native-worklets'
       # jest-expo 57 is built against jest 29; a jest major has to wait for
       # jest-expo to follow. Same story for the types.
       - dependency-name: 'jest'
