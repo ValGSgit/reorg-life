@@ -3,8 +3,8 @@ id: T-025
 title: End-to-end tests for each period using a mocked clock
 milestone: W3-4
 priority: P2
-status: todo
-cut_candidate: false
+status: cut
+cut_candidate: true
 blocked_by: T-023
 ---
 
@@ -68,3 +68,11 @@ minutes per run and find nothing new.
 ## Blockers
 
 Needs T-023.
+
+## Why this was cut
+
+Post-launch. The period logic has 38 unit tests behind it; mocked-clock
+e2e coverage is belt-and-braces on the best-tested code in the repository.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).

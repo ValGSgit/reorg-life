@@ -1,10 +1,19 @@
 # ADR 0001 — Companions rotate with the time of day
 
-- **Status:** accepted
+- **Status:** accepted, and **partly superseded by [ADR 0007](0007-one-companion.md)**
 - **Date:** 2026-09-20
 - **Decided by:** the owner
 - **Affects:** `src/domain/companion.ts` (new), `src/db/schema.ts`,
   timeline, settings, reminders, character art
+
+> **Superseded in part, 22 September 2026.** [ADR 0007](0007-one-companion.md)
+> replaces the three rotating creatures with **one** companion whose
+> _environment_ changes by period. Everything in this ADR about **periods** —
+> `periodFor`, the boundaries, the smoothstep `blend`, storing a period on
+> rows, three check-ins a day, reduce-motion — **stands unchanged**. Only the
+> table below, which maps a period to a _different creature_, and point 4
+> (pinning) no longer apply. Read this ADR for the period model; read ADR 0007
+> for what the companion is.
 
 ## Context
 

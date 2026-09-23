@@ -1,11 +1,11 @@
 ---
 id: T-019
 title: Store listing and screenshots
-milestone: W9-10
+milestone: W5-6
 priority: P1
 status: todo
 cut_candidate: false
-blocked_by: T-010, T-037
+blocked_by: null
 ---
 
 # T-019 — Store listing and screenshots
@@ -66,3 +66,17 @@ removing or cropping a watermark is explicitly forbidden.
 
 This sits on the critical path to 14 December, because the store listing is
 needed before production submission in W12.
+
+## Unblocked — 22 September 2026
+
+This was blocked on [T-010](T-010-replace-placeholder-art.md), the artwork.
+[ADR 0007](../DECISIONS/0007-one-companion.md) removed that dependency, so the
+listing can be written as soon as [T-042](T-042-one-companion.md) lands and
+there is something unwatermarked to screenshot.
+
+**This is now on the critical path to a closed test starting 2 November.**
+
+Draft copy is in [MARKETING.md](../MARKETING.md). Two hard rules when writing
+it: lead on **periods and privacy**, not on the companion; and no medical
+claim, per the rule in AGENTS.md. Screenshots use seeded demo data, never real
+entries.

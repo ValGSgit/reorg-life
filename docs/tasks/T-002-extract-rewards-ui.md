@@ -3,7 +3,7 @@ id: T-002
 title: Move the unlockables picker into features/rewards
 milestone: W3-4
 priority: P3
-status: todo
+status: cut
 cut_candidate: true
 blocked_by: null
 ---
@@ -50,3 +50,11 @@ Unlockables are cut-list position 3. If they are cut, this task goes with them.
 ## Blockers
 
 None.
+
+## Why this was cut
+
+The unlockables picker it moves is being removed entirely by
+[T-045](T-045-remove-xp-display.md). There is nothing left to extract.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).

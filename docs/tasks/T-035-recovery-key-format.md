@@ -1,9 +1,9 @@
 ---
 id: T-035
 title: Show the recovery key in a format people can copy by hand
-milestone: W3-4
-priority: P2
-status: blocked
+milestone: W5-6
+priority: P1
+status: todo
 cut_candidate: false
 blocked_by: null
 ---
@@ -64,9 +64,17 @@ The design mockups solved the human half of this well: case insensitivity,
 dashes ignored, and a warning that `0` and `O` are easy to confuse. Keep all
 of it. Only the length was wrong — six blocks cannot hold 256 bits.
 
-## Blockers
+## Was blocked, now settled
 
-ADR 0003 is **proposed**, not accepted. It asks the owner to choose between
-keeping 256 bits with a longer display and shortening the key to 128 bits to
-match the mockups. Do not start until that is settled — the choice changes
-both the tests and the protected rule in `AGENTS.md`.
+ADR 0003 was accepted on 22 September 2026: **option A**, 256 bits shown as
+Crockford base32 in groups of four. This task is unblocked.
+
+## Why this is launch-blocking
+
+A key shown once and stored nowhere is correct cryptographically and hostile
+behaviourally. Forty-four characters of base64 containing `+`, `/`, `l`, `I`,
+`0` and `O` is the worst possible shape for the one string a person must
+transcribe correctly or lose years of writing. Some people will get it wrong,
+and they will lose everything, and they will be right to blame the app.
+
+Shipping without this is shipping a data-loss bug with a friendly face.

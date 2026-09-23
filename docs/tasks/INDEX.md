@@ -2,46 +2,37 @@
 
 # Task index
 
-31 tasks. The source of truth for each is its own file; this is a view.
+37 tasks. The source of truth for each is its own file; this is a view.
 
-**Next up:** [T-030](T-030-release-build.md) — First EAS release build and the manual device checks
+**Next up:** [T-042](T-042-one-companion.md) — One named companion, with the period driving its environment
 
 Run `npm run next-task` to get the same answer on the command line.
 
-## To do (23)
+## To do (21)
 
 | Task | Title | Priority | Milestone | Notes |
 | --- | --- | --- | --- | --- |
+| [T-042](T-042-one-companion.md) | One named companion, with the period driving its environment | P1 | W3-4 | — |
+| [T-018](T-018-privacy-policy.md) | Finish and publish the privacy policy | P1 | W5-6 | — |
+| [T-019](T-019-store-listing.md) | Store listing and screenshots | P1 | W5-6 | — |
+| [T-026](T-026-backup-recovery-sheet.md) | Add a printed/PDF recovery sheet to backup export | P1 | W5-6 | — |
 | [T-030](T-030-release-build.md) | First EAS release build and the manual device checks | P1 | W5-6 | — |
 | [T-031](T-031-closed-test-prep.md) | Prepare and start the Google Play closed test | P1 | W5-6 | waiting on T-030 |
+| [T-035](T-035-recovery-key-format.md) | Show the recovery key in a format people can copy by hand | P1 | W5-6 | — |
 | [T-038](T-038-ci-build-artifacts.md) | Upload the web and Android exports as downloadable CI artifacts | P1 | W5-6 | — |
 | [T-039](T-039-version-visible-and-deliberate.md) | Show the version and build number, and make versioning deliberate | P1 | W5-6 | — |
 | [T-040](T-040-tagged-release-downloads.md) | Tagged releases with a downloadable Android build and a safe rollback path | P1 | W5-6 | waiting on T-030 |
-| [T-010](T-010-replace-placeholder-art.md) | Replace the watermarked placeholder character art | P1 | W9-10 | — |
-| [T-012](T-012-accessibility-pass.md) | Accessibility pass over every screen | P1 | W9-10 | — |
-| [T-018](T-018-privacy-policy.md) | Finish and publish the privacy policy | P1 | W9-10 | — |
-| [T-019](T-019-store-listing.md) | Store listing and screenshots | P1 | W9-10 | waiting on T-010 |
-| [T-032](T-032-open-source-licences-screen.md) | Add an open-source licences screen | P1 | W9-10 | — |
-| [T-001](T-001-habits-polish.md) | Polish habits — edit, reorder and an archive view | P2 | W3-4 | — |
+| [T-043](T-043-local-insights.md) | Local insights — mood over time, by period, by life area, habit consistency | P1 | W5-6 | — |
+| [T-044](T-044-crisis-resources.md) | A static offline crisis-resources screen | P1 | W5-6 | — |
+| [T-012](T-012-accessibility-pass.md) | Accessibility pass over every screen | P1 | W7-8 | — |
+| [T-032](T-032-open-source-licences-screen.md) | Add an open-source licences screen | P1 | W7-8 | — |
 | [T-014](T-014-cancel-safe-screen-loading.md) | Make screen data loading cancel-safe and re-enable the lint rule | P2 | W3-4 | — |
-| [T-024](T-024-period-settings-and-reminders.md) | Settings for periods, pinning and per-period reminders | P2 | W3-4 | cut candidate |
-| [T-025](T-025-e2e-clock-tests.md) | End-to-end tests for each period using a mocked clock | P2 | W3-4 | — |
-| [T-015](T-015-calendar-sync.md) | Read-only device calendar sync | P2 | W5-6 | — |
-| [T-041](T-041-biometric-app-lock.md) | Unlock the app with a fingerprint or face, with a passcode fallback | P2 | W9-10 | — |
-| [T-002](T-002-extract-rewards-ui.md) | Move the unlockables picker into features/rewards | P3 | W3-4 | cut candidate |
-| [T-011](T-011-process-placeholder-sheets.md) | Cut the placeholder sheets into per-mood transparent PNGs | P3 | W3-4 | cut candidate |
-| [T-034](T-034-app-typeface.md) | Decide and wire the app typeface | P3 | W5-6 | cut candidate |
-| [T-013](T-013-animations.md) | Idle animations — breathing and a bounce on reward | P3 | W7-8 | cut candidate |
-| [T-016](T-016-notion-sync.md) | Notion sync | P3 | W7-8 | cut candidate |
-| [T-017](T-017-footprint-inventory.md) | Digital footprint inventory | P3 | W7-8 | cut candidate |
-| [T-036](T-036-web-companion-viewer.md) | Web viewer for exported backups | P3 | Unscheduled | cut candidate |
-
-## Blocked (2)
-
-| Task | Title | Priority | Milestone | Notes |
-| --- | --- | --- | --- | --- |
-| [T-035](T-035-recovery-key-format.md) | Show the recovery key in a format people can copy by hand | P2 | W3-4 | blocked |
-| [T-026](T-026-backup-recovery-sheet.md) | Add a printed/PDF recovery sheet to backup export | P2 | Unscheduled | blocked |
+| [T-045](T-045-remove-xp-display.md) | Remove XP, levels and unlockables from the UI | P2 | W3-4 | — |
+| [T-046](T-046-landing-page.md) | One-page landing site | P2 | W5-6 | cut candidate |
+| [T-024](T-024-period-settings-and-reminders.md) | Settings for period boundaries and per-period reminders | P2 | W7-8 | cut candidate |
+| [T-041](T-041-biometric-app-lock.md) | Unlock the app with a fingerprint or face, with a passcode fallback | P2 | W7-8 | — |
+| [T-047](T-047-continuity-billing.md) | Continuity — scheduled encrypted backup, restore and transfer, as a paid unlock | P2 | Unscheduled | — |
+| [T-010](T-010-replace-placeholder-art.md) | Replace the watermarked placeholder character art | P3 | Unscheduled | cut candidate |
 
 ## Done (6)
 
@@ -53,6 +44,21 @@ Run `npm run next-task` to get the same answer on the command line.
 | [T-022](T-022-timeline-by-period.md) | Group the timeline by day and period | P1 | W3-4 | done |
 | [T-023](T-023-companion-crossfade.md) | Cross-fade the companion when the period changes | P1 | W3-4 | done |
 | [T-033](T-033-light-palette-contrast.md) | Fix the three WCAG failures in the light palette | P1 | W3-4 | done |
+
+## Cut (10)
+
+| Task | Title | Priority | Milestone | Notes |
+| --- | --- | --- | --- | --- |
+| [T-001](T-001-habits-polish.md) | Polish habits — edit, reorder and an archive view | P2 | W3-4 | cut candidate; cut |
+| [T-025](T-025-e2e-clock-tests.md) | End-to-end tests for each period using a mocked clock | P2 | W3-4 | cut candidate; cut |
+| [T-015](T-015-calendar-sync.md) | Read-only device calendar sync | P2 | W5-6 | cut candidate; cut |
+| [T-002](T-002-extract-rewards-ui.md) | Move the unlockables picker into features/rewards | P3 | W3-4 | cut candidate; cut |
+| [T-011](T-011-process-placeholder-sheets.md) | Cut the placeholder sheets into per-mood transparent PNGs | P3 | W3-4 | cut candidate; cut |
+| [T-034](T-034-app-typeface.md) | Decide and wire the app typeface | P3 | W5-6 | cut candidate; cut |
+| [T-013](T-013-animations.md) | Idle animations — breathing and a bounce on reward | P3 | W7-8 | cut candidate; cut |
+| [T-016](T-016-notion-sync.md) | Notion sync | P3 | W7-8 | cut candidate; cut |
+| [T-017](T-017-footprint-inventory.md) | Digital footprint inventory | P3 | W7-8 | cut candidate; cut |
+| [T-036](T-036-web-companion-viewer.md) | Web viewer for exported backups | P3 | Unscheduled | cut candidate; cut |
 
 ## Statuses
 

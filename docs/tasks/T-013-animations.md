@@ -3,7 +3,7 @@ id: T-013
 title: Idle animations — breathing and a bounce on reward
 milestone: W7-8
 priority: P3
-status: todo
+status: cut
 cut_candidate: true
 blocked_by: T-023
 ---
@@ -48,3 +48,10 @@ Restraint is the point — this is an app for calming down.
 ## Blockers
 
 Needs T-023.
+
+## Why this was cut
+
+Post-launch polish. Nothing depends on it.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).

@@ -3,7 +3,7 @@ id: T-034
 title: Decide and wire the app typeface
 milestone: W5-6
 priority: P3
-status: todo
+status: cut
 cut_candidate: true
 blocked_by: null
 ---
@@ -65,3 +65,11 @@ before 2 November, drop it and update the mockups instead.
 ## Blockers
 
 None.
+
+## Why this was cut
+
+Post-launch. The system typeface ships fine, and a licensed typeface is
+another asset licence on a project that just removed its last one.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).

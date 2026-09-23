@@ -43,14 +43,48 @@ The app makes no network request carrying your data. There is no analytics SDK,
 no crash reporting, no advertising identifier, no telemetry of any kind. It
 does not ask for your contacts or your location.
 
-Planned integrations will not change this without being explicit:
+**Notion sync has been dropped.** It was the one planned feature that would
+have sent your writing to someone else's server, and it was cut on
+22 September 2026 so that the sentence above needs no footnote.
 
-- **Device calendar (planned):** read-only, on your device, to build your
-  timeline. Nothing is written back and nothing is uploaded.
-- **Notion sync (planned, and a candidate to be dropped):** would talk to
-  Notion's servers **only** if you connect it yourself, with a token you
-  provide, which would be held in the OS keystore. It would be off unless you
-  turn it on.
+The only remaining planned integration keeps everything on the device:
+
+- **Device calendar (planned, post-launch):** read-only, on your device, to
+  build your timeline. Nothing is written back and nothing is uploaded.
+
+### Charts and insights are not analytics
+
+The app shows you your own patterns — mood over time, by time of day, by life
+area, how consistent a habit has been. **All of it is calculated on your phone,
+from your own data, and none of it is transmitted anywhere.**
+
+This is worth stating plainly because "analytics" usually means the opposite:
+a company watching what you do. Here it means your phone doing arithmetic on
+your own writing and drawing you a picture. No one else sees it, including us.
+There is no server to see it with.
+
+### What we know about you
+
+Nothing individual. The developer sees only what Google Play reports to every
+developer, with no code added to the app and no SDK: how many people installed
+it, how many uninstalled, ratings and reviews, which countries, and anonymous
+crash and ANR rates. None of it identifies anyone and none of it contains
+anything you wrote.
+
+## If you buy something
+
+If you buy the optional Continuity unlock or leave a supporter tip, the
+purchase happens through Google Play. **Google** learns that your Google
+account bought this app; that is between you and Google, and their privacy
+policy covers it. The app itself receives only a yes-or-no answer about
+whether the purchase exists, checked on your device. Nothing about your
+writing, your moods or your habits is involved in a purchase, and there is no
+server of ours for it to be sent to.
+
+Continuity schedules an encrypted backup to a folder **you choose** in your
+own storage or cloud. We never host it, never see it and never learn where you
+put it. The file is encrypted before it leaves the app, exactly as a manual
+export is.
 
 ## Backups
 

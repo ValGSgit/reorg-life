@@ -1,7 +1,7 @@
 ---
 id: T-018
 title: Finish and publish the privacy policy
-milestone: W9-10
+milestone: W5-6
 priority: P1
 status: todo
 cut_candidate: false

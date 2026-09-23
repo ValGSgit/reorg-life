@@ -143,22 +143,37 @@ an ADR.
 
 - **Streaks forgive one missed day.** Two in a row stops a streak; one does
   not. Days a schedule does not ask for are skipped, not counted as misses.
-- **No penalties.** XP is only ever added. Unticking something is a
-  correction, never a punishment.
+- **No penalties.** The care you have put in is only ever added to. Unticking
+  something is a correction, never a punishment. The accumulating value still
+  exists in `src/domain` and drives how grown the companion looks; it is
+  **never shown to the user as a number, a level or a bar**.
+  ([ADR 0007](docs/DECISIONS/0007-one-companion.md))
 - **Encryption on native is not optional.** SQLCipher, key in the OS keystore.
 - **Backups are AES-256-GCM.** The recovery key is generated per export, shown
-  **once**, and stored nowhere.
+  **once**, and **never stored by the app**. The user may take a printable
+  copy. ([ADR 0002](docs/DECISIONS/0002-backup-recovery.md),
+  [ADR 0003](docs/DECISIONS/0003-recovery-key-format.md))
 - **No analytics, no telemetry, no network call carrying personal data.**
-- **Time-of-day companions follow the local clock** and cross-fade smoothly,
-  or switch instantly under reduce-motion. The rotation itself is never cut.
-  ([ADR 0001](docs/DECISIONS/0001-time-of-day-companions.md))
-- **Up to three check-ins a day**, one per period. The first gives normal XP,
-  the rest a smaller bonus. **The streak counts any day with at least one, and
-  still forgives one missed day.**
+  "Analytics" means **data leaving the device**. Rendering someone's own data
+  back to them on their own phone — mood over time, by period, by life area,
+  habit consistency — is **not** analytics, is explicitly allowed, and is a
+  free feature. The measurement surface for the project is Play Console, which
+  reports installs, uninstalls, ratings, country split and crash/ANR rates
+  with no SDK and no code. ([PRIVACY.md](docs/PRIVACY.md))
+- **One companion**, named by the user, which grows as the app is used. The
+  period follows the local clock and drives its **environment** — light,
+  background, posture — never its identity. The cross-fade is smooth, or
+  instant under reduce-motion, and is never cut.
+  ([ADR 0001](docs/DECISIONS/0001-time-of-day-companions.md) for the period
+  model, [ADR 0007](docs/DECISIONS/0007-one-companion.md) for the companion)
+- **Up to three check-ins a day**, one per period. The first counts for more
+  than the rest, so a second is a welcome extra and never an obligation.
+  **The streak counts any day with at least one, and still forgives one missed
+  day.**
 - **Reminder copy is written in the companion's voice and never induces
   guilt.**
 - **Engaging, never coercive.** Retention comes from craft and warmth — the
-  companions, art worth looking at, a timeline worth re-reading. It never
+  companion, art worth looking at, a timeline worth re-reading. It never
   comes from making it uncomfortable to leave. Specifically forbidden:
   streak-loss pressure, variable or random rewards, loss aversion, artificial
   scarcity, notifications designed to pull rather than remind, and social
@@ -166,9 +181,22 @@ an ADR.
   list, not the second.
   ([ADR 0005](docs/DECISIONS/0005-engagement-model.md))
 - **The core is never behind a paywall.** Check-in, notes, habits, timeline,
-  export and backup stay free, and anyone who stops paying keeps access to
-  what they have already written and can still export it.
+  local insights and charts, and **manual** export, backup and restore stay
+  free forever. Anyone who stops paying keeps everything they have written and
+  can still get all of it out by hand. Only **scheduling, automation and
+  device-to-device transfer** are paid — the free tier can always export and
+  import; the paid tier removes the remembering.
   ([ADR 0006](docs/DECISIONS/0006-monetisation.md))
+- **Never a medical claim.** These words must not appear in the app, the store
+  listing, the landing page or any post: _treat, cure, therapy, therapeutic,
+  clinically proven, diagnose,_ "reduces anxiety", "manage your depression",
+  or any other outcome or symptom-improvement claim — including a testimonial
+  that implies one. Under EU MDR, qualification as a medical device turns on
+  **intended purpose**: documenting mood without clinical interpretation, for
+  wellbeing, is outside scope, and it is _claims_ that drag a product in.
+  **Never add a scored clinical instrument** (PHQ-9, GAD-7 or similar), and
+  never add risk scoring or mood-triggered detection. See
+  [MARKETING.md](docs/MARKETING.md).
 
 ---
 
@@ -264,8 +292,12 @@ unblocked first, then report exactly what is left and why.
 - **No analytics, crash reporting or telemetry.** Adding any is a product
   decision requiring an ADR, and it would contradict
   [docs/PRIVACY.md](docs/PRIVACY.md).
-- **No network call carrying personal data.** The only planned exception is
-  Notion sync, off by default and explicitly opted into.
+- **No network call carrying personal data. There is no exception.** Notion
+  sync was the one planned exception and was **cut** on 22 September, because
+  it was the single feature that turned "nothing leaves your phone" into a
+  sentence needing a footnote — in the store listing, in the Data Safety form
+  and in the strongest claim the app has. See
+  [T-016](docs/tasks/T-016-notion-sync.md).
 - The web preview is **not** secure and must always say so.
 
 Details in [docs/SECURITY.md](docs/SECURITY.md).
