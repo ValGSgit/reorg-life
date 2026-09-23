@@ -250,31 +250,6 @@ not deleted, so the decision is still visible later.
   `--generate` undid it again. `assembleStatusLog` now leaves the blank line
   prettier wants, and three tests hold it there.
 
-- **22 Sep** — Fixed a red `main`. Dependabot proposed `react-native-reanimated` 4.7.0, it was
-  merged as PR #33, and it broke `npm ci` outright — so every CI job since has
-  died at install, including the one for PR #34 that merged after it. Reanimated
-  4.6+ needs `react-native-worklets` 0.13.x while `expo-modules-core` 57 pins it
-  to `^0.10.0`. Worklets is transitive, so nothing in `package.json` showed a
-  conflict and the failure only appeared when npm tried to resolve.
-
-  Two things made this land unnoticed. PR #33's own check run was cancelled
-  rather than failing, so it merged without ever going green. And a local
-  `npm run verify` passes on an older `node_modules`, because nothing re-resolves
-  until `npm ci` runs — which is why the docs PR opened afterwards looked green
-  locally and red on CI.
-
-  Reverted `package.json` **and** `package-lock.json` to 4.5.1. Reverting
-  `package.json` alone is not enough; `dependabot.yml` already recorded that
-  lesson from the eslint 10 incident.
-
-  `react-native-reanimated` and `react-native-worklets` are now in the
-  Dependabot ignore list with the Expo SDK siblings, where they always belonged.
-  `tests/unit/scripts/dependabot-policy.test.ts` is new and asserts the list
-  stays complete, plus that reanimated stays on 4.5.x — the policy was already
-  written in a comment in that file, and a comment cannot fail a build.
-
-  First real use of the `ALLOW_RED=1` hatch added earlier today, for the red
-  test commit.
 - **22 Sep** — Re-planned the project around covering its costs, after a business review
   concluded that as scoped it earned approximately nothing. Six owner decisions,
   all recorded as ADRs rather than left in a chat.
@@ -326,6 +301,52 @@ not deleted, so the decision is still visible later.
   Also added a medical-claim rule to AGENTS.md — a forbidden word list, the EU
   MDR intended-purpose reasoning, and a ban on scored clinical instruments — so
   it survives being forgotten.
+
+- **22 Sep** — Fixed a red `main`. Dependabot proposed `react-native-reanimated` 4.7.0, it was
+  merged as PR #33, and it broke `npm ci` outright — so every CI job since has
+  died at install, including the one for PR #34 that merged after it. Reanimated
+  4.6+ needs `react-native-worklets` 0.13.x while `expo-modules-core` 57 pins it
+  to `^0.10.0`. Worklets is transitive, so nothing in `package.json` showed a
+  conflict and the failure only appeared when npm tried to resolve.
+
+  Two things made this land unnoticed. PR #33's own check run was cancelled
+  rather than failing, so it merged without ever going green. And a local
+  `npm run verify` passes on an older `node_modules`, because nothing re-resolves
+  until `npm ci` runs — which is why the docs PR opened afterwards looked green
+  locally and red on CI.
+
+  Reverted `package.json` **and** `package-lock.json` to 4.5.1. Reverting
+  `package.json` alone is not enough; `dependabot.yml` already recorded that
+  lesson from the eslint 10 incident.
+
+  `react-native-reanimated` and `react-native-worklets` are now in the
+  Dependabot ignore list with the Expo SDK siblings, where they always belonged.
+  `tests/unit/scripts/dependabot-policy.test.ts` is new and asserts the list
+  stays complete, plus that reanimated stays on 4.5.x — the policy was already
+  written in a comment in that file, and a comment cannot fail a build.
+
+  First real use of the `ALLOW_RED=1` hatch added earlier today, for the red
+  test commit.
+
+- **23 Sep** — Fixed a red `main`, again. The status log in `docs/ROADMAP.md`
+  had its two 22 Sep entries in the wrong order and was missing a blank line, which
+  `prettier --check` rejects — so the lint job has failed on every push since PR #36
+  merged.
+
+  Nothing was wrong with the entry files. One file per entry does stop two open
+  pull requests conflicting over the same lines of the log, which is what it was
+  built for. It does not stop them conflicting over the **generated output**: #35
+  and #36 each ran `--generate`, git merged `docs/ROADMAP.md` by hunk, and the
+  result was a log the generator would never have written.
+
+  `tests/unit/scripts/roadmap-log.test.ts` now compares the log in the ROADMAP
+  against what `assembleStatusLog` produces from `docs/status/`, so the answer to
+  "is the generated file stale?" is a test rather than a formatting error three
+  merges later. The fix itself is one command.
+
+  Worth noticing that this is the second red `main` in two days that a merge
+  produced rather than a pull request: #36's own checks were green on its branch.
+  A generated file committed to the repository is a merge hazard by construction.
 
 ## How this file is kept up to date
 
