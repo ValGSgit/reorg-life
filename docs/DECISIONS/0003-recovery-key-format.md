@@ -1,6 +1,7 @@
 # ADR 0003 — What a recovery key looks like
 
-- **Status:** proposed — needs the owner's decision
+- **Status:** accepted — option A, 256 bits shown as Crockford base32
+- **Decided by:** the owner, 22 September 2026
 - **Date:** 2026-09-20
 - **Affects:** `src/backup.ts`, the export and restore screens
 - **Related:** [ADR 0002](0002-backup-recovery.md), which asks what happens
@@ -60,7 +61,10 @@ A word list, BIP39-style, where the words _are_ the entropy.
 - Adds a word list to the bundle and a whole class of normalisation bugs
   (homophones, plurals, locale).
 
-## Recommendation
+## Decision
+
+**Accepted: option A**, signed off by the owner on 22 September 2026.
+**T-035 is unblocked** and is launch-blocking.
 
 **Option A.** Keep the 256-bit key and present it as Crockford base32 in
 groups of four, then adopt everything else the design got right: case

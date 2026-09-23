@@ -1,10 +1,10 @@
 ---
 id: T-010
 title: Replace the watermarked placeholder character art
-milestone: W9-10
-priority: P1
+milestone: Unscheduled
+priority: P3
 status: todo
-cut_candidate: false
+cut_candidate: true
 blocked_by: null
 ---
 
@@ -65,3 +65,21 @@ edit.
 ## Blockers
 
 Needs a decision from the owner on how the final art is sourced and licensed.
+
+## Moved off the critical path — 22 September 2026
+
+[ADR 0007](../DECISIONS/0007-one-companion.md) replaces the three creatures
+with one companion drawn as a designed abstract character, needing no external
+licence. [T-042](T-042-one-companion.md) delivers that.
+
+This task therefore stops being a release blocker and becomes a **post-launch
+upgrade**: commissioning a proper illustrator for the five expressions. It is
+a drop-in replacement and touches no logic.
+
+It is also the **best thing to spend the first revenue on**. At 2% conversion a
+€300 commission needs roughly 2,000 installs to break even, which is why it
+could not be bought up front — but it is exactly what a profitable first year
+should buy.
+
+The acceptance criteria above still describe six companions and are stale;
+rewrite them when this is picked up, against one companion and five moods.

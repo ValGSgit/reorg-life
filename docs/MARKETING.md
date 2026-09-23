@@ -297,6 +297,120 @@ production review window.
 
 ---
 
+## Draft listing, landing and launch copy — 22 September 2026
+
+Written for [T-019](tasks/T-019-store-listing.md) and
+[T-046](tasks/T-046-landing-page.md). **Lead on periods and privacy, not on
+the companion.** The companion is what makes people stay; privacy is what makes
+them install.
+
+### Forbidden words — check every draft against this
+
+_treat · cure · therapy · therapeutic · clinically proven · diagnose ·
+"reduces anxiety" · "manage your depression"_ — and any other outcome or
+symptom-improvement claim, including a testimonial implying one. Under EU MDR,
+qualification as a medical device turns on **intended purpose**, and it is
+claims that drag a product in. Never add a scored clinical instrument (PHQ-9,
+GAD-7 or similar). This is a protected rule in AGENTS.md.
+
+### Play title (30 characters)
+
+`ReorgLife: private mood diary` — 29.
+
+### Short description (80 characters)
+
+`A mood and habit diary that never leaves your phone. No account, no cloud.`
+
+74 characters. It leads on the unusual true thing and makes no claim about how
+anyone will feel.
+
+### Full description
+
+> **Your day has a shape. Most trackers only see the date.**
+>
+> ReorgLife lets you check in up to three times a day — morning, afternoon and
+> night — so "a rough morning that got better" is something you can actually
+> write down, and later read back.
+>
+> **Nothing leaves your phone.**
+>
+> No account. No sign-up. No cloud. No analytics, no telemetry, no advertising
+> ID. There is no server, so there is nothing to breach and nobody to sell.
+> Your writing is stored encrypted on your own device.
+>
+> **What you get**
+>
+> · Check in by time of day, not just by date
+> · Notes and a timeline worth re-reading
+> · Habits with forgiving streaks — one missed day never breaks anything
+> · Charts of your own patterns, drawn on your phone from your own data
+> · Encrypted export and restore, free, forever
+> · A companion you name, that grows as you use the app
+>
+> **Forgiving on purpose**
+>
+> No guilt, no nagging, no "don't break your streak". A quiet week is
+> information, not a failure. There are no points to lose.
+>
+> **Free, and honest about what is paid**
+>
+> Everything above is free and stays free. One optional one-off purchase,
+> Continuity, automates your backups to a folder you choose. You can always
+> export and restore by hand without it — it just removes the remembering.
+>
+> ReorgLife is a diary, not a medical device, and not a substitute for
+> professional support.
+
+### Screenshots plan
+
+Eight, seeded with demo data — **never a real entry**. Set the device clock per
+shot so the period is right.
+
+1. Check-in, morning — the three-periods idea, immediately
+2. Timeline grouped by day and period — the thing competitors cannot show
+3. Insights: mood by period — the reason to recommend it
+4. Insights: mood over time
+5. Habits with a forgiven missed day visible, captioned as forgiven
+6. The companion at night — warmth, after the substance
+7. Settings showing "no account, nothing uploaded"
+8. Encrypted export with the recovery key panel
+
+Caption each in plain language. No claim about outcomes anywhere.
+
+### Landing page
+
+One page. Same title and short description, the eight screenshots, a link to
+Play, a link to the repository, and the privacy policy at a stable URL because
+Play requires one.
+
+### Launch posts
+
+Communities where this audience actually is: privacy-focused, FOSS-adjacent,
+and mental-health-tooling spaces that allow self-promotion. **Read each set of
+rules first and post under them** — a removed post costs more than it earns.
+
+Lead with the verifiable claim, not the pitch:
+
+> I built a mood and habit diary that has no account and no server. It stores
+> everything encrypted on the phone, and the charts are drawn on-device from
+> your own data. It checks in by time of day rather than by date, which turned
+> out to be the part I actually wanted. Android, free, source is open. Happy to
+> answer anything about the crypto or the storage model.
+
+Do not post the same text everywhere on the same day. Answer every reply for
+the first 48 hours — that is the whole growth loop, and it costs nothing but
+attention.
+
+### Why distribution, not features, is the lever
+
+At €8.99 a sale nets about €7.64. Covering costs needs about five sales;
+€300 clear needs about forty, which is roughly 2,000 installs at a 2%
+conversion. No further feature moves that number. The listing, the landing
+page and these posts are the only things that do. See
+[COMMERCIAL-PLAN.md](COMMERCIAL-PLAN.md).
+
+---
+
 ## Tone rules for anything published
 
 The product's tone is a requirement, and marketing copy is the first place it
@@ -340,7 +454,9 @@ easy to walk into once there is money involved.
 
 Everything measurable is outside the app:
 
-- **Play Console** — installs, uninstalls, ratings, crash reports. Enough.
+- **Play Console** — installs, uninstalls, ratings, country split, and crash
+  and ANR rates. No SDK, no code, nothing added to the app. This is the
+  measurement surface for the whole project and it is enough.
 - **Channel-side numbers** — what Reddit, Mastodon or Instagram report.
 - **Testers, directly.** Twelve people is few enough to ask. A question in the
   Discord will tell you more than any funnel would.

@@ -1,8 +1,8 @@
 # ADR 0002 — What happens when a backup's recovery key is lost
 
-- **Status:** proposed — needs the owner's sign-off before any code changes
+- **Status:** accepted — option (b), the printed/PDF recovery sheet
 - **Date:** 2026-09-20
-- **Decided by:** not yet decided; this document is the input to that decision
+- **Decided by:** the owner, 22 September 2026
 - **Affects:** `src/backup.ts`, `docs/ARCHITECTURE.md`, `docs/PRIVACY.md`,
   `docs/SECURITY.md`, `AGENTS.md` (two protected product rules — see below),
   `docs/RELEASE.md`
@@ -167,8 +167,19 @@ chosen, never instead of one. Requires amending rule 1 either way.
 
 ## Decision
 
-**Recommended: (b), the printed/PDF recovery sheet.** Not implemented here —
-this ADR is the input to that decision, not the decision itself.
+**Accepted: (b), the printed/PDF recovery sheet.** Signed off by the owner on
+22 September 2026, together with [ADR 0003](0003-recovery-key-format.md), as
+part of promoting recovery-key hardening to launch-blocking.
+
+The narrow rewording of protected rule 1 is therefore approved. It becomes:
+
+> Backups are AES-256-GCM. The recovery key is generated per export, shown
+> once, and **never stored by the app**. The user may take a printable copy.
+
+Rule 2 is untouched: the sheet is generated on device, involves no network
+call and adds no third party.
+
+**T-026 is unblocked** and is launch-blocking.
 
 Option (f) was added after the owner asked for fingerprint unlocking. The app
 lock half of that request has no conflict with any rule and is `T-041`; the

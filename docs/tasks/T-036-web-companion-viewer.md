@@ -3,7 +3,7 @@ id: T-036
 title: Web viewer for exported backups
 milestone: Unscheduled
 priority: P3
-status: todo
+status: cut
 cut_candidate: true
 blocked_by: null
 ---
@@ -75,3 +75,10 @@ could stop being something the public ever sees.
 
 None, but T-035 would change the key format, so doing that first avoids
 building the key input twice.
+
+## Why this was cut
+
+Post-launch. Already unscheduled; making the cut explicit.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).

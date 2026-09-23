@@ -3,7 +3,7 @@ id: T-016
 title: Notion sync
 milestone: W7-8
 priority: P3
-status: todo
+status: cut
 cut_candidate: true
 blocked_by: null
 ---
@@ -61,3 +61,14 @@ If the schedule is tight, cut this. Nothing else depends on it.
 ## Blockers
 
 None.
+
+## Why this was cut
+
+It is the one feature that turns "no network" into "a network call
+carrying personal data". That costs the strongest line in the store
+listing, complicates the Data Safety declaration, and adds a third party
+to a privacy policy whose whole value is having none. The feature is worth
+less than the sentence it costs.
+
+Cut on 22 September 2026 in the re-planning session. See
+[COMMERCIAL-PLAN.md](../COMMERCIAL-PLAN.md).
